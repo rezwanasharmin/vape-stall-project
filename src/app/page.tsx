@@ -11,8 +11,8 @@ export default function HomePage() {
   return (
     <div>
       <HeroSlider />
-      <FeaturesBar />
       <CategoryGrid />
+      <FeaturesBar />
       <ProductSection products={products} />
       <PromoBanner />
       <Testimonials />
