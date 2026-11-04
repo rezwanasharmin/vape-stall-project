@@ -5,9 +5,10 @@ import { CategoryGrid } from '@/components/home/CategoryGrid';
 import { ProductSection } from '@/components/home/ProductSection';
 import { NewArrivalsSection } from '@/components/home/NewArrivalsSection';
 import { BrandsSection } from '@/components/home/BrandsSection';
+import { MostPopularSection } from '@/components/home/MostPopularSection';
 import { PromoBanner } from '@/components/home/PromoBanner';
 import { Testimonials } from '@/components/home/Testimonials';
-import { products, newArrivalProducts } from '@/data/products';
+import { products, newArrivalProducts, mostPopularProducts } from '@/data/products';
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
       <ProductSection products={products} />
       <NewArrivalsSection products={newArrivalProducts} />
       <BrandsSection />
+      <MostPopularSection products={mostPopularProducts} />
       <PromoBanner />
       <Testimonials />
     </div>

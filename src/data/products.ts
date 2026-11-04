@@ -648,3 +648,110 @@ export const newArrivalProducts: Product[] = [
     description: "Buy YUOTO 3000 Puffs 50mg Vape Online in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
   }
 ];
+
+export const mostPopularProducts: Product[] = [
+  {
+    id: "mp-1",
+    name: "Sultan Shisha 100K Puff 2mg Disposable Vape in UAE",
+    handle: "buy-sultan-shisha-100k-puff-2mg-disposable-vape-in-uae",
+    price: 65.00,
+    priceFormatted: "Dhs. 65.00",
+    rating: 5.0,
+    reviewsCount: 66,
+    image: "/images/products/sultan-shisha-100k.png",
+    altImage: "/images/products/sultan-shisha-100k-alt.png",
+    category: "Disposable Vape",
+    brand: "Sultan Shisha",
+    puffs: "100000 Puffs",
+    nicotine: "2mg",
+    inStock: true,
+    flavors: [
+      "Blueberry Raspberry",
+      "Double Apple",
+      "Grape",
+      "Lemon Mint",
+      "Peach Ice",
+      "Watermelon"
+    ],
+    description: "Buy Sultan Shisha 100K Puff 2mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+  },
+  {
+    id: "mp-2",
+    name: "Ignite V250 25000 Puff 50mg Disposable Vape in UAE",
+    handle: "buy-ignite-v250-25000-puff-50mg-disposable-vape-in-uae",
+    price: 75.00,
+    priceFormatted: "Dhs. 75.00",
+    rating: 5.0,
+    reviewsCount: 56,
+    isOutOfStock: true,
+    inStock: false,
+    image: "/images/products/ignite-v250.png",
+    altImage: "/images/products/ignite-v250-alt.png",
+    category: "Disposable Vape",
+    brand: "Ignite",
+    puffs: "25000 Puffs",
+    nicotine: "50mg",
+    flavors: [
+      "Aloe Grape Ice",
+      "Icy Mint",
+      "Pineapple Kiwi Dragonfruit",
+      "Sweet & Sour Pomegranate",
+      "Peach Mango"
+    ],
+    description: "Buy Ignite V250 25000 Puff 50mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+  },
+  {
+    id: "mp-3",
+    name: "Nasty Bolt 50000 puff 50mg Disposable Vape in UAE",
+    handle: "buy-nasty-bolt-50000-puff-50mg-disposable-vape-in-uae",
+    price: 49.00,
+    priceFormatted: "Dhs. 49.00",
+    rating: 5.0,
+    reviewsCount: 55,
+    image: "/images/products/nasty-bolt-50000.png",
+    altImage: "/images/products/nasty-bolt-50000-alt.png",
+    category: "Disposable Vape",
+    brand: "Nasty",
+    puffs: "50000 Puffs",
+    nicotine: "50mg",
+    inStock: true,
+    flavors: [
+      "Blueberry Ice",
+      "Cherry Cola",
+      "Kiwi Passionfruit Guava",
+      "Raspberry Watermelon",
+      "Strawberry Kiwi",
+      "Watermelon Ice"
+    ],
+    description: "Buy Nasty Bolt 50000 puff 50mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+  },
+  {
+    id: "mp-4",
+    name: "Lost Mary MT35000 Puff 50mg Disposable Vape in UAE",
+    handle: "buy-lost-mary-mt35000-puff-50mg-disposable-vape-in-uae",
+    price: 40.00,
+    priceFormatted: "Dhs. 40.00",
+    originalPrice: 48.00,
+    originalPriceFormatted: "Dhs. 48.00",
+    savingsFormatted: "Save Dhs. 8.00",
+    rating: 5.0,
+    reviewsCount: 73,
+    badge: "8.3% - 16.7% OFF",
+    image: "/images/products/lost-mary-mt35000.png",
+    altImage: "/images/products/lost-mary-mt35000-alt.png",
+    category: "Disposable Vape",
+    brand: "Lost Mary",
+    puffs: "35000 Puffs",
+    nicotine: "50mg",
+    inStock: true,
+    flavors: [
+      "Berry Burst",
+      "Black Grape",
+      "Cola Ice",
+      "Peach Green Grape",
+      "Strawberry Kiwi Ice",
+      "Watermelon Bubblegum"
+    ],
+    description: "Buy Lost Mary MT35000 Puff 50mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+  }
+];

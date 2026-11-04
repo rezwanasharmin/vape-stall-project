@@ -62,18 +62,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             alt={product.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-contain transition-all duration-500 group-hover:scale-106"
+            className="object-contain transition-all duration-500 group-hover:scale-106 group-hover:opacity-0"
             priority={false}
           />
 
-          {/* Secondary / Flavor Splash Hover Image */}
+          {/* Secondary / Flavor Splash Hover Image with smooth zoom and fade animation */}
           {product.altImage && (
             <Image
               src={product.altImage}
               alt={`${product.name} hover view`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-contain absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-106"
+              className="object-contain absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-95 group-hover:scale-106"
             />
           )}
         </div>
