@@ -1,13 +1,48 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export const PromoBanner: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+
+    // Safety fallback
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 600);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
-    <section className="offer-card-section bg-[#f3f6fb] py-16 sm:py-20 border-t border-slate-100">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      ref={sectionRef}
+      className={`offer-card-section ${isVisible ? 'is-visible' : ''}`}
+    >
+      <div className="page-width">
         <div className="card-block">
           
           {/* Card 1: Vape Kits & Pod Systems */}
@@ -15,6 +50,7 @@ export const PromoBanner: React.FC = () => {
             className="offer-card"
             style={{
               background: 'linear-gradient(135deg, rgba(110, 189, 184, 1), rgba(110, 189, 184, 1) 98%)',
+              color: '#ffffff',
             }}
           >
             <div className="offer-card__deco" />
@@ -27,21 +63,7 @@ export const PromoBanner: React.FC = () => {
               <div className="btn-container">
                 <Link href="/shop" className="btn-shop">
                   <span>Shop Kits</span>
-                  <span className="arrow-icon" aria-hidden="true">
-                    <svg
-                      className="w-3.5 h-3.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.8}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                      />
-                    </svg>
-                  </span>
+                  <span className="arrow-icon">→</span>
                 </Link>
               </div>
             </div>
@@ -53,8 +75,8 @@ export const PromoBanner: React.FC = () => {
                   alt="Vape Kits & Pod Systems"
                   width={600}
                   height={600}
-                  className="w-auto h-auto max-h-[310px] object-contain drop-shadow-xl"
                   priority
+                  style={{ height: 'auto' }}
                 />
               </div>
             </div>
@@ -65,6 +87,7 @@ export const PromoBanner: React.FC = () => {
             className="offer-card"
             style={{
               background: '#E0BEA5',
+              color: '#ffffff',
             }}
           >
             <div className="offer-card__deco" />
@@ -77,21 +100,7 @@ export const PromoBanner: React.FC = () => {
               <div className="btn-container">
                 <Link href="/shop" className="btn-shop">
                   <span>Shop Premium</span>
-                  <span className="arrow-icon" aria-hidden="true">
-                    <svg
-                      className="w-3.5 h-3.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.8}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                      />
-                    </svg>
-                  </span>
+                  <span className="arrow-icon">→</span>
                 </Link>
               </div>
             </div>
@@ -103,8 +112,8 @@ export const PromoBanner: React.FC = () => {
                   alt="Premium Vape Collection"
                   width={600}
                   height={589}
-                  className="w-auto h-auto max-h-[310px] object-contain drop-shadow-xl"
                   priority
+                  style={{ height: 'auto' }}
                 />
               </div>
             </div>
