@@ -9,7 +9,7 @@ export const BrandsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Staggered gentle float movements so adjacent logos move organically
+  // 4 staggered gentle float animations
   const floatClasses = [
     'animate-brand-move-1',
     'animate-brand-move-2',
@@ -38,7 +38,7 @@ export const BrandsSection: React.FC = () => {
     // Fallback: make visible if not triggered
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 800);
+    }, 600);
 
     return () => {
       observer.disconnect();
@@ -49,17 +49,19 @@ export const BrandsSection: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-16 sm:py-24 md:py-28 bg-white border-t border-slate-100"
+      className={`vap-marken-section w-full bg-white border-t border-slate-100 ${
+        isVisible ? 'is-visible' : ''
+      }`}
     >
-      {/* Container matching ProductSection & NewArrivalsSection on both sides */}
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+      {/* Container rendering div.vap-brand-container at exactly 1396px width matching DevTools */}
+      <div className="page-width max-w-[1436px] mx-auto px-4 sm:px-5">
         
-        {/* Title with generous spacing */}
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1a2f52] text-center mb-10 sm:mb-14 tracking-tight">
+        {/* Title matching vapstall.ae */}
+        <h2 className="vap-common-title text-[28px] sm:text-[32px] md:text-[34px] font-bold text-[#1a2f52] text-center mb-6 sm:mb-8 tracking-tight">
           Brands
         </h2>
 
-        {/* 24 Brands Grid with 100% stable, persistent borders */}
+        {/* 24 Brands Grid: 1396px x 494.8px matching exact DevTools inspection */}
         <div className="vap-brand-container">
           {brandsList.map((brand, index) => {
             const floatClass = floatClasses[index % floatClasses.length];
@@ -69,26 +71,19 @@ export const BrandsSection: React.FC = () => {
                 key={brand.id}
                 href={brand.link}
                 aria-label={`Shop ${brand.name} products`}
-                className="vap-brand-item group relative select-none h-36 sm:h-40 md:h-44 lg:h-[165px]"
+                className="vap-brand-item group relative select-none"
+                style={{ '--i': index } as React.CSSProperties}
               >
-                {/* Entrance scale-in & hover zoom wrapper */}
-                <div
-                  className={`w-full h-full flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:scale-108 ${
-                    isVisible ? 'animate-brand-scale-in' : 'opacity-0'
-                  }`}
-                  style={{ animationDelay: `${0.05 + index * 0.03}s` }}
-                >
-                  {/* Continuous gentle floating moving animation */}
-                  <div className={`w-full h-full flex items-center justify-center ${floatClass}`}>
-                    <Image
-                      src={brand.image}
-                      alt={brand.name}
-                      width={200}
-                      height={140}
-                      className="max-h-[92px] sm:max-h-[105px] md:max-h-[115px] lg:max-h-[125px] w-auto max-w-[88%] object-contain select-none"
-                      priority={index < 8}
-                    />
-                  </div>
+                {/* Continuous gentle floating movement and hover zoom */}
+                <div className={`flex items-center justify-center w-full h-full ${floatClass}`}>
+                  <Image
+                    src={brand.image}
+                    alt={brand.name}
+                    width={150}
+                    height={147}
+                    className="max-w-full h-auto object-contain select-none transition-transform duration-300 ease-in-out group-hover:scale-105"
+                    priority={index < 8}
+                  />
                 </div>
               </Link>
             );
