@@ -125,13 +125,14 @@ export const Navbar: React.FC = () => {
 
           {/* Left: Mascot Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16">
+            <div className="relative flex items-center justify-center">
               <Image
                 src="/images/header-logo.png"
                 alt="Vape Stall Logo"
-                fill
+                width={64}
+                height={64}
                 priority
-                className="object-contain"
+                className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
               />
             </div>
           </Link>
