@@ -40,7 +40,7 @@ export const PromoBanner: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className={`offer-card-section ${isVisible ? 'is-visible' : ''}`}
+      className={`offer-card-section bg-white w-full ${isVisible ? 'is-visible' : ''}`}
     >
       <div className="page-width">
         <div className="card-block">
