@@ -89,3 +89,4 @@ export const MostPopularSection: React.FC<MostPopularSectionProps> = ({ products
     </section>
   );
 };
+

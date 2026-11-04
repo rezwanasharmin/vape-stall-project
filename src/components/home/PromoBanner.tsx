@@ -2,46 +2,112 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Tag, Gift } from 'lucide-react';
+import Image from 'next/image';
 
 export const PromoBanner: React.FC = () => {
   return (
-    <section className="py-12 bg-slate-950 border-b border-dark-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-amber-600/20 via-brand-500/10 to-slate-900 border border-brand-500/30 p-8 sm:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+    <section className="offer-card-section bg-[#f3f6fb] py-16 sm:py-20 border-t border-slate-100">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="card-block">
           
-          {/* Text Content */}
-          <div className="space-y-4 max-w-xl text-center md:text-left">
-            <div className="inline-flex items-center space-x-2 bg-brand-500/20 border border-brand-500/40 px-3 py-1 rounded-full text-brand-400 text-xs font-bold">
-              <Gift className="w-3.5 h-3.5" />
-              <span>Limited Time UAE Exclusive</span>
+          {/* Card 1: Vape Kits & Pod Systems */}
+          <div
+            className="offer-card"
+            style={{
+              background: 'linear-gradient(135deg, rgba(110, 189, 184, 1), rgba(110, 189, 184, 1) 98%)',
+            }}
+          >
+            <div className="offer-card__deco" />
+            
+            <div className="text-block">
+              <h3 className="lbl">Vape Kits &amp; Pod Systems</h3>
+              <p className="text">
+                Shop high-performance vape kits and pod systems designed for smooth flavor, long battery life, and everyday use.
+              </p>
+              <div className="btn-container">
+                <Link href="/shop" className="btn-shop">
+                  <span>Shop Kits</span>
+                  <span className="arrow-icon" aria-hidden="true">
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.8}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </span>
+                </Link>
+              </div>
             </div>
 
-            <h3 className="text-2xl sm:text-4xl font-black text-white leading-tight">
-              Get Up to <span className="text-brand-400">10% OFF</span> + Free Delivery Above AED 350
-            </h3>
-
-            <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-              Order your favorite authentic disposable vapes, pod kits, and e-liquids now. Enjoy fast same-day shipping across Dubai and seamless Cash on Delivery across all 7 Emirates.
-            </p>
-
-            <div className="flex items-center justify-center md:justify-start space-x-2 pt-2">
-              <span className="text-xs text-gray-400">Coupon Code:</span>
-              <span className="bg-slate-900 border border-brand-500/40 text-brand-400 font-mono font-bold text-xs px-3 py-1 rounded-lg">
-                VAPE10
-              </span>
+            <div className="img-container">
+              <div className="img-wrapper">
+                <Image
+                  src="/images/banners/offer-vape-kits.png"
+                  alt="Vape Kits & Pod Systems"
+                  width={600}
+                  height={600}
+                  className="w-auto h-auto max-h-[310px] object-contain drop-shadow-xl"
+                  priority
+                />
+              </div>
             </div>
           </div>
 
-          {/* Action Button */}
-          <div className="flex-shrink-0">
-            <Link
-              href="/shop"
-              className="bg-brand-500 hover:bg-brand-600 text-slate-950 font-black px-8 py-4 rounded-2xl text-sm transition-all shadow-xl shadow-brand-500/20 flex items-center space-x-2"
-            >
-              <span>Shop Discount Deals</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+          {/* Card 2: Premium Vape Collection */}
+          <div
+            className="offer-card"
+            style={{
+              background: '#E0BEA5',
+            }}
+          >
+            <div className="offer-card__deco" />
+            
+            <div className="text-block">
+              <h3 className="lbl">Premium Vape Collection</h3>
+              <p className="text">
+                Discover top-tier vape devices crafted for performance, style, and an elevated vaping experience.
+              </p>
+              <div className="btn-container">
+                <Link href="/shop" className="btn-shop">
+                  <span>Shop Premium</span>
+                  <span className="arrow-icon" aria-hidden="true">
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.8}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="img-container">
+              <div className="img-wrapper">
+                <Image
+                  src="/images/banners/offer-premium-logo.png"
+                  alt="Premium Vape Collection"
+                  width={600}
+                  height={589}
+                  className="w-auto h-auto max-h-[310px] object-contain drop-shadow-xl"
+                  priority
+                />
+              </div>
+            </div>
           </div>
 
         </div>
@@ -49,4 +115,3 @@ export const PromoBanner: React.FC = () => {
     </section>
   );
 };
-

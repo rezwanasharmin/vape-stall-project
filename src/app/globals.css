@@ -306,3 +306,213 @@ a.vap-brand-item:hover img {
     max-height: 75px;
   }
 }
+
+/* ── Offer Cards Section (Vape Kits & Premium Collection from vapstall.ae) ── */
+.offer-card-section {
+  padding-block: 60px;
+}
+
+.offer-card-section .card-block {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.offer-card-section .offer-card {
+  border-radius: 28px;
+  padding: 44px 40px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px #ffffff1f inset, 0 20px 48px rgba(0, 0, 0, 0.08), 0 6px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.38s ease;
+}
+
+.offer-card-section .offer-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 2px #ffffff29 inset, 0 28px 60px rgba(0, 0, 0, 0.12), 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.offer-card-section .offer-card .offer-card__deco {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.offer-card-section .offer-card .offer-card__deco:before,
+.offer-card-section .offer-card .offer-card__deco:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.offer-card-section .offer-card .offer-card__deco:before {
+  width: 340px;
+  height: 340px;
+  top: -100px;
+  right: -80px;
+}
+
+.offer-card-section .offer-card .offer-card__deco:after {
+  width: 200px;
+  height: 200px;
+  bottom: -70px;
+  left: -40px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.offer-card-section .offer-card .text-block,
+.offer-card-section .offer-card .img-container {
+  position: relative;
+  z-index: 1;
+}
+
+.offer-card-section .offer-card .lbl {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 14px;
+  letter-spacing: -0.3px;
+  color: #1a2f52;
+}
+
+.offer-card-section .offer-card .text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #2c4266;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.offer-card-section .offer-card .btn-container {
+  padding-top: 26px;
+}
+
+/* Exact Interactive Button matching user's screenshots 2 & 3 */
+.offer-card-section .btn-shop {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #b48648;
+  padding: 8px 10px 8px 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14.5px;
+  transition: all 0.3s ease;
+  color: #ffffff;
+  border: 1.5px solid #b48648;
+}
+
+.offer-card-section .btn-shop:hover {
+  color: #f78804;
+  background: #ffffff;
+  border-color: #b48648;
+}
+
+.offer-card-section .btn-shop .arrow-icon {
+  transform: rotate(-45deg);
+  border-radius: 50%;
+  background: #8c6530;
+  width: 32px;
+  height: 32px;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 16px;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+}
+
+.offer-card-section .btn-shop:hover .arrow-icon {
+  transform: rotate(0deg);
+}
+
+.offer-card-section .offer-card .img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.offer-card-section .offer-card .img-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.offer-card-section .offer-card .img-wrapper img {
+  width: auto;
+  max-width: 100%;
+  max-height: 310px;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.16));
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.offer-card-section .offer-card:hover .img-wrapper img {
+  transform: scale(1.05) translateY(-6px);
+}
+
+@media (max-width: 1199px) {
+  .offer-card-section .offer-card .lbl {
+    font-size: 28px;
+  }
+  .offer-card-section .offer-card {
+    padding: 36px 30px;
+  }
+}
+
+@media (max-width: 991px) {
+  .offer-card-section {
+    padding-block: 50px;
+  }
+  .offer-card-section .card-block {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .offer-card-section .offer-card .lbl {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 767px) {
+  .offer-card-section .offer-card {
+    border-radius: 20px;
+    padding: 32px 24px;
+    gap: 20px;
+  }
+  .offer-card-section .offer-card .lbl {
+    font-size: 24px;
+  }
+  .offer-card-section .offer-card .text {
+    font-size: 14.5px;
+  }
+}
+
+@media (max-width: 575px) {
+  .offer-card-section .offer-card {
+    grid-template-columns: 1fr;
+    padding: 28px 20px;
+    border-radius: 18px;
+    gap: 20px;
+  }
+  .offer-card-section .offer-card .lbl {
+    font-size: 22px;
+  }
+  .offer-card-section .offer-card .text {
+    font-size: 14px;
+  }
+  .offer-card-section .offer-card .img-wrapper img {
+    max-height: 220px;
+  }
+}
