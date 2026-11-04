@@ -18,7 +18,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ products }) => {
 
   return (
     <section className="py-14 sm:py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
         {/* Section Header (Exact design from vapstall.ae) */}
         <div className="text-center mb-10 sm:mb-12">
@@ -52,8 +52,8 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ products }) => {
           </p>
         </div>
 
-        {/* 4 Cards Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+        {/* 4 Cards Grid - Expanded size matching vapstall.ae */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
           {bestSellers.map((product) => (
             <ProductCard
               key={product.id}
@@ -64,10 +64,10 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ products }) => {
         </div>
 
         {/* Section Footer: View All Button */}
-        <div className="flex justify-center mt-10 sm:mt-12">
+        <div className="flex justify-center mt-12 sm:mt-14">
           <Link
             href="/shop"
-            className="group inline-flex items-center gap-2 bg-[#25406F] hover:bg-[#F5A623] text-white text-[13px] sm:text-[14px] font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-[0_4px_14px_rgba(37,64,111,0.18)] hover:shadow-[0_6px_20px_rgba(245,166,35,0.32)] hover:-translate-y-0.5"
+            className="group inline-flex items-center gap-2 bg-[#25406F] hover:bg-[#F5A623] text-white text-[14px] sm:text-[15px] font-semibold px-9 py-3.5 rounded-full transition-all duration-300 shadow-[0_4px_14px_rgba(37,64,111,0.18)] hover:shadow-[0_6px_20px_rgba(245,166,35,0.32)] hover:-translate-y-0.5"
           >
             <span>View All</span>
             <svg
