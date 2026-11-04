@@ -32,7 +32,7 @@ const features = [
 
 export const FeaturesBar: React.FC = () => {
   return (
-    <section className="vab-usp-section bg-[#f1f4f9] pt-12 sm:pt-16 pb-20 sm:pb-24 border-b border-slate-200">
+    <section className="vab-usp-section bg-[#f1f4f9] pt-16 sm:pt-24 pb-20 sm:pb-24 border-b border-slate-200">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* 4 Feature Items Grid */}
