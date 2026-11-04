@@ -71,7 +71,7 @@ const categoriesData: CategoryCard[] = [
 
 export const CategoryGrid: React.FC = () => {
   return (
-    <section className="py-14 sm:py-20 bg-[#f1f4f9] text-slate-900 border-b border-slate-200">
+    <section className="pt-14 sm:pt-16 pb-4 bg-[#f1f4f9] text-slate-900">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Section (Exact match from screenshot 1) */}

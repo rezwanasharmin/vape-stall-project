@@ -1,56 +1,73 @@
 'use client';
 
 import React from 'react';
-import { Truck, ShieldCheck, Wallet, Clock } from 'lucide-react';
+import Image from 'next/image';
 
 const features = [
   {
-    icon: Truck,
-    title: 'Fast Delivery in UAE',
-    description: 'Same day in Dubai, rapid shipping across all 7 Emirates.'
+    icon: '/images/icons/delivery-van.svg',
+    alt: 'Free Delivery Van Icon',
+    title: 'Free Shipping',
+    description: 'Terms & Conditions applied for free shipping and delivery',
   },
   {
-    icon: ShieldCheck,
-    title: '100% Authentic Products',
-    description: 'Original brand verification with anti-counterfeit guarantee.'
+    icon: '/images/icons/support.svg',
+    alt: '24x7 Support Gift Hand Icon',
+    title: '24x7 Support',
+    description: 'Round-the-Clock Assistance, Anytime You Need It',
   },
   {
-    icon: Wallet,
-    title: 'Cash on Delivery (COD)',
-    description: 'Pay conveniently by cash or card upon delivery.'
+    icon: '/images/icons/parcel-return.svg',
+    alt: '1 Week Return Parcel Icon',
+    title: '1 Week Return',
+    description: 'Your Satisfaction is Our Priority: Return Any Product Within 1 week',
   },
   {
-    icon: Clock,
-    title: 'Dedicated Customer Care',
-    description: 'Direct WhatsApp and phone assistance 10 AM – 10 PM.'
-  }
+    icon: '/images/icons/secure_payment.png',
+    alt: 'Secure Payment Credit Card Icon',
+    title: 'Secure Payment',
+    description: 'Seamless Shopping Backed by Safe andSecure Payment Options',
+  },
 ];
 
 export const FeaturesBar: React.FC = () => {
   return (
-    <section className="bg-slate-950 py-10 border-b border-dark-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={index}
-                className="flex items-start space-x-4 p-4 rounded-xl bg-dark-card/50 border border-dark-border/60 hover:border-brand-500/30 transition-colors"
-              >
-                <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 flex-shrink-0">
-                  <Icon className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-white mb-1">{feature.title}</h4>
-                  <p className="text-xs text-gray-400 leading-relaxed">{feature.description}</p>
+    <section className="vab-usp-section bg-[#f1f4f9] pb-16 pt-6 sm:pb-20 border-b border-slate-200">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* 4 Feature Items Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+          {features.map((item, index) => (
+            <div
+              key={index}
+              className="group bg-[rgba(37,64,111,0.06)] hover:bg-[rgba(37,64,111,0.09)] border border-[#C8D5EC] hover:border-[#a0b8df] rounded-xl p-6 text-center transition-all duration-300 shadow-sm flex flex-col items-center justify-start"
+            >
+              {/* Centered Line Icon */}
+              <div className="h-10 flex items-center justify-center mb-3">
+                <div className="relative w-10 h-10 transition-transform duration-300 group-hover:scale-110">
+                  <Image
+                    src={item.icon}
+                    alt={item.alt}
+                    fill
+                    className="object-contain"
+                  />
                 </div>
               </div>
-            );
-          })}
+
+              {/* Title */}
+              <h3 className="text-[#25406F] text-[15px] sm:text-base font-bold mb-1.5 tracking-tight">
+                {item.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-[#64748b] text-xs leading-relaxed max-w-[240px] mx-auto font-normal">
+                {item.description}
+              </p>
+            </div>
+          ))}
         </div>
+
       </div>
     </section>
   );
 };
-
