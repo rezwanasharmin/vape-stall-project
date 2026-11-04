@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Slide {
   id: number;
@@ -61,21 +61,15 @@ const slides: Slide[] = [
 
 export const HeroSlider: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Auto-scroll carousel every 5 seconds
+  // Automatic slide movement every 4 seconds
   useEffect(() => {
-    if (isHovered) return;
-
-    timerRef.current = setInterval(() => {
+    const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 4000);
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [isHovered]);
+    return () => clearInterval(timer);
+  }, []);
 
   const handlePrev = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
@@ -88,84 +82,89 @@ export const HeroSlider: React.FC = () => {
   return (
     <div
       className="relative w-full overflow-hidden select-none"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       aria-roledescription="carousel"
       aria-label="Hero Promotions Slider"
     >
-      {/* Slides Container */}
-      <div className="relative min-h-[420px] sm:min-h-[460px] lg:min-h-[500px] flex items-center">
-        {slides.map((slide, index) => {
-          const isActive = index === currentSlide;
-          return (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-700 ease-in-out flex items-center ${
-                isActive ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'
-              }`}
-              style={{ background: slide.gradient }}
-            >
-              <div className="max-w-[1400px] mx-auto px-6 sm:px-12 lg:px-16 w-full py-10 lg:py-16">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      {/* Sliding Carousel Track (Smooth Physical Move Animation) */}
+      <div
+        className="flex w-full transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+      >
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className="w-full flex-shrink-0 min-w-full flex items-center min-h-[440px] sm:min-h-[480px] lg:min-h-[520px]"
+            style={{ background: slide.gradient }}
+          >
+            <div className="max-w-[1400px] mx-auto px-6 sm:px-12 lg:px-16 w-full py-10 lg:py-16">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                
+                {/* Left Text Content */}
+                <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-left">
                   
-                  {/* Left Text Content */}
-                  <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-left">
-                    
-                    {/* Orange Offer Badge */}
-                    <div className="inline-block">
-                      <span className="bg-[#e8740c] text-white text-[11px] sm:text-xs font-bold tracking-wide px-3.5 py-1 rounded-full shadow-sm">
-                        {slide.badge}
-                      </span>
-                    </div>
-
-                    {/* Main Headline */}
-                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.18] max-w-xl">
-                      {slide.title}
-                    </h1>
-
-                    {/* Subtitle Description */}
-                    <p className="text-xs sm:text-sm lg:text-base text-white/90 leading-relaxed max-w-lg font-normal">
-                      {slide.description}
-                    </p>
-
-                    {/* Explore Button (Exact style from uploaded screenshots 4 & 5) */}
-                    <div className="pt-2">
-                      <Link
-                        href={slide.link}
-                        className="group inline-flex items-center space-x-3.5 bg-[#ba8a4c] hover:bg-white text-white hover:text-[#e8740c] px-6 py-2.5 sm:px-7 sm:py-3 rounded-full text-sm sm:text-base font-bold transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
-                      >
-                        <span className="tracking-wide">Explore</span>
-                        
-                        {/* Circle with Arrow (transitions on hover) */}
-                        <div className="w-8 h-8 rounded-full bg-[#7e5b2e] flex items-center justify-center text-white flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1 shadow-inner">
-                          <span className="text-sm font-bold leading-none transform -rotate-45 group-hover:rotate-0 transition-transform duration-300">
-                            →
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-
+                  {/* Orange Offer Badge */}
+                  <div className="inline-block">
+                    <span className="bg-[#e8740c] text-white text-[11px] sm:text-xs font-bold tracking-wide px-4 py-1.5 rounded-full shadow-sm">
+                      {slide.badge}
+                    </span>
                   </div>
 
-                  {/* Right Image */}
-                  <div className="lg:col-span-5 flex justify-center lg:justify-end">
-                    <div className="relative w-64 sm:w-80 lg:w-[420px] aspect-square transition-transform duration-700 ease-out">
-                      <Image
-                        src={slide.image}
-                        alt={slide.alt}
-                        fill
-                        priority={index === 0}
-                        sizes="(max-width: 640px) 260px, (max-width: 1024px) 340px, 420px"
-                        className="object-contain drop-shadow-2xl"
-                      />
-                    </div>
+                  {/* Main Headline */}
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.18] max-w-xl drop-shadow-sm">
+                    {slide.title}
+                  </h1>
+
+                  {/* Subtitle Description */}
+                  <p className="text-xs sm:text-sm lg:text-base text-white/90 leading-relaxed max-w-lg font-normal">
+                    {slide.description}
+                  </p>
+
+                  {/* Beautiful & Refined Explore Button */}
+                  <div className="pt-2">
+                    <Link
+                      href={slide.link}
+                      className="group relative inline-flex items-center justify-between gap-4 bg-[#ba8a4c] hover:bg-white text-white hover:text-[#d96b08] pl-7 pr-2 py-2 rounded-full text-[15px] font-extrabold tracking-wide transition-all duration-300 ease-out shadow-lg hover:shadow-2xl hover:shadow-black/25 active:scale-95 border border-white/20 hover:border-white"
+                    >
+                      <span className="transition-colors duration-300">Explore</span>
+                      
+                      {/* Dark circle with arrow (transforms smoothly) */}
+                      <div className="w-9 h-9 rounded-full bg-[#7a5528] group-hover:bg-[#6c4820] flex items-center justify-center text-white flex-shrink-0 transition-all duration-300 shadow-inner group-hover:scale-105 group-hover:translate-x-0.5">
+                        <svg
+                          className="w-4 h-4 transition-transform duration-300 transform -rotate-45 group-hover:rotate-0"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <line x1="5" y1="12" x2="19" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                      </div>
+                    </Link>
                   </div>
 
                 </div>
+
+                {/* Right Image */}
+                <div className="lg:col-span-5 flex justify-center lg:justify-end">
+                  <div className="relative w-64 sm:w-80 lg:w-[420px] aspect-square transition-transform duration-500 ease-out hover:scale-105">
+                    <Image
+                      src={slide.image}
+                      alt={slide.alt}
+                      fill
+                      priority={index === 0}
+                      sizes="(max-width: 640px) 260px, (max-width: 1024px) 340px, 420px"
+                      className="object-contain drop-shadow-2xl"
+                    />
+                  </div>
+                </div>
+
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
 
       {/* Prev Navigation Arrow Button (Left edge) */}
@@ -173,7 +172,7 @@ export const HeroSlider: React.FC = () => {
         type="button"
         onClick={handlePrev}
         aria-label="Previous Slide"
-        className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-950/40 hover:bg-slate-950/70 border border-white/20 text-white flex items-center justify-center transition-all duration-200 backdrop-blur-sm shadow-lg active:scale-90"
+        className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/35 hover:bg-black/65 border border-white/20 hover:border-white/50 text-white flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-xl hover:scale-105 active:scale-90"
       >
         <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
       </button>
@@ -183,7 +182,7 @@ export const HeroSlider: React.FC = () => {
         type="button"
         onClick={handleNext}
         aria-label="Next Slide"
-        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-950/40 hover:bg-slate-950/70 border border-white/20 text-white flex items-center justify-center transition-all duration-200 backdrop-blur-sm shadow-lg active:scale-90"
+        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/35 hover:bg-black/65 border border-white/20 hover:border-white/50 text-white flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-xl hover:scale-105 active:scale-90"
       >
         <ChevronRight className="w-5 h-5 stroke-[2.5]" />
       </button>
@@ -198,8 +197,8 @@ export const HeroSlider: React.FC = () => {
             aria-label={`Go to slide ${i + 1}`}
             className={`transition-all duration-300 rounded-full ${
               i === currentSlide
-                ? 'w-7 h-2 bg-[#ffb347] shadow-sm'
-                : 'w-2 h-2 bg-white/40 hover:bg-white/70'
+                ? 'w-8 h-2.5 bg-[#ffb347] shadow-md'
+                : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/80'
             }`}
           />
         ))}
