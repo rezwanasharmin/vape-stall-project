@@ -7,8 +7,9 @@ import { NewArrivalsSection } from '@/components/home/NewArrivalsSection';
 import { BrandsSection } from '@/components/home/BrandsSection';
 import { MostPopularSection } from '@/components/home/MostPopularSection';
 import { PromoBanner } from '@/components/home/PromoBanner';
+import { TopRatedSection } from '@/components/home/TopRatedSection';
 import { Testimonials } from '@/components/home/Testimonials';
-import { products, newArrivalProducts, mostPopularProducts } from '@/data/products';
+import { products, newArrivalProducts, mostPopularProducts, topRatedProducts } from '@/data/products';
 
 export default function HomePage() {
   return (
@@ -21,6 +22,7 @@ export default function HomePage() {
       <BrandsSection />
       <MostPopularSection products={mostPopularProducts} />
       <PromoBanner />
+      <TopRatedSection products={topRatedProducts} />
       <Testimonials />
     </div>
   );

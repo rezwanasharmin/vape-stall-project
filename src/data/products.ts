@@ -755,3 +755,105 @@ export const mostPopularProducts: Product[] = [
     description: "Buy Lost Mary MT35000 Puff 50mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
   }
 ];
+
+export const topRatedProducts: Product[] = [
+  {
+    id: "tr-1",
+    name: "Waka Blade 50000 puffs 50mg Nicotine Adjustable vape in UAE",
+    handle: "buy-waka-blade-50000-puffs-50mg-nicotine-adjustable-vape-in-uae",
+    price: 50.00,
+    priceFormatted: "Dhs. 50.00",
+    originalPrice: 55.00,
+    originalPriceFormatted: "Dhs. 55.00",
+    savingsFormatted: "Save Dhs. 5.00",
+    rating: 5.0,
+    reviewsCount: 60,
+    image: "/images/products/top-rated-waka-blade-1.png",
+    altImage: "/images/products/top-rated-waka-blade-2.png",
+    category: "Disposable Vape",
+    brand: "Waka",
+    puffs: "50000 Puffs",
+    nicotine: "50mg",
+    inStock: true,
+    flavors: [
+      "Banana Ice",
+      "Blueberry Ice",
+      "Watermelon Ice",
+      "Cherry Cola",
+      "Strawberry Kiwi"
+    ],
+    description: "Buy Waka Blade 50000 puffs 50mg Nicotine Adjustable vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+  },
+  {
+    id: "tr-2",
+    name: "Flonq Max S 8000 Puffs 20mg Disposable Vape in UAE",
+    handle: "buy-flonq-max-s-8000-puffs-20mg-disposable-vape-in-uae",
+    price: 45.00,
+    priceFormatted: "Dhs. 45.00",
+    rating: 5.0,
+    reviewsCount: 60,
+    image: "/images/products/top-rated-flonq-max-s-1.png",
+    altImage: "/images/products/top-rated-flonq-max-s-2.png",
+    category: "Disposable Vape",
+    brand: "Flonq",
+    puffs: "8000 Puffs",
+    nicotine: "20mg",
+    inStock: true,
+    flavors: [
+      "Blackberry Mint",
+      "Blueberry Ice",
+      "Watermelon Ice",
+      "Cool Mint",
+      "Strawberry Watermelon"
+    ],
+    description: "Buy Flonq Max S 8000 Puffs 20mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+  },
+  {
+    id: "tr-3",
+    name: "Humo Azul 24000 Puff 20mg Disposable Vape in UAE",
+    handle: "buy-humo-azul-24000-puff-20mg-disposable-vape-in-uae",
+    price: 135.00,
+    priceFormatted: "Dhs. 135.00",
+    rating: 5.0,
+    reviewsCount: 40,
+    badge: "9% OFF | 1 Piece",
+    image: "/images/products/top-rated-humo-azul-1.png",
+    altImage: "/images/products/top-rated-humo-azul-2.png",
+    category: "Disposable Vape",
+    brand: "Humo Azul",
+    puffs: "24000 Puffs",
+    nicotine: "20mg",
+    inStock: true,
+    flavors: [
+      "Blackberry Dragonfruit",
+      "Blueberry Ice",
+      "Peach Mango",
+      "Watermelon Bubblegum"
+    ],
+    description: "Buy Humo Azul 24000 Puff 20mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+  },
+  {
+    id: "tr-4",
+    name: "Buy Air Bar Flow 30000 Puff 20mg Disposable Vape in UAE",
+    handle: "buy-air-bar-flow-30000-puff-20mg-disposable-vape-in-uae",
+    price: 65.00,
+    priceFormatted: "Dhs. 65.00",
+    rating: 5.0,
+    reviewsCount: 20,
+    image: "/images/products/top-rated-air-bar-flow-1.png",
+    altImage: "/images/products/top-rated-air-bar-flow-2.png",
+    category: "Disposable Vape",
+    brand: "Air Bar",
+    puffs: "30000 Puffs",
+    nicotine: "20mg",
+    inStock: true,
+    flavors: [
+      "Cantaloupe Ice",
+      "Blueberry Ice",
+      "Watermelon Ice",
+      "Cool Mint",
+      "Cherry Fizz"
+    ],
+    description: "Buy Air Bar Flow 30000 Puff 20mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+  }
+];
