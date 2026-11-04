@@ -120,11 +120,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           </span>
         </div>
 
+        {/* Out of Stock Badge if applicable */}
+        {product.isOutOfStock && (
+          <div className="mt-2">
+            <span className="bg-[#fee2e2] text-[#ef4444] text-[11px] font-semibold px-2 py-0.5 rounded-md inline-block">
+              Out of stock
+            </span>
+          </div>
+        )}
+
         {/* Price & Add to Cart Action */}
         <div className="mt-3.5 pt-3 flex items-center justify-between border-t border-slate-100">
-          <span className="text-[16px] sm:text-[17px] font-bold text-[#1a2f52]">
-            {product.priceFormatted}
-          </span>
+          <div className="flex items-center flex-wrap gap-x-2 gap-y-0.5">
+            {product.originalPriceFormatted && (
+              <span className="text-[13px] sm:text-[14px] text-red-500 line-through decoration-red-500 font-medium">
+                {product.originalPriceFormatted}
+              </span>
+            )}
+            <span className="text-[16px] sm:text-[17px] font-bold text-[#1a2f52]">
+              {product.priceFormatted}
+            </span>
+            {product.savingsFormatted && (
+              <span className="text-[11.5px] sm:text-[12px] text-[#16a34a] font-semibold">
+                {product.savingsFormatted}
+              </span>
+            )}
+          </div>
 
           <button
             type="button"
@@ -132,7 +153,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
               e.stopPropagation();
               addToCart(product, 1);
             }}
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f1f5f9] hover:bg-[#25406F] text-[#25406F] hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm active:scale-95"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f1f5f9] hover:bg-[#25406F] text-[#25406F] hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm active:scale-95 flex-shrink-0"
             aria-label={`Add ${product.name} to cart`}
             title="Add to cart"
           >

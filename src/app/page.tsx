@@ -3,9 +3,10 @@ import { HeroSlider } from '@/components/home/HeroSlider';
 import { FeaturesBar } from '@/components/home/FeaturesBar';
 import { CategoryGrid } from '@/components/home/CategoryGrid';
 import { ProductSection } from '@/components/home/ProductSection';
+import { NewArrivalsSection } from '@/components/home/NewArrivalsSection';
 import { PromoBanner } from '@/components/home/PromoBanner';
 import { Testimonials } from '@/components/home/Testimonials';
-import { products } from '@/data/products';
+import { products, newArrivalProducts } from '@/data/products';
 
 export default function HomePage() {
   return (
@@ -14,6 +15,7 @@ export default function HomePage() {
       <CategoryGrid />
       <FeaturesBar />
       <ProductSection products={products} />
+      <NewArrivalsSection products={newArrivalProducts} />
       <PromoBanner />
       <Testimonials />
     </div>
