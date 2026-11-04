@@ -19,6 +19,9 @@ export const MostPopularSection: React.FC<MostPopularSectionProps> = ({ products
         
         {/* Section Header (Exact design from vapstall.ae) */}
         <div className="text-center mb-10 sm:mb-12">
+          {/* Top subtle 2-color gradient bar */}
+          <div className="w-14 h-1 bg-gradient-to-r from-[#25406F] to-[#F5A623] mx-auto rounded-full mb-6" />
+
           {/* Eyebrow: — TRENDING NOW — */}
           <div className="flex items-center justify-center gap-3 mb-2">
             <span className="w-9 h-[1px] bg-[#F5A623] opacity-60" />
