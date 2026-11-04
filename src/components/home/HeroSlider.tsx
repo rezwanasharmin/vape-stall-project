@@ -66,7 +66,7 @@ export const HeroSlider: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000);
+    }, 4500);
 
     return () => clearInterval(timer);
   }, []);
@@ -90,81 +90,98 @@ export const HeroSlider: React.FC = () => {
         className="flex w-full transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        {slides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className="w-full flex-shrink-0 min-w-full flex items-center min-h-[440px] sm:min-h-[480px] lg:min-h-[520px]"
-            style={{ background: slide.gradient }}
-          >
-            <div className="max-w-[1400px] mx-auto px-6 sm:px-12 lg:px-16 w-full py-10 lg:py-16">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                
-                {/* Left Text Content */}
-                <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-left">
+        {slides.map((slide, index) => {
+          const isActive = index === currentSlide;
+
+          return (
+            <div
+              key={slide.id}
+              className="w-full flex-shrink-0 min-w-full flex items-center min-h-[440px] sm:min-h-[480px] lg:min-h-[520px]"
+              style={{ background: slide.gradient }}
+            >
+              <div className="max-w-[1400px] mx-auto px-6 sm:px-12 lg:px-16 w-full py-10 lg:py-16">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                   
-                  {/* Orange Offer Badge */}
-                  <div className="inline-block">
-                    <span className="bg-[#e8740c] text-white text-[11px] sm:text-xs font-bold tracking-wide px-4 py-1.5 rounded-full shadow-sm">
-                      {slide.badge}
-                    </span>
+                  {/* Left Text Content with Staggered Entrance Motion */}
+                  <div
+                    key={isActive ? `text-${slide.id}-${currentSlide}` : `inactive-text-${slide.id}`}
+                    className="lg:col-span-7 space-y-4 sm:space-y-6 text-left"
+                  >
+                    
+                    {/* Orange Offer Badge */}
+                    <div className={isActive ? 'animate-slide-up-badge' : 'opacity-0'}>
+                      <span className="inline-block bg-[#e8740c] text-white text-[11px] sm:text-xs font-bold tracking-wide px-4 py-1.5 rounded-full shadow-sm">
+                        {slide.badge}
+                      </span>
+                    </div>
+
+                    {/* Main Headline */}
+                    <div className={isActive ? 'animate-slide-up-title' : 'opacity-0'}>
+                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.18] max-w-xl drop-shadow-sm">
+                        {slide.title}
+                      </h1>
+                    </div>
+
+                    {/* Subtitle Description */}
+                    <div className={isActive ? 'animate-slide-up-desc' : 'opacity-0'}>
+                      <p className="text-xs sm:text-sm lg:text-base text-white/90 leading-relaxed max-w-lg font-normal">
+                        {slide.description}
+                      </p>
+                    </div>
+
+                    {/* Beautiful Explore Button */}
+                    <div className={isActive ? 'animate-slide-up-btn pt-2' : 'opacity-0 pt-2'}>
+                      <Link
+                        href={slide.link}
+                        className="group relative inline-flex items-center justify-between gap-4 bg-[#ba8a4c] hover:bg-white text-white hover:text-[#d96b08] pl-7 pr-2 py-2 rounded-full text-[15px] font-extrabold tracking-wide transition-all duration-300 ease-out shadow-lg hover:shadow-2xl hover:shadow-black/25 active:scale-95 border border-white/20 hover:border-white"
+                      >
+                        <span className="transition-colors duration-300">Explore</span>
+                        
+                        {/* Dark circle with arrow (transforms smoothly) */}
+                        <div className="w-9 h-9 rounded-full bg-[#7a5528] group-hover:bg-[#6c4820] flex items-center justify-center text-white flex-shrink-0 transition-all duration-300 shadow-inner group-hover:scale-105 group-hover:translate-x-0.5">
+                          <svg
+                            className="w-4 h-4 transition-transform duration-300 transform -rotate-45 group-hover:rotate-0"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                          </svg>
+                        </div>
+                      </Link>
+                    </div>
+
                   </div>
 
-                  {/* Main Headline */}
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.18] max-w-xl drop-shadow-sm">
-                    {slide.title}
-                  </h1>
-
-                  {/* Subtitle Description */}
-                  <p className="text-xs sm:text-sm lg:text-base text-white/90 leading-relaxed max-w-lg font-normal">
-                    {slide.description}
-                  </p>
-
-                  {/* Beautiful & Refined Explore Button */}
-                  <div className="pt-2">
-                    <Link
-                      href={slide.link}
-                      className="group relative inline-flex items-center justify-between gap-4 bg-[#ba8a4c] hover:bg-white text-white hover:text-[#d96b08] pl-7 pr-2 py-2 rounded-full text-[15px] font-extrabold tracking-wide transition-all duration-300 ease-out shadow-lg hover:shadow-2xl hover:shadow-black/25 active:scale-95 border border-white/20 hover:border-white"
-                    >
-                      <span className="transition-colors duration-300">Explore</span>
-                      
-                      {/* Dark circle with arrow (transforms smoothly) */}
-                      <div className="w-9 h-9 rounded-full bg-[#7a5528] group-hover:bg-[#6c4820] flex items-center justify-center text-white flex-shrink-0 transition-all duration-300 shadow-inner group-hover:scale-105 group-hover:translate-x-0.5">
-                        <svg
-                          className="w-4 h-4 transition-transform duration-300 transform -rotate-45 group-hover:rotate-0"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <line x1="5" y1="12" x2="19" y2="12" />
-                          <polyline points="12 5 19 12 12 19" />
-                        </svg>
-                      </div>
-                    </Link>
+                  {/* Right Image with Automatic Floating Motion (vapFloat) */}
+                  <div
+                    key={isActive ? `img-${slide.id}-${currentSlide}` : `inactive-img-${slide.id}`}
+                    className={`lg:col-span-5 flex justify-center lg:justify-end ${
+                      isActive ? 'animate-slide-in-image' : 'opacity-0'
+                    }`}
+                  >
+                    {/* Continuous Automatic Floating Container */}
+                    <div className="animate-vap-float relative w-64 sm:w-80 lg:w-[420px] aspect-square transition-transform duration-500 ease-out">
+                      <Image
+                        src={slide.image}
+                        alt={slide.alt}
+                        fill
+                        priority={index === 0}
+                        sizes="(max-width: 640px) 260px, (max-width: 1024px) 340px, 420px"
+                        className="object-contain drop-shadow-2xl"
+                      />
+                    </div>
                   </div>
 
                 </div>
-
-                {/* Right Image */}
-                <div className="lg:col-span-5 flex justify-center lg:justify-end">
-                  <div className="relative w-64 sm:w-80 lg:w-[420px] aspect-square transition-transform duration-500 ease-out hover:scale-105">
-                    <Image
-                      src={slide.image}
-                      alt={slide.alt}
-                      fill
-                      priority={index === 0}
-                      sizes="(max-width: 640px) 260px, (max-width: 1024px) 340px, 420px"
-                      className="object-contain drop-shadow-2xl"
-                    />
-                  </div>
-                </div>
-
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Prev Navigation Arrow Button (Left edge) */}

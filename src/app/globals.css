@@ -33,7 +33,7 @@ body {
   background: #f59e0b;
 }
 
-/* Animations */
+/* Ticker marquee animation */
 @keyframes ticker {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -49,3 +49,59 @@ body {
   animation-play-state: paused;
 }
 
+/* ── Hero Slider Exact Animations (from vapstall.ae) ── */
+@keyframes vapSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vapSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Continuous automatic floating up and down */
+@keyframes vapFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.animate-vap-float {
+  animation: vapFloat 4s ease-in-out infinite;
+}
+
+.animate-slide-up-badge {
+  animation: vapSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.animate-slide-up-title {
+  animation: vapSlideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+}
+
+.animate-slide-up-desc {
+  animation: vapSlideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
+}
+
+.animate-slide-up-btn {
+  animation: vapSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+}
+
+.animate-slide-in-image {
+  animation: vapSlideIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
