@@ -123,3 +123,17 @@ body {
   border-radius: 50%;
   animation: vapParticleFloat 3.2s ease-in-out infinite;
 }
+
+/* ── Best Selling Product Card Animations ── */
+@keyframes vapBadgePulse {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.07) translateY(-2px);
+  }
+}
+
+.animate-vap-badge {
+  animation: vapBadgePulse 2.4s ease-in-out infinite;
+}

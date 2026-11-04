@@ -2,7 +2,7 @@ export interface Product {
   id: string;
   name: string;
   handle: string;
-  price: number; // in AED numeric
+  price: number; // in AED numeric e.g. 49.00
   priceFormatted: string; // e.g. "Dhs. 49.00"
   originalPrice?: number;
   originalPriceFormatted?: string;
@@ -10,6 +10,7 @@ export interface Product {
   reviewsCount: number;
   image: string; // local image path
   altImage?: string;
+  badge?: string;
   category: 'Disposable Vape' | 'Pod Systems' | 'E-Liquids' | 'Shisha / Hookah';
   brand: string;
   puffs?: string;

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Flame, Sparkles } from 'lucide-react';
 import { Product } from '@/types';
 import { ProductCard } from '@/components/product/ProductCard';
 import { QuickViewModal } from '@/components/product/QuickViewModal';
@@ -12,63 +11,50 @@ interface ProductSectionProps {
 }
 
 export const ProductSection: React.FC<ProductSectionProps> = ({ products }) => {
-  const [activeTab, setActiveTab] = useState<'bestseller' | 'new'>('bestseller');
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
-  // Divide products cleanly between tabs
-  const bestSellers = products.slice(0, 8);
-  const newArrivals = products.slice(8, 16);
-
-  const displayList = activeTab === 'bestseller' ? bestSellers : newArrivals;
+  // Take the 4 featured best sellers for the section as shown on vapstall.ae
+  const bestSellers = products.slice(0, 4);
 
   return (
-    <section className="py-16 sm:py-20 bg-dark-bg border-b border-dark-border">
+    <section className="py-14 sm:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header with Tabs */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white text-center sm:text-left">
-              Featured UAE Vapes
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1 text-center sm:text-left">
-              Our most loved products, chosen by you in Dubai & Abu Dhabi
-            </p>
+        {/* Section Header (Exact design from vapstall.ae) */}
+        <div className="text-center mb-10 sm:mb-12">
+          {/* Top subtle 2-color gradient bar */}
+          <div className="w-14 h-1 bg-gradient-to-r from-[#25406F] to-[#F5A623] mx-auto rounded-full mb-6" />
+
+          {/* Eyebrow: — TOP PICKS — */}
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <span className="w-9 h-[1px] bg-[#F5A623] opacity-60" />
+            <span className="text-[12px] font-bold tracking-[0.18em] uppercase text-[#F5A623]">
+              Top Picks
+            </span>
+            <span className="w-9 h-[1px] bg-[#F5A623] opacity-60" />
           </div>
 
-          {/* Tab Switcher */}
-          <div className="flex items-center bg-dark-card border border-dark-border p-1.5 rounded-2xl shadow-inner">
-            <button
-              type="button"
-              onClick={() => setActiveTab('bestseller')}
-              className={`flex items-center space-x-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeTab === 'bestseller'
-                  ? 'bg-brand-500 text-slate-950 shadow-md'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <Flame className="w-4 h-4" />
-              <span>Best Selling</span>
-            </button>
+          {/* Heading */}
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#25406F] tracking-tight mb-2.5">
+            Best Selling
+          </h2>
 
-            <button
-              type="button"
-              onClick={() => setActiveTab('new')}
-              className={`flex items-center space-x-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeTab === 'new'
-                  ? 'bg-brand-500 text-slate-950 shadow-md'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>New Arrivals</span>
-            </button>
+          {/* 3 Dots accent */}
+          <div className="flex items-center justify-center gap-1.5 mb-2.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#25406F] opacity-20" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#F5A623]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#25406F] opacity-20" />
           </div>
+
+          {/* Subtitle */}
+          <p className="text-sm sm:text-base text-gray-500 font-normal max-w-lg mx-auto">
+            Our most loved products, chosen by you
+          </p>
         </div>
 
-        {/* Product Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {displayList.map((product) => (
+        {/* 4 Cards Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+          {bestSellers.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -77,14 +63,25 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ products }) => {
           ))}
         </div>
 
-        {/* Bottom CTA to Shop */}
-        <div className="mt-12 text-center">
+        {/* Section Footer: View All Button */}
+        <div className="flex justify-center mt-10 sm:mt-12">
           <Link
             href="/shop"
-            className="inline-flex items-center space-x-2 bg-dark-card hover:bg-slate-800 text-white border border-dark-border hover:border-brand-500 px-8 py-3.5 rounded-full text-xs sm:text-sm font-bold transition-all shadow-lg"
+            className="group inline-flex items-center gap-2 bg-[#25406F] hover:bg-[#F5A623] text-white text-[13px] sm:text-[14px] font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-[0_4px_14px_rgba(37,64,111,0.18)] hover:shadow-[0_6px_20px_rgba(245,166,35,0.32)] hover:-translate-y-0.5"
           >
-            <span>Explore All 150+ Products</span>
-            <ArrowRight className="w-4 h-4 text-brand-400" />
+            <span>View All</span>
+            <svg
+              className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
           </Link>
         </div>
 
@@ -98,4 +95,3 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ products }) => {
     </section>
   );
 };
-
