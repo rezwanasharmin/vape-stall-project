@@ -1,54 +1,75 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { brandsList } from '@/data/brands';
 
 export const BrandsSection: React.FC = () => {
-  // Staggered float animations for organic gentle movement
-  const floatClasses = [
-    'animate-brand-float-1',
-    'animate-brand-float-2',
-    'animate-brand-float-3',
-    'animate-brand-float-4',
-  ];
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+
+    // Fallback: make visible if not triggered
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 1200);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
-    <section className="py-14 sm:py-20 bg-white border-t border-slate-100">
+    <section
+      ref={sectionRef}
+      className={`vap-marken-section w-full bg-white ${isVisible ? 'is-visible' : ''}`}
+    >
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
-        {/* Title */}
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1a2f52] text-center mb-8 sm:mb-12 tracking-tight">
+        {/* Title matching vapstall.ae */}
+        <h2 className="vap-common-title text-[28px] sm:text-[32px] md:text-[36px] font-bold text-[#1a2f52] text-center mb-6 sm:mb-8 tracking-tight">
           Brands
         </h2>
 
-        {/* 24 Brands Grid - Expanded Large Sizing (8 Columns x 3 Rows on Desktop) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 bg-[#f4f8ff] border border-[#cfd7e5] rounded-[16px] overflow-hidden shadow-sm">
-          {brandsList.map((brand, index) => {
-            const floatClass = floatClasses[index % floatClasses.length];
-
-            return (
-              <Link
-                key={brand.id}
-                href={brand.link}
-                aria-label={`Shop ${brand.name} vape products`}
-                className="flex items-center justify-center p-3 sm:p-4 h-28 sm:h-32 md:h-36 bg-[#f4f8ff] hover:bg-white transition-all duration-300 shadow-[1px_0_0_0_rgba(37,64,111,0.18),0_1px_0_0_rgba(37,64,111,0.18)] group relative overflow-hidden"
-              >
-                {/* Gentle Floating Wrapper with Large Logo */}
-                <div className={`flex items-center justify-center w-full h-full ${floatClass}`}>
-                  <Image
-                    src={brand.image}
-                    alt={brand.name}
-                    width={180}
-                    height={95}
-                    className="max-h-[68px] sm:max-h-[82px] md:max-h-[88px] w-auto max-w-[88%] object-contain transition-transform duration-300 group-hover:scale-108 select-none"
-                    priority={index < 8}
-                  />
-                </div>
-              </Link>
-            );
-          })}
+        {/* 24 Brands Grid matching vap-brand-container */}
+        <div className="vap-brand-container">
+          {brandsList.map((brand, index) => (
+            <Link
+              key={brand.id}
+              href={brand.link}
+              aria-label={`Shop ${brand.name} products`}
+              className="vap-brand-item group"
+              style={{ '--i': index } as React.CSSProperties}
+            >
+              <Image
+                src={brand.image}
+                alt={brand.name}
+                width={150}
+                height={147}
+                className="max-h-[64px] sm:max-h-[72px] md:max-h-[80px] w-auto max-w-[85%] object-contain select-none transition-transform duration-300 ease-in-out group-hover:scale-105"
+                priority={index < 8}
+              />
+            </Link>
+          ))}
         </div>
 
       </div>

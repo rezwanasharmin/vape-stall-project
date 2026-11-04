@@ -138,28 +138,122 @@ body {
   animation: vapBadgePulse 2.4s ease-in-out infinite;
 }
 
-/* ── Brands Section Gentle Floating Animation ── */
-@keyframes brandGentleMove {
-  0%, 100% {
+/* ── Brands Section Exact Animations (from vapstall.ae) ── */
+@keyframes brandFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
     transform: translateY(0);
   }
-  50% {
-    transform: translateY(-3.5px);
+}
+
+@keyframes brandScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
-.animate-brand-float-1 {
-  animation: brandGentleMove 3.6s ease-in-out infinite;
+.vap-marken-section {
+  padding-block: 40px;
 }
 
-.animate-brand-float-2 {
-  animation: brandGentleMove 4.2s ease-in-out infinite 0.7s;
+.vap-brand-container {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  border-radius: 15px;
+  background: #f4f8ff;
+  border: 1px solid #cfd7e5;
+  overflow: hidden;
 }
 
-.animate-brand-float-3 {
-  animation: brandGentleMove 4.8s ease-in-out infinite 1.4s;
+a.vap-brand-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 0 rgba(37, 64, 111, 0.18), 0 1px rgba(37, 64, 111, 0.18);
+  padding: 12px 16px;
+  background: #f4f8ff;
+  min-height: 100px;
+  transition: transform 0.3s ease-in-out;
 }
 
-.animate-brand-float-4 {
-  animation: brandGentleMove 5.4s ease-in-out infinite 2.1s;
+/* Ensure background NEVER turns white on hover! Stays #f4f8ff */
+a.vap-brand-item:hover {
+  background: #f4f8ff !important;
+}
+
+a.vap-brand-item > img,
+a.vap-brand-item img {
+  max-width: 100%;
+  height: auto;
+  transition: transform 0.3s ease-in-out;
+}
+
+a.vap-brand-item:hover > img,
+a.vap-brand-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Initial hidden state before scroll into view */
+.vap-marken-section h2.vap-common-title,
+.vap-marken-section .vap-brand-item {
+  opacity: 0;
+}
+
+/* Triggered on scroll */
+.vap-marken-section.is-visible h2.vap-common-title {
+  animation: brandFadeUp 0.5s ease 0.1s both;
+}
+
+.vap-marken-section.is-visible .vap-brand-item {
+  animation: brandScaleIn 0.45s ease both;
+  animation-delay: calc(0.20s + var(--i, 0) * 0.08s);
+}
+
+@media (max-width: 1024px) {
+  .vap-brand-container {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .vap-marken-section {
+    padding-block: 32px;
+  }
+  .vap-brand-container {
+    grid-template-columns: repeat(4, 1fr);
+    border-radius: 12px;
+  }
+  a.vap-brand-item {
+    padding: 10px 12px;
+    min-height: 85px;
+  }
+  a.vap-brand-item img {
+    max-width: 90px;
+  }
+}
+
+@media (max-width: 440px) {
+  .vap-marken-section {
+    padding-block: 24px;
+  }
+  .vap-brand-container {
+    grid-template-columns: repeat(3, 1fr);
+    border-radius: 10px;
+  }
+  a.vap-brand-item {
+    padding: 8px 10px;
+    min-height: 75px;
+  }
+  a.vap-brand-item img {
+    max-width: 75px;
+  }
 }

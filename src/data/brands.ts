@@ -31,3 +31,4 @@ export const brandsList: BrandItem[] = [
   { id: '23', name: 'VGOD', image: '/images/brands/brand-vgod.png', link: '/shop?brand=VGOD' },
   { id: '24', name: 'Dr Vapes', image: '/images/brands/brand-drvapes.png', link: '/shop?brand=Dr+Vapes' },
 ];
+
