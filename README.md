@@ -53,3 +53,4 @@ src/
   ├── data/            # Mock dataset with authentic Vape Stall UAE products
   └── types/           # TypeScript interfaces and definitions
 ```
+

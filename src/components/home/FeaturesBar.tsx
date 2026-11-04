@@ -53,3 +53,4 @@ export const FeaturesBar: React.FC = () => {
     </section>
   );
 };
+

@@ -114,3 +114,4 @@ export const HeroSlider: React.FC = () => {
     </div>
   );
 };
+

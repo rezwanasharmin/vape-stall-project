@@ -164,3 +164,4 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
     </div>
   );
 };
+

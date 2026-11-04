@@ -72,3 +72,4 @@ export const CategoryGrid: React.FC = () => {
     </section>
   );
 };
+

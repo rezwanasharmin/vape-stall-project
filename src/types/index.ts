@@ -32,3 +32,4 @@ export interface CategoryItem {
   itemCount: string;
   description: string;
 }
+
