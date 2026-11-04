@@ -92,3 +92,4 @@ export const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({ products
     </section>
   );
 };
+

@@ -137,3 +137,29 @@ body {
 .animate-vap-badge {
   animation: vapBadgePulse 2.4s ease-in-out infinite;
 }
+
+/* ── Brands Section Gentle Floating Animation ── */
+@keyframes brandGentleMove {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3.5px);
+  }
+}
+
+.animate-brand-float-1 {
+  animation: brandGentleMove 3.6s ease-in-out infinite;
+}
+
+.animate-brand-float-2 {
+  animation: brandGentleMove 4.2s ease-in-out infinite 0.7s;
+}
+
+.animate-brand-float-3 {
+  animation: brandGentleMove 4.8s ease-in-out infinite 1.4s;
+}
+
+.animate-brand-float-4 {
+  animation: brandGentleMove 5.4s ease-in-out infinite 2.1s;
+}
