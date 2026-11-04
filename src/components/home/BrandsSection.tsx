@@ -43,14 +43,15 @@ export const BrandsSection: React.FC = () => {
       ref={sectionRef}
       className={`vap-marken-section w-full bg-white ${isVisible ? 'is-visible' : ''}`}
     >
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+      {/* Container with max-w-[1240px] matching vapstall.ae page-width */}
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
         
         {/* Title matching vapstall.ae */}
-        <h2 className="vap-common-title text-[28px] sm:text-[32px] md:text-[36px] font-bold text-[#1a2f52] text-center mb-6 sm:mb-8 tracking-tight">
+        <h2 className="vap-common-title text-[28px] sm:text-[32px] md:text-[34px] font-bold text-[#1a2f52] text-center mb-6 sm:mb-8 tracking-tight">
           Brands
         </h2>
 
-        {/* 24 Brands Grid matching vap-brand-container */}
+        {/* 24 Brands Grid with visible outer border and inner dividers */}
         <div className="vap-brand-container">
           {brandsList.map((brand, index) => (
             <Link
@@ -60,12 +61,13 @@ export const BrandsSection: React.FC = () => {
               className="vap-brand-item group"
               style={{ '--i': index } as React.CSSProperties}
             >
+              {/* Large brand logo filling the cell nicely */}
               <Image
                 src={brand.image}
                 alt={brand.name}
                 width={150}
                 height={147}
-                className="max-h-[64px] sm:max-h-[72px] md:max-h-[80px] w-auto max-w-[85%] object-contain select-none transition-transform duration-300 ease-in-out group-hover:scale-105"
+                className="max-h-[82px] sm:max-h-[88px] md:max-h-[96px] w-auto max-w-[90%] object-contain select-none transition-transform duration-300 ease-in-out group-hover:scale-106"
                 priority={index < 8}
               />
             </Link>
