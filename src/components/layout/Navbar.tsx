@@ -202,47 +202,69 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Right Icons: Wishlist (with red '1' badge) + User + Cart */}
-          <div className="flex items-center space-x-5 sm:space-x-7 text-white">
+          {/* Right Icons: Wishlist (with red '1' badge) + Account + Cart (Exact 20px / 44px matching vapstall.ae DevTools) */}
+          <div className="flex items-center space-x-1 sm:space-x-2 text-white">
             
-            {/* Wishlist Icon with Red Circle Badge */}
+            {/* Wishlist Icon (20x20 matching svg.icon.icon-accordion.icon-heart) */}
             <Link
               href="/wishlist"
-              className="relative hover:text-[#ffb347] transition-colors"
+              className="relative flex items-center justify-center w-11 h-11 hover:text-[#ffb347] transition-colors"
               title="Wishlist"
               aria-label="Wishlist"
             >
-              <Heart className="w-6 h-6 stroke-[1.6]" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-white hover:text-[#ffb347] transition-colors"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill="currentColor"
+                  fillRule="evenodd"
+                  d="M10 5.24 8.515 3.773a4.433 4.433 0 0 0-6.21 0 4.293 4.293 0 0 0 0 6.128L10 17.495l7.695-7.593a4.293 4.293 0 0 0 0-6.128 4.433 4.433 0 0 0-6.21 0zm.765-2.177c2.113-2.084 5.538-2.084 7.65 0a5.29 5.29 0 0 1 0 7.55l-7.695 7.593a1.03 1.03 0 0 1-1.44 0l-7.696-7.594a5.29 5.29 0 0 1 0-7.549C3.697.98 7.122.98 9.234 3.063l.766.755z"
+                />
+              </svg>
               {wishlistCount > 0 && (
-                <span className="absolute -top-1.5 -right-2 bg-[#e11d48] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
+                <span className="absolute top-1.5 right-1.5 bg-[#e11d48] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
                   {wishlistCount}
                 </span>
               )}
             </Link>
 
-            {/* Account Icon */}
+            {/* Account Icon (20x20 matching svg.icon.icon-account viewBox="0 0 18 19") */}
             <Link
               href="/about"
-              className="hover:text-[#ffb347] transition-colors hidden sm:block"
+              className="flex items-center justify-center w-11 h-11 hover:text-[#ffb347] transition-colors hidden sm:flex"
               title="My Account"
               aria-label="Account"
             >
-              <User className="w-6 h-6 stroke-[1.6]" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                className="w-5 h-5 text-white hover:text-[#ffb347] transition-colors"
+                viewBox="0 0 18 19"
+              >
+                <path
+                  fill="currentColor"
+                  fillRule="evenodd"
+                  d="M6 4.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-4a4 4 0 1 0 0 8 4 4 0 0 0 0-8m5.58 12.15c1.12.82 1.83 2.24 1.91 4.85H1.51c.08-2.6.79-4.03 1.9-4.85C4.66 11.75 6.5 11.5 9 11.5s4.35.26 5.58 1.15M9 10.5c-2.5 0-4.65.24-6.17 1.35C1.27 12.98.5 14.93.5 18v.5h17V18c0-3.07-.77-5.02-2.33-6.15-1.52-1.1-3.67-1.35-6.17-1.35"
+                  clipRule="evenodd"
+                />
+              </svg>
             </Link>
 
-            {/* Cart Icon */}
+            {/* Cart Icon (44x44 matching svg.icon.icon-cart-empty viewBox="0 0 40 40") */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="relative hover:text-[#ffb347] transition-colors focus:outline-none"
+              className="relative flex items-center justify-center w-11 h-11 hover:text-[#ffb347] transition-colors focus:outline-none cursor-pointer"
               title="Cart"
               aria-label="Shopping Cart"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
-                viewBox="11 11 18 18"
-                className="w-6 h-6 text-white hover:text-[#ffb347] transition-colors"
+                viewBox="0 0 40 40"
+                className="w-[44px] h-[44px] text-white hover:text-[#ffb347] transition-colors"
               >
                 <path
                   fill="currentColor"
@@ -251,7 +273,7 @@ export const Navbar: React.FC = () => {
                 />
               </svg>
               {totalItems > 0 && (
-                <span className="absolute -top-1.5 -right-2 bg-[#ffb347] text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center animate-pulse shadow-sm">
+                <span className="absolute top-1.5 right-1.5 bg-[#ffb347] text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center animate-pulse shadow-sm">
                   {totalItems}
                 </span>
               )}
