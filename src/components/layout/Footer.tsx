@@ -16,9 +16,9 @@ export const Footer: React.FC = () => {
               <Image
                 src="/images/footer-logo.png"
                 alt="Logo of Vape Stall"
-                width={100}
-                height={100}
-                className="w-[100px] h-auto object-contain brightness-110"
+                width={90}
+                height={90}
+                className="w-[90px] h-auto object-contain brightness-110"
               />
             </Link>
 
