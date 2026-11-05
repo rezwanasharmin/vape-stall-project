@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './component-whatsapp-float.css';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
