@@ -2848,3 +2848,334 @@ body.vap-qv-open {
   .vap-auth-badges { gap: 12px; }
   .vap-auth-cert { min-width: calc(50% - 6px); max-width: none; flex: 1 1 300px; }
 }
+
+
+/* =============================================
+   VAP DISPOSABLE VAPE INSIGHTS SECTION
+   ============================================= */
+
+/* Base Section Styling */
+.bin-read-more-about-section {
+  padding-block-start: 60px;
+  padding-block-end: 70px;
+  background-color: #f7f9fa;
+  position: relative;
+}
+
+a.blog-content {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.bin-read-more-about-section .bin-read-more-title {
+  color: #141414;
+  text-align: center;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 121%;
+  letter-spacing: -1.44px;
+  margin-bottom: 8px;
+}
+
+.bin-read-more-about-section .bin-read-more-text {
+  color: #555555;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+  margin: 0;
+}
+
+.bin-read-more-about-section .bin-read-more-card-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.en-blog-card {
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.en-blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  border-color: rgba(37, 64, 111, 0.25);
+}
+
+.en-blog-card .img-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #f0f0f0;
+}
+
+.en-blog-card .img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 10px 10px 0 0;
+  transition: transform 0.4s ease;
+}
+
+.en-blog-card:hover .img-container img {
+  transform: scale(1.04);
+}
+
+.en-blog-card .blog-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 18px;
+  flex-grow: 1;
+}
+
+.en-blog-card .blog-text-content .blog-author {
+  background-color: #e5e7eb;
+  border-radius: 25px;
+  padding: 4px 14px;
+  width: max-content;
+  font-size: 12px;
+  color: #374151;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.en-blog-card .blog-title {
+  color: #111827;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.32;
+  padding-top: 4px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 50px;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.en-blog-card:hover .blog-title {
+  color: #25406f;
+}
+
+.en-blog-card .date-tag .time {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-tag span.tag {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.en-blog-card .blog-text {
+  color: #4b5563;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.en-blog-card .blog-text p {
+  margin: 0;
+}
+
+.en-blog-card .btn-container {
+  margin-top: auto;
+  padding-top: 14px;
+  color: #1f271b;
+  font-size: 14px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+p.lees-meer-text {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+  color: #111827;
+  transition: color 0.2s ease;
+}
+
+.en-blog-card:hover p.lees-meer-text {
+  color: #25406f;
+}
+
+.arrow-svg {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+.en-blog-card:hover .arrow-svg {
+  transform: translateX(4px);
+}
+
+.arrow-svg svg path {
+  fill: #111827;
+  transition: fill 0.2s ease;
+}
+
+.en-blog-card:hover .arrow-svg svg path {
+  fill: #25406f;
+}
+
+/* Footer & View All Button */
+.bin-read-more-about-section .bin-read-more-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.bin-read-more-about-section .bin-read-more-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: #25406f;
+  text-decoration: none;
+  padding: 10px 28px;
+  border-radius: 9999px;
+  border: 2px solid #25406f;
+  transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+  box-shadow: 0 4px 14px rgba(37, 64, 111, 0.22);
+  min-height: 44px;
+}
+
+.bin-read-more-about-section .bin-read-more-view-all svg {
+  transition: transform 0.22s ease;
+}
+
+.bin-read-more-about-section .bin-read-more-view-all:hover {
+  background: #f5a623;
+  border-color: #f5a623;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 166, 35, 0.35);
+}
+
+.bin-read-more-about-section .bin-read-more-view-all:hover svg {
+  transform: translateX(4px);
+}
+
+/* Animation keyframes & Visibility */
+@keyframes blogFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bin-read-more-about-section h4.bin-read-more-title,
+.bin-read-more-about-section p.bin-read-more-text,
+.bin-read-more-about-section .bin-read-more-card-container > *,
+.bin-read-more-about-section .bin-read-more-footer {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.bin-read-more-about-section.is-visible h4.bin-read-more-title {
+  animation: blogFadeUp 0.5s ease 0.1s both;
+}
+
+.bin-read-more-about-section.is-visible p.bin-read-more-text {
+  animation: blogFadeUp 0.5s ease 0.2s both;
+}
+
+.bin-read-more-about-section.is-visible .bin-read-more-card-container > *:nth-child(1) {
+  animation: blogFadeUp 0.55s ease 0.3s both;
+}
+
+.bin-read-more-about-section.is-visible .bin-read-more-card-container > *:nth-child(2) {
+  animation: blogFadeUp 0.55s ease 0.45s both;
+}
+
+.bin-read-more-about-section.is-visible .bin-read-more-card-container > *:nth-child(3) {
+  animation: blogFadeUp 0.55s ease 0.6s both;
+}
+
+.bin-read-more-about-section.is-visible .bin-read-more-card-container > *:nth-child(4) {
+  animation: blogFadeUp 0.55s ease 0.75s both;
+}
+
+.bin-read-more-about-section.is-visible .bin-read-more-footer {
+  animation: blogFadeUp 0.55s ease 0.9s both;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .bin-read-more-about-section {
+    padding-block: 40px;
+  }
+  .bin-read-more-about-section .bin-read-more-title {
+    font-size: 28px;
+  }
+  .bin-read-more-about-section .bin-read-more-card-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 575px) {
+  .bin-read-more-about-section {
+    padding-block: 30px;
+  }
+  .bin-read-more-about-section .bin-read-more-title {
+    font-size: 22px;
+    letter-spacing: normal;
+  }
+  .bin-read-more-about-section .bin-read-more-text {
+    font-size: 15px;
+  }
+  .bin-read-more-about-section .bin-read-more-card-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(260px, 1fr));
+    grid-auto-flow: column;
+    overflow-x: auto !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    margin-inline: -15px;
+    padding-inline: 15px;
+    width: calc(100% + 30px);
+    margin-top: 25px;
+  }
+  .bin-read-more-about-section .bin-read-more-card-container::-webkit-scrollbar {
+    display: none;
+  }
+}
+

@@ -11,6 +11,7 @@ import { TopRatedSection } from '@/components/home/TopRatedSection';
 import { WellnessSection } from '@/components/home/WellnessSection';
 import { FAQSection } from '@/components/home/FAQSection';
 import { OfficialStatusSection } from '@/components/home/OfficialStatusSection';
+import { InsightsSection } from '@/components/home/InsightsSection';
 import { Testimonials } from '@/components/home/Testimonials';
 import { products, newArrivalProducts, mostPopularProducts, topRatedProducts } from '@/data/products';
 
@@ -29,6 +30,7 @@ export default function HomePage() {
       <WellnessSection />
       <FAQSection />
       <OfficialStatusSection />
+      <InsightsSection />
       <Testimonials />
     </div>
   );
