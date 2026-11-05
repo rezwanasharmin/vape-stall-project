@@ -96,10 +96,10 @@ export const HeroSlider: React.FC = () => {
           return (
             <div
               key={slide.id}
-              className="w-full flex-shrink-0 min-w-full flex items-center min-h-[440px] sm:min-h-[480px] lg:min-h-[520px]"
+              className="w-full flex-shrink-0 min-w-full flex items-center min-h-[460px] sm:min-h-[500px] lg:min-h-[540px]"
               style={{ background: slide.gradient }}
             >
-              <div className="max-w-[1400px] mx-auto px-6 sm:px-12 lg:px-16 w-full py-10 lg:py-16">
+              <div className="max-w-[1400px] mx-auto px-6 sm:px-12 lg:px-16 w-full pt-8 pb-16 sm:pt-10 sm:pb-20 lg:pt-12 lg:pb-24">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                   
                   {/* Left Text Content with Staggered Entrance Motion */}
@@ -204,18 +204,67 @@ export const HeroSlider: React.FC = () => {
         <ChevronRight className="w-5 h-5 stroke-[2.5]" />
       </button>
 
-      {/* Bottom Pagination Dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center space-x-2">
+      {/* Unique Sculpted Center Arch & Luminous Vapor Wave Divider */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none z-10">
+        <svg
+          className="relative block w-full h-[48px] sm:h-[62px] lg:h-[78px]"
+          viewBox="0 0 1440 90"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <defs>
+            {/* Golden Amber Light Stream Gradient */}
+            <linearGradient id="vapGlowRim" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#ffb347" stopOpacity="0" />
+              <stop offset="20%" stopColor="#ffb347" stopOpacity="0.4" />
+              <stop offset="38%" stopColor="#ffd180" stopOpacity="0.95" />
+              <stop offset="50%" stopColor="#ffffff" stopOpacity="1" />
+              <stop offset="62%" stopColor="#ffd180" stopOpacity="0.95" />
+              <stop offset="80%" stopColor="#ffb347" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#ffb347" stopOpacity="0" />
+            </linearGradient>
+
+            {/* Ambient Frosted Vapor Halo */}
+            <linearGradient id="vapMistHalo" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.04" />
+            </linearGradient>
+          </defs>
+
+          {/* Secondary Layer: Ambient Frosted Vapor Halo */}
+          <path
+            d="M 0,68 Q 380,68 510,30 Q 720,-12 930,30 Q 1060,68 1440,68 V 90 H 0 Z"
+            fill="url(#vapMistHalo)"
+          />
+
+          {/* Primary Layer: Seamless Solid Fill matching CategoryGrid (#f1f4f9) */}
+          <path
+            d="M 0,74 Q 400,74 535,39 Q 720,4 905,39 Q 1040,74 1440,74 V 90 H 0 Z"
+            fill="#f1f4f9"
+          />
+
+          {/* Luxury Accent: Luminous Prism Ridge Line */}
+          <path
+            d="M 0,74 Q 400,74 535,39 Q 720,4 905,39 Q 1040,74 1440,74"
+            fill="none"
+            stroke="url(#vapGlowRim)"
+            strokeWidth="2.5"
+          />
+        </svg>
+      </div>
+
+      {/* Floating Glassmorphism Pagination Capsule */}
+      <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-slate-950/45 backdrop-blur-md border border-white/20 shadow-xl transition-all duration-300">
         {slides.map((_, i) => (
           <button
             key={i}
             type="button"
             onClick={() => setCurrentSlide(i)}
             aria-label={`Go to slide ${i + 1}`}
-            className={`transition-all duration-300 rounded-full ${
+            className={`transition-all duration-300 rounded-full focus:outline-none ${
               i === currentSlide
-                ? 'w-8 h-2.5 bg-[#ffb347] shadow-md'
-                : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/80'
+                ? 'w-7 sm:w-8 h-2 sm:h-2.5 bg-gradient-to-r from-[#ffb347] to-[#e8740c] shadow-[0_0_12px_rgba(255,179,71,0.85)]'
+                : 'w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white/40 hover:bg-white/80'
             }`}
           />
         ))}
