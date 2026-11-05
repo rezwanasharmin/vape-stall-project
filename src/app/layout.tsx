@@ -12,7 +12,14 @@ export const metadata: Metadata = {
   title: 'Best authentic disposable vape store in UAE | Buy Vape in Dubai',
   description: 'Shop at Vape Stall, the best authentic disposable vape store in UAE. Buy vape in Dubai with a premium selection of disposable vapes, pod systems, vape kits, and accessories from top brands.',
   icons: {
-    icon: '/images/logo.png',
+    icon: [
+      { url: '/favicon-32x32.png?v=2', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-48x48.png?v=2', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon-96x96.png?v=2', sizes: '96x96', type: 'image/png' },
+      { url: '/favicon.ico?v=2', sizes: 'any' },
+    ],
+    shortcut: '/favicon-32x32.png?v=2',
+    apple: '/favicon-192x192.png?v=2',
   },
 };
 
