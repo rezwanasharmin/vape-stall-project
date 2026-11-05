@@ -6,16 +6,17 @@ import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { Search, Heart, User, ShoppingBag, ChevronDown, Menu, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
 import { products } from '@/data/products';
 
 export const Navbar: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { totalItems, setIsCartOpen } = useCart();
+  const { wishlistCount } = useWishlist();
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [wishlistCount] = useState(1); // Exact count '1' shown in user's screenshot
 
   const filteredSearch = searchQuery.trim()
     ? products
@@ -204,9 +205,9 @@ export const Navbar: React.FC = () => {
           {/* Right Icons: Wishlist (with red '1' badge) + User + Cart */}
           <div className="flex items-center space-x-5 sm:space-x-7 text-white">
             
-            {/* Wishlist Icon with Red Circle Badge '1' */}
+            {/* Wishlist Icon with Red Circle Badge */}
             <Link
-              href="/shop"
+              href="/wishlist"
               className="relative hover:text-[#ffb347] transition-colors"
               title="Wishlist"
               aria-label="Wishlist"

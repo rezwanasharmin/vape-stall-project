@@ -1,6 +1,25 @@
 import { Product, CategoryItem } from '@/types';
 
+export const airBarNanoProduct: Product = {
+  id: "prod-air-bar-nano",
+  name: "Air Bar Nano 800 puffs 20mg disposable vape uae",
+  handle: "buy-air-bar-nano-800-puffs-20mg-disposable-vape-uae",
+  price: 35.00,
+  priceFormatted: "Dhs. 35.00",
+  rating: 5.0,
+  reviewsCount: 80,
+  image: "/images/products/air-bar-nano-800-puffs.webp",
+  category: "Disposable Vape",
+  brand: "Air Bar",
+  puffs: "800 Puffs",
+  nicotine: "20mg",
+  inStock: true,
+  flavors: ["Blackcurrant", "Grape", "Strawberry", "Triple Mango"],
+  description: "Buy Air Bar Nano 800 puffs 20mg disposable vape uae online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates."
+};
+
 export const products: Product[] = [
+  airBarNanoProduct,
   {
     "id": "prod-1",
     "name": "Kief King 35000 Puffs 3mg Disposable Vape in UAE",

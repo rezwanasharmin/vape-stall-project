@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
 
 interface ProductCardProps {
   product: Product;
@@ -14,7 +15,8 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }) => {
   const { addToCart } = useCart();
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { toggleWishlist, isInWishlist } = useWishlist();
+  const isWishlisted = isInWishlist(product.id);
 
   return (
     <div
@@ -32,10 +34,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         type="button"
         onClick={(e) => {
           e.stopPropagation();
-          setIsWishlisted(!isWishlisted);
+          toggleWishlist(product);
         }}
         aria-label={`Wishlist ${product.name}`}
-        className="absolute top-4 left-4 z-20 w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-white/90 hover:bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)] border border-slate-100 flex items-center justify-center text-slate-400 hover:text-red-500 transition-all duration-200"
+        className="absolute top-4 left-4 z-20 w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-full bg-white/95 hover:bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)] border border-slate-100 flex items-center justify-center transition-all duration-200"
       >
         <Heart
           className={`w-4 h-4 sm:w-4.5 sm:h-4.5 transition-colors ${

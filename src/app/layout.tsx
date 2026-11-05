@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
+import { WishlistProvider } from '@/context/WishlistContext';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -32,15 +33,17 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-dark-bg text-gray-100 flex flex-col antialiased">
         <CartProvider>
-          <AnnouncementBar />
-          <Navbar />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-          <CartDrawer />
-          <AgeVerificationModal />
-          <WhatsAppButton />
+          <WishlistProvider>
+            <AnnouncementBar />
+            <Navbar />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+            <CartDrawer />
+            <AgeVerificationModal />
+            <WhatsAppButton />
+          </WishlistProvider>
         </CartProvider>
       </body>
     </html>
