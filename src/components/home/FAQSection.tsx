@@ -242,3 +242,4 @@ export const FAQSection: React.FC = () => {
     </section>
   );
 };
+
