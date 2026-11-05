@@ -1,162 +1,392 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { X, Star, ShoppingBag, Plus, Minus, Check } from 'lucide-react';
-import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
+import { Product } from '@/types';
+
+export interface QuickViewProductData {
+  id: string;
+  name: string;
+  title?: string;
+  handle?: string;
+  priceFormatted?: string;
+  price?: string | number;
+  originalPriceFormatted?: string;
+  comparePrice?: string;
+  savingsFormatted?: string;
+  badge?: string;
+  saleBadge?: string;
+  image?: string;
+  img?: string;
+  images?: string[];
+  galleryImages?: string[];
+  flavors?: string[];
+  quantityTypes?: string[];
+  isOutOfStock?: boolean;
+  isSoldOut?: boolean;
+  link?: string;
+  numericPrice?: number;
+}
 
 interface QuickViewModalProps {
-  product: Product | null;
+  product: QuickViewProductData | Product | null;
   onClose: () => void;
 }
 
 export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose }) => {
   const { addToCart } = useCart();
-  const [selectedFlavor, setSelectedFlavor] = useState<string>(
-    product?.flavors?.[0] || 'Blueberry Ice'
-  );
-  const [quantity, setQuantity] = useState(1);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedFlavor, setSelectedFlavor] = useState<string>('');
+  const [selectedQuantityType, setSelectedQuantityType] = useState<string>('');
+  const [isAdded, setIsAdded] = useState(false);
+
+  // Parse product attributes
+  const p = product as any;
+  const title = p ? (p.title || p.name || '') : '';
+  const handle = p ? (p.handle || (p.link ? p.link.replace('/products/', '') : '')) : '';
+  const link = p?.link || (handle ? `/product/${handle}` : '#');
+  const isSoldOut = Boolean(p?.isOutOfStock || p?.isSoldOut);
+  
+  const currentPrice = p?.priceFormatted || 
+    (typeof p?.price === 'string' ? p.price : (p?.price ? `Dhs. ${p.price}.00` : ''));
+    
+  const comparePrice = p?.originalPriceFormatted || p?.comparePrice || '';
+  const saleBadge = p?.saleBadge || p?.badge || '';
+
+  // Extract images
+  const allImages: string[] = [];
+  if (p) {
+    if (p.galleryImages && p.galleryImages.length > 0) {
+      allImages.push(...p.galleryImages);
+    } else if (p.images && p.images.length > 0) {
+      allImages.push(...p.images);
+    } else if (p.image) {
+      allImages.push(p.image);
+    } else if (p.img) {
+      allImages.push(p.img);
+    }
+  }
+
+  // Extract flavors
+  const flavors: string[] = p?.flavors && p.flavors.length > 0 
+    ? p.flavors 
+    : ['Default Flavor'];
+
+  // Extract quantity types
+  const quantityTypes: string[] = p?.quantityTypes && p.quantityTypes.length > 0
+    ? p.quantityTypes
+    : ['1Pc/1Device'];
+
+  // Initialize selections when product changes
+  useEffect(() => {
+    if (product) {
+      setCurrentSlide(0);
+      setSelectedFlavor(flavors[0]);
+      setSelectedQuantityType(quantityTypes[0]);
+      setIsAdded(false);
+
+      // Trigger animation
+      const raf = requestAnimationFrame(() => {
+        setIsOpen(true);
+        document.body.classList.add('vap-qv-open');
+      });
+
+      return () => {
+        cancelAnimationFrame(raf);
+      };
+    } else {
+      setIsOpen(false);
+      document.body.classList.remove('vap-qv-open');
+    }
+  }, [product]);
+
+  // Handle ESC and Arrow keys
+  useEffect(() => {
+    if (!product) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [product, currentSlide, allImages.length]);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    document.body.classList.remove('vap-qv-open');
+    setTimeout(() => {
+      onClose();
+    }, 280);
+  };
+
+  const prevSlide = () => {
+    if (allImages.length <= 1) return;
+    setCurrentSlide((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    if (allImages.length <= 1) return;
+    setCurrentSlide((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleAddToCart = () => {
+    if (!product || isSoldOut) return;
+
+    const numericPrice = p.numericPrice || 
+      (typeof p.price === 'number' ? p.price : parseFloat(String(currentPrice).replace(/[^0-9.]/g, '')) || 45);
+
+    addToCart(
+      {
+        id: product.id,
+        name: title,
+        handle: handle || 'product',
+        price: numericPrice,
+        priceFormatted: currentPrice,
+        rating: 5,
+        reviewsCount: 45,
+        image: allImages[0] || '/images/products/wellness-alfakher-ultra-25k.png',
+        category: 'Disposable Vape',
+        brand: title.split(' ')[0],
+        inStock: true,
+        flavors: [selectedFlavor],
+        description: title,
+      },
+      1,
+      selectedFlavor
+    );
+
+    setIsAdded(true);
+    setTimeout(() => {
+      handleClose();
+    }, 900);
+  };
 
   if (!product) return null;
 
-  const handleAdd = () => {
-    addToCart(product, quantity, selectedFlavor);
-    onClose();
-  };
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-2xl bg-dark-card border border-dark-border rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+    <div
+      ref={overlayRef}
+      className={`vap-qv-overlay is-active ${isOpen ? 'is-open' : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      onClick={(e) => {
+        if (e.target === overlayRef.current) {
+          handleClose();
+        }
+      }}
+    >
+      <div className="vap-qv-modal" onClick={(e) => e.stopPropagation()}>
         {/* Close Button */}
         <button
           type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-900/80 text-gray-400 hover:text-white transition-colors"
+          className="vap-qv-close"
           aria-label="Close"
+          onClick={handleClose}
         >
-          <X className="w-5 h-5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          >
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
         </button>
 
-        {/* Product Image */}
-        <div className="w-full md:w-1/2 bg-slate-900/80 p-8 flex items-center justify-center relative aspect-square md:aspect-auto">
-          <div className="relative w-full h-64 md:h-80">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-contain"
-            />
-          </div>
-        </div>
-
-        {/* Product Info & Options */}
-        <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
-          <div className="space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-md border border-brand-500/20">
-              {product.brand}
-            </span>
-
-            <h2 className="text-lg font-bold text-white leading-snug">
-              {product.name}
-            </h2>
-
-            {/* Rating */}
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-4 h-4 ${
-                      i < Math.floor(product.rating)
-                        ? 'fill-amber-400 text-amber-400'
-                        : 'text-slate-700'
-                    }`}
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-gray-400">
-                {product.rating} ({product.reviewsCount} reviews)
-              </span>
+        <div className="vap-qv-body">
+          {/* Gallery Carousel */}
+          <div className="vap-qv-gallery">
+            {/* Vape Stall Logo Watermark */}
+            <div className="vap-qv-watermark">
+              <Image
+                src="/images/banners/wellness-promo-logo.png"
+                alt="Vape Stall"
+                width={42}
+                height={42}
+                className="object-contain"
+              />
             </div>
 
-            {/* Price */}
-            <div className="flex items-baseline space-x-3">
-              <span className="text-2xl font-black text-brand-400">{product.priceFormatted}</span>
-              {product.originalPriceFormatted && (
-                <span className="text-sm text-gray-500 line-through">
-                  {product.originalPriceFormatted}
+            {/* Slider track */}
+            <div
+              className="vap-qv-track"
+              style={{
+                transform: `translateX(-${currentSlide * 100}%)`,
+              }}
+            >
+              {allImages.map((imgSrc, idx) => (
+                <div key={idx} className="vap-qv-slide">
+                  <Image
+                    src={imgSrc}
+                    alt={`${title} - view ${idx + 1}`}
+                    width={460}
+                    height={460}
+                    className="object-contain"
+                    priority={idx === 0}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Arrows */}
+            {allImages.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  className="vap-qv-arrow vap-qv-arrow--prev"
+                  aria-label="Previous image"
+                  onClick={prevSlide}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  >
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
+
+                <button
+                  type="button"
+                  className="vap-qv-arrow vap-qv-arrow--next"
+                  aria-label="Next image"
+                  onClick={nextSlide}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  >
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+
+                {/* Dot Pagination */}
+                <div className="vap-qv-dots">
+                  {allImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      className={`vap-qv-dot ${idx === currentSlide ? 'is-active' : ''}`}
+                      aria-label={`Image ${idx + 1}`}
+                      onClick={() => setCurrentSlide(idx)}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Product Info */}
+          <div className="vap-qv-info">
+            {/* Title */}
+            <h2 className="vap-qv-title">{title}</h2>
+
+            {/* Price Wrap */}
+            <div className="vap-qv-price-wrap">
+              {comparePrice && (
+                <span className="vap-qv-price--compare">{comparePrice}</span>
+              )}
+              <span className="vap-qv-price--current">{currentPrice}</span>
+              {saleBadge && (
+                <span className="vap-qv-badge-sale">
+                  {saleBadge.startsWith('-') ? saleBadge : `-${saleBadge.replace(/[^0-9%]/g, '')}`}
                 </span>
               )}
             </div>
 
-            {/* Flavor Selector */}
-            {product.flavors && product.flavors.length > 0 && (
-              <div className="pt-2">
-                <label className="text-xs font-semibold text-gray-300 block mb-2">
-                  Select Flavor: <span className="text-brand-400 font-bold">{selectedFlavor}</span>
-                </label>
-                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1">
-                  {product.flavors.map((flavor) => (
-                    <button
-                      key={flavor}
-                      type="button"
-                      onClick={() => setSelectedFlavor(flavor)}
-                      className={`text-xs px-2.5 py-1 rounded-lg border transition-all flex items-center space-x-1 ${
-                        selectedFlavor === flavor
-                          ? 'bg-brand-500 text-slate-950 font-bold border-brand-500'
-                          : 'bg-slate-900 text-gray-300 border-slate-700 hover:border-slate-500'
-                      }`}
-                    >
-                      {selectedFlavor === flavor && <Check className="w-3 h-3" />}
-                      <span>{flavor}</span>
-                    </button>
-                  ))}
+            {/* Options */}
+            <div className="vap-qv-options">
+              {/* Flavor Selector */}
+              {flavors.length > 0 && (
+                <div className="vap-qv-option-group">
+                  <p className="vap-qv-option-label">
+                    FLAVOR: <span className="vap-qv-option-selected">{selectedFlavor}</span>
+                  </p>
+                  <div className="vap-qv-option-values">
+                    {flavors.map((flavor) => {
+                      const isSelected = selectedFlavor === flavor;
+                      return (
+                        <button
+                          key={flavor}
+                          type="button"
+                          className={`vap-qv-opt-btn ${isSelected ? 'is-selected' : ''}`}
+                          onClick={() => setSelectedFlavor(flavor)}
+                        >
+                          {flavor}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
 
-          {/* Quantity & Add to Cart */}
-          <div className="pt-6 border-t border-dark-border mt-4 space-y-3">
-            <div className="flex items-center space-x-3">
-              {/* Quantity Picker */}
-              <div className="flex items-center bg-slate-900 border border-slate-700 rounded-xl p-1">
-                <button
-                  type="button"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-1.5 text-gray-400 hover:text-white rounded-lg transition-colors"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="w-10 text-center font-bold text-sm text-white">{quantity}</span>
-                <button
-                  type="button"
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="p-1.5 text-gray-400 hover:text-white rounded-lg transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Add Button */}
-              <button
-                type="button"
-                onClick={handleAdd}
-                className="flex-1 bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-md active:scale-98"
-              >
-                <ShoppingBag className="w-5 h-5" />
-                <span>Add to Cart</span>
-              </button>
+              {/* Quantity Type Selector */}
+              {quantityTypes.length > 0 && (
+                <div className="vap-qv-option-group">
+                  <p className="vap-qv-option-label">
+                    QUANTITY TYPE: <span className="vap-qv-option-selected">{selectedQuantityType}</span>
+                  </p>
+                  <div className="vap-qv-option-values">
+                    {quantityTypes.map((qty) => {
+                      const isSelected = selectedQuantityType === qty;
+                      return (
+                        <button
+                          key={qty}
+                          type="button"
+                          className={`vap-qv-opt-btn ${isSelected ? 'is-selected' : ''}`}
+                          onClick={() => setSelectedQuantityType(qty)}
+                        >
+                          {qty}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
-            <Link
-              href={`/product/${product.handle}`}
-              onClick={onClose}
-              className="block text-center text-xs text-gray-400 hover:text-brand-400 transition-colors"
+            {/* Add to Cart / Sold out Button */}
+            <button
+              type="button"
+              className="vap-qv-atc-btn"
+              disabled={isSoldOut}
+              onClick={handleAddToCart}
             >
-              View Full Product Details &rarr;
+              <span>
+                {isSoldOut ? 'Sold out' : isAdded ? 'Added to cart ✓' : 'Add to cart'}
+              </span>
+            </button>
+
+            {/* View Full Details Link */}
+            <Link href={link} onClick={handleClose} className="vap-qv-view-link">
+              View full details &rarr;
             </Link>
           </div>
         </div>
@@ -164,4 +394,3 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
     </div>
   );
 };
-
