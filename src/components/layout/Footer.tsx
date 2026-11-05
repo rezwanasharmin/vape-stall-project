@@ -94,7 +94,7 @@ export const Footer: React.FC = () => {
                 <li><Link href="/shop?category=Nicotine+Pouches" className="vap-footer__nav-link">Nicotine Pouches</Link></li>
                 <li><Link href="/shop?category=Shisha+Disposable" className="vap-footer__nav-link">Shisha Disposable</Link></li>
                 <li><Link href="/shop?category=Disposable+Vape" className="vap-footer__nav-link">Disposable Vape</Link></li>
-                <li><Link href="/wishlist" className="vap-footer__nav-link">Wishlist</Link></li>
+                <li><Link href="/pages/wishlist" className="vap-footer__nav-link">Wishlist</Link></li>
                 <li><Link href="/sitemap" className="vap-footer__nav-link">Sitemap</Link></li>
               </ul>
             </div>

@@ -207,7 +207,7 @@ export const Navbar: React.FC = () => {
             
             {/* Wishlist Icon (20x20 matching svg.icon.icon-accordion.icon-heart) */}
             <Link
-              href="/wishlist"
+              href="/pages/wishlist"
               className="relative flex items-center justify-center w-11 h-11 hover:text-[#ffb347] transition-colors"
               title="Wishlist"
               aria-label="Wishlist"
