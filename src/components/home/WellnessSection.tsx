@@ -168,7 +168,7 @@ export const WellnessSection: React.FC = () => {
               />
             </div>
 
-            <h3 className="promo-heading">Your Vibe. Your Flavor.</h3>
+            <h3 className="promo-heading whitespace-nowrap">Your Vibe. Your Flavor.</h3>
             <p className="promo-text"></p>
 
             <Link href="/shop" className="explore-btn">
@@ -297,3 +297,4 @@ export const WellnessSection: React.FC = () => {
     </section>
   );
 };
+

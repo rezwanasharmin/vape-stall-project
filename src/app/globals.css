@@ -830,30 +830,31 @@ a.vap-brand-item:hover img {
 
 /* ── Wellness Products Section (Your Vibe. Your Flavor. from vapstall.ae) ── */
 .wellness-products {
-  padding-block: 80px;
+  padding-block: 70px;
   background-color: #ffffff;
 }
 
 .wellness-grid {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 320px 1fr;
   gap: 16px;
   padding: 16px;
   border-radius: 32px;
   background: #25406F;
   box-shadow: 0 12px 60px rgba(0, 0, 0, 0.07);
-  max-width: 1396px;
+  max-width: 1496px;
   margin: 0 auto;
 }
 
 /* Promo Card */
 .promo-card {
   border-radius: 24px;
-  padding: 36px 24px 32px;
+  padding: 32px 16px 28px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
   background: #ffffff;
@@ -906,7 +907,7 @@ a.vap-brand-item:hover img {
   position: relative;
   width: 170px;
   height: 170px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   z-index: 1;
   flex-shrink: 0;
   display: flex;
@@ -953,14 +954,19 @@ a.vap-brand-item:hover img {
 }
 
 .promo-heading {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
-  line-height: 1.22;
-  margin: 0 0 24px;
+  line-height: 1.25;
+  margin: 0 0 20px;
   position: relative;
   z-index: 1;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.3px;
   color: #1a2f52;
+  white-space: nowrap;
+}
+
+.promo-text:empty {
+  display: none;
 }
 
 .explore-btn {
@@ -968,22 +974,24 @@ a.vap-brand-item:hover img {
   align-items: center;
   gap: 10px;
   background: #b48648;
-  padding: 8px 10px 8px 16px;
+  padding: 8px 10px 8px 18px;
   border-radius: 30px;
   text-decoration: none;
-  font-weight: 900;
+  font-weight: 800;
   font-size: 14px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
   color: #ffffff;
   border: 1px solid #b48648;
   position: relative;
   z-index: 1;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(180, 134, 72, 0.25);
 }
 
 .explore-btn:hover {
   color: #f78804;
   background: #ffffff;
+  box-shadow: 0 6px 20px rgba(247, 136, 4, 0.3);
 }
 
 .explore-btn .arrow-icon {
@@ -997,7 +1005,7 @@ a.vap-brand-item:hover img {
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  transition: 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 
 .explore-btn:hover .arrow-icon {
@@ -1008,14 +1016,19 @@ a.vap-brand-item:hover img {
 .wellness-products .products-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 16px;
   align-content: start;
 }
 
 .wellness-products .product-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+}
+
+.wellness-products .product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .wellness-products .product-card {
@@ -1024,12 +1037,13 @@ a.vap-brand-item:hover img {
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  border-radius: 16px;
+  border-radius: 18px;
   background: #ffffff;
   color: #000000;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
   cursor: pointer;
+  margin: 0;
 }
 
 .wellness-products .product-card:hover {
@@ -1219,7 +1233,10 @@ a.vap-brand-item:hover img {
 /* Responsive */
 @media (max-width: 1100px) {
   .wellness-grid {
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 280px 1fr;
+  }
+  .promo-heading {
+    font-size: 18px;
   }
 }
 
@@ -1229,11 +1246,14 @@ a.vap-brand-item:hover img {
   }
   .wellness-grid {
     grid-template-columns: 1fr;
-    padding: 14px;
-    gap: 14px;
+    padding: 16px;
+    gap: 16px;
   }
   .promo-card {
     padding: 32px 24px 28px;
+  }
+  .promo-heading {
+    font-size: 22px;
   }
   .promo-img-wrapper,
   .promo-img {
@@ -1249,10 +1269,13 @@ a.vap-brand-item:hover img {
   }
   .wellness-products .products-wrapper {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 12px;
   }
   .wellness-products .product-group {
-    gap: 8px;
+    gap: 12px;
+  }
+  .wellness-products .product-list {
+    gap: 12px;
   }
 }
 
@@ -1270,7 +1293,7 @@ a.vap-brand-item:hover img {
     border-radius: 18px;
   }
   .promo-heading {
-    font-size: 20px;
+    font-size: 18px;
   }
   .promo-img-wrapper,
   .promo-img {
