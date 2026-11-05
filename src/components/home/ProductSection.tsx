@@ -80,7 +80,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ products }) => {
           {bestSellers.map((product, index) => (
             <div
               key={product.id}
-              className={`vap-pg__item vap-pg__reveal ${isVisible ? 'is-visible' : ''}`}
+              className={`vap-pg__item vap-pg__reveal h-full flex flex-col ${isVisible ? 'is-visible' : ''}`}
               style={{ '--delay': `${index * 80}ms` } as React.CSSProperties}
             >
               <ProductCard

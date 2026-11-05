@@ -18,7 +18,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
 
   return (
     <div
-      className="group relative bg-white border border-[#d9d9d9] hover:border-transparent rounded-[18px] p-2.5 sm:p-3.5 pb-4 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(37,64,111,0.16)] cursor-pointer"
+      className="group relative bg-white border border-[#d9d9d9] hover:border-transparent rounded-[18px] p-2.5 sm:p-3.5 pb-4 flex flex-col justify-between h-full w-full transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(37,64,111,0.16)] cursor-pointer"
       onClick={(e) => {
         // If clicking on a button or link, don't trigger wrapper link
         const target = e.target as HTMLElement;
@@ -95,14 +95,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
       {/* Product Information */}
       <div className="pt-3.5 pb-1 flex flex-col flex-1">
         {/* Title */}
-        <h3 className="text-[15px] sm:text-[16px] font-semibold text-[#000000] line-clamp-2 leading-[1.38] min-h-[44px] group-hover:text-[#25406F] transition-colors">
+        <h3 className="text-[15px] sm:text-[16px] font-semibold text-[#000000] line-clamp-2 leading-[1.38] min-h-[44px] h-[44px] group-hover:text-[#25406F] transition-colors">
           <Link href={`/product/${product.handle}`} onClick={(e) => e.stopPropagation()}>
             {product.name}
           </Link>
         </h3>
 
         {/* Stars and Review Count */}
-        <div className="flex items-center space-x-2 mt-2.5">
+        <div className="flex items-center space-x-2 mt-2">
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
               <svg
@@ -120,17 +120,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           </span>
         </div>
 
-        {/* Out of Stock Badge if applicable */}
-        {product.isOutOfStock && (
-          <div className="mt-2">
-            <span className="bg-[#fee2e2] text-[#ef4444] text-[11px] font-semibold px-2 py-0.5 rounded-md inline-block">
+        {/* Stock Status Badge Slot - min-h-[26px] ensures uniform spacing across all cards */}
+        <div className="min-h-[26px] flex items-center mt-1.5">
+          {product.isOutOfStock ? (
+            <span className="bg-[#fee2e2] text-[#991b1b] text-[11px] font-semibold px-2.5 py-0.5 rounded-md inline-block leading-tight">
               Out of stock
             </span>
-          </div>
-        )}
+          ) : null}
+        </div>
 
         {/* Price & Add to Cart Action */}
-        <div className="mt-3.5 pt-3 flex items-center justify-between border-t border-slate-100">
+        <div className="mt-auto pt-3 flex items-center justify-between border-t border-slate-100 min-h-[52px]">
           <div className="flex items-center flex-wrap gap-x-2 gap-y-0.5">
             {product.originalPriceFormatted && (
               <span className="text-[13px] sm:text-[14px] text-red-500 line-through decoration-red-500 font-medium">
