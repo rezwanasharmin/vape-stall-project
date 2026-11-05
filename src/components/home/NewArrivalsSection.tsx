@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -12,13 +12,36 @@ interface NewArrivalsSectionProps {
 
 export const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({ products }) => {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="py-14 sm:py-20 bg-white border-t border-slate-100">
+    <section ref={sectionRef} className="py-14 sm:py-20 bg-white border-t border-slate-100">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
         {/* Section Header (Exact design from vapstall.ae) */}
-        <div className="text-center mb-10 sm:mb-12">
+        <div className={`vap-pg__head text-center mb-10 sm:mb-12 ${isVisible ? 'bar-visible' : ''}`}>
           {/* Top subtle 2-color gradient bar */}
           <div className="w-14 h-1 bg-gradient-to-r from-[#25406F] to-[#F5A623] mx-auto rounded-full mb-6" />
 
@@ -50,18 +73,28 @@ export const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({ products
         </div>
 
         {/* 8 Cards Grid (2 rows of 4 on desktop) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
-          {products.map((product) => (
-            <ProductCard
+        <div className="vap-pg__grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
+          {products.map((product, index) => (
+            <div
               key={product.id}
-              product={product}
-              onQuickView={(p) => setQuickViewProduct(p)}
-            />
+              className={`vap-pg__item vap-pg__reveal ${isVisible ? 'is-visible' : ''}`}
+              style={{ '--delay': `${(index % 4) * 80}ms` } as React.CSSProperties}
+            >
+              <ProductCard
+                product={product}
+                onQuickView={(p) => setQuickViewProduct(p)}
+              />
+            </div>
           ))}
         </div>
 
         {/* Section Footer: View All Button */}
-        <div className="flex justify-center mt-12 sm:mt-14">
+        <div
+          className={`vap-pg__footer vap-pg__reveal flex justify-center mt-12 sm:mt-14 ${
+            isVisible ? 'is-visible' : ''
+          }`}
+          style={{ '--delay': '320ms' } as React.CSSProperties}
+        >
           <Link
             href="/shop"
             className="group inline-flex items-center gap-2 bg-[#25406F] hover:bg-[#F5A623] text-white text-[14px] sm:text-[15px] font-semibold px-9 py-3.5 rounded-full transition-all duration-300 shadow-[0_4px_14px_rgba(37,64,111,0.18)] hover:shadow-[0_6px_20px_rgba(245,166,35,0.32)] hover:-translate-y-0.5"

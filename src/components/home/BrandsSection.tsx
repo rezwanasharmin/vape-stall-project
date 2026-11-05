@@ -30,19 +30,13 @@ export const BrandsSection: React.FC = () => {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
 
     observer.observe(el);
 
-    // Fallback: make visible if not triggered
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 600);
-
     return () => {
       observer.disconnect();
-      clearTimeout(timer);
     };
   }, []);
 

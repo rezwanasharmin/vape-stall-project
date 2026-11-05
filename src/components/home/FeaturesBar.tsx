@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 const features = [
@@ -31,19 +31,49 @@ const features = [
 ];
 
 export const FeaturesBar: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="vab-usp-section bg-[#f1f4f9] pt-16 sm:pt-24 pb-20 sm:pb-24 border-b border-slate-200">
+    <section
+      ref={sectionRef}
+      className={`vab-usp-section bg-[#f1f4f9] pt-16 sm:pt-24 pb-20 sm:pb-24 border-b border-slate-200 ${
+        isVisible ? 'is-visible' : ''
+      }`}
+    >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* 4 Feature Items Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="content-block grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
           {features.map((item, index) => (
             <div
               key={index}
-              className="group bg-[rgba(37,64,111,0.06)] hover:bg-[rgba(37,64,111,0.09)] border border-[#C8D5EC] hover:border-[#a0b8df] rounded-xl p-6 text-center transition-all duration-300 shadow-sm flex flex-col items-center justify-start"
+              style={{ '--i': index } as React.CSSProperties}
+              className="item group bg-[rgba(37,64,111,0.06)] hover:bg-[rgba(37,64,111,0.09)] border border-[#C8D5EC] hover:border-[#a0b8df] rounded-xl p-6 text-center transition-all duration-300 shadow-sm flex flex-col items-center justify-start"
             >
               {/* Centered Line Icon */}
-              <div className="h-10 flex items-center justify-center mb-3">
+              <div className="icon h-10 flex items-center justify-center mb-3">
                 <div className="relative w-10 h-10 transition-transform duration-300 group-hover:scale-110">
                   <Image
                     src={item.icon}
@@ -55,12 +85,12 @@ export const FeaturesBar: React.FC = () => {
               </div>
 
               {/* Title */}
-              <h3 className="text-[#25406F] text-[15px] sm:text-base font-bold mb-1.5 tracking-tight">
+              <h3 className="lbl text-[#25406F] text-[15px] sm:text-base font-bold mb-1.5 tracking-tight">
                 {item.title}
               </h3>
 
               {/* Description */}
-              <p className="text-[#64748b] text-xs leading-relaxed max-w-[240px] mx-auto font-normal">
+              <p className="text text-[#64748b] text-xs leading-relaxed max-w-[240px] mx-auto font-normal">
                 {item.description}
               </p>
             </div>

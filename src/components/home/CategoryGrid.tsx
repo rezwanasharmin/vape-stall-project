@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
@@ -70,12 +70,36 @@ const categoriesData: CategoryCard[] = [
 ];
 
 export const CategoryGrid: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="pt-14 sm:pt-16 pb-12 sm:pb-16 bg-[#f1f4f9] text-slate-900">
+    <section ref={sectionRef} className="pt-14 sm:pt-16 pb-12 sm:pb-16 bg-[#f1f4f9] text-slate-900">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Section (Exact match from screenshot 1) */}
-        <div className="text-center max-w-xl mx-auto mb-12">
+        <div className={`vap-category-header text-center max-w-xl mx-auto mb-12 ${isVisible ? 'is-visible' : ''}`}>
           
           {/* Eyebrow */}
           <div className="flex items-center justify-center space-x-3 text-[#f78804] text-xs font-bold tracking-[0.2em] uppercase">
@@ -100,11 +124,14 @@ export const CategoryGrid: React.FC = () => {
 
         {/* 4 Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categoriesData.map((cat) => (
+          {categoriesData.map((cat, index) => (
             <Link
               key={cat.id}
               href={cat.link}
-              className="group relative rounded-[22px] overflow-hidden aspect-[3/4.2] p-6 flex flex-col justify-between shadow-xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-slate-700/60 hover:border-[#b48648]"
+              style={{ '--cc-delay': `${index * 0.14}s` } as React.CSSProperties}
+              className={`vap-cc__card group relative rounded-[22px] overflow-hidden aspect-[3/4.2] p-6 flex flex-col justify-between shadow-xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-slate-700/60 hover:border-[#b48648] ${
+                isVisible ? 'is-visible' : ''
+              }`}
             >
               
               {/* Background Image (Scales forward on hover) */}

@@ -274,18 +274,13 @@ export const WellnessSection: React.FC = () => {
           }
         });
       },
-      { threshold: 0.08 }
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     );
 
     observer.observe(el);
 
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 600);
-
     return () => {
       observer.disconnect();
-      clearTimeout(timer);
     };
   }, []);
 

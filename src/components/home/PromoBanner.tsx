@@ -22,19 +22,13 @@ export const PromoBanner: React.FC = () => {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
 
     observer.observe(el);
 
-    // Safety fallback
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 600);
-
     return () => {
       observer.disconnect();
-      clearTimeout(timer);
     };
   }, []);
 
