@@ -237,7 +237,18 @@ export const Navbar: React.FC = () => {
               title="Cart"
               aria-label="Shopping Cart"
             >
-              <ShoppingBag className="w-6 h-6 stroke-[1.6]" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 40 40"
+                className="w-6 h-6 text-white hover:text-[#ffb347] transition-colors"
+              >
+                <path
+                  fill="currentColor"
+                  fillRule="evenodd"
+                  d="M15.75 11.8h-3.16l-.77 11.6a5 5 0 0 0 4.99 5.34h7.38a5 5 0 0 0 4.99-5.33L28.4 11.8zm0 1h-2.22l-.71 10.67a4 4 0 0 0 3.99 4.27h7.38a4 4 0 0 0 4-4.27l-.72-10.67h-2.22v.63a4.75 4.75 0 1 1-9.5 0zm8.5 0h-7.5v.63a3.75 3.75 0 1 0 7.5 0z"
+                />
+              </svg>
               {totalItems > 0 && (
                 <span className="absolute -top-1.5 -right-2 bg-[#ffb347] text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center animate-pulse shadow-sm">
                   {totalItems}
