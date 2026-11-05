@@ -50,12 +50,13 @@ export const AnnouncementBar: React.FC = () => {
 
             <span className="text-white/30 hidden sm:inline">|</span>
 
-            <Link
-              href="/about"
-              className="hover:text-white hover:bg-white/15 px-2 py-1 rounded transition-colors hidden sm:inline whitespace-nowrap"
+            <a
+              href="#about-us"
+              onClick={(e) => e.preventDefault()}
+              className="hover:text-white hover:bg-white/15 px-2 py-1 rounded transition-colors hidden sm:inline whitespace-nowrap cursor-pointer"
             >
               About Us
-            </Link>
+            </a>
 
             <span className="text-white/30 hidden sm:inline">|</span>
 

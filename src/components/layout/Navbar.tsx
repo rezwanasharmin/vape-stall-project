@@ -231,9 +231,10 @@ export const Navbar: React.FC = () => {
             </Link>
 
             {/* Account Icon (20x20 matching svg.icon.icon-account viewBox="0 0 18 19") */}
-            <Link
-              href="/about"
-              className="flex items-center justify-center w-11 h-11 hover:text-[#ffb347] transition-colors hidden sm:flex"
+            <a
+              href="#account"
+              onClick={(e) => e.preventDefault()}
+              className="flex items-center justify-center w-11 h-11 hover:text-[#ffb347] transition-colors hidden sm:flex cursor-pointer"
               title="My Account"
               aria-label="Account"
             >
@@ -250,7 +251,7 @@ export const Navbar: React.FC = () => {
                   clipRule="evenodd"
                 />
               </svg>
-            </Link>
+            </a>
 
             {/* Cart Icon (44x44 matching svg.icon.icon-cart-empty viewBox="0 0 40 40") */}
             <button
@@ -343,7 +344,6 @@ export const Navbar: React.FC = () => {
           <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-white/80">
             <span>Help: +971 55 168 8299</span>
             <div className="flex space-x-3">
-              <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">About Us</Link>
               <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Contact</Link>
             </div>
           </div>
