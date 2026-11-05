@@ -240,7 +240,7 @@ export const Navbar: React.FC = () => {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
-                viewBox="0 0 40 40"
+                viewBox="11 11 18 18"
                 className="w-6 h-6 text-white hover:text-[#ffb347] transition-colors"
               >
                 <path
