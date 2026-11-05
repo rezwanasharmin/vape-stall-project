@@ -148,19 +148,11 @@ export function OfficialStatusSection() {
               Official Status
             </div>
             <h2 className="vap-auth-headline">
-              <span className="vap-auth-headline-line">Certified &amp;</span>{' '}
+              <span className="vap-auth-headline-line">Certified &amp;</span>
               <span className="vap-auth-headline-line vap-auth-headline-line--accent">Authorised Dealer</span>
             </h2>
             <p className="vap-auth-sub">
-              Welcome to Vape Stall, your trusted vape shop in UAE. We offer a wide selection of genuine vaping products for all kinds of users. You’ll find disposable vapes, pod systems, vape kits, nicotine pouches, and accessories from top brands like Elf bar, Lost Mary, VOZOL, HQD, Al Fakher, and others. These brands are popular around the world for their uniform performance, great flavors, and reliability.
-              <br /><br />
-              As a growing vape shop in UAE, Vape Stall serves newcomers and and experienced vapers with convenience and confidence. Whether you need high puff disposable vapes, refillable pod devices, starter kits, or nicotine pouches like Velo and Zyn, our collection has been specially chosen to fulfill modern vaping demands.
-              <br /><br />
-              We serve clients in all seven Emirates in the UAE (Abu Dhabi, Dubai, Sharjah, Ajman, Umm Al Quwain, Ras Al Khaimah, and Fujairah). You can count on us for fast delivery and friendly customer service.
-              <br /><br />
-              You can shop with us online or in the shop, making Vape Stall your one-stop vape shop in the UAE. We offer fair prices, real products, and focus on making sure you are happy with your purchase and our service.
-              <br /><br />
-              At Vape Stall, we want to be your top choice for vaping in UAE. We offer quality products, trusted brands, and a easy shopping experience made for today’s vapers. Try Vape Stall and see how easy it is to enjoy premium vaping products.
+              Welcome to Vape Stall, your trusted vape shop in UAE. We offer a wide selection of genuine vaping products for all kinds of users. You’ll find disposable vapes, pod systems, vape kits, nicotine pouches, and accessories from top brands like Elf bar, Lost Mary, VOZOL, HQD, Al Fakher, and others. These brands are popular around the world for their uniform performance, great flavors, and reliability. As a growing vape shop in UAE, Vape Stall serves newcomers and and experienced vapers with convenience and confidence. Whether you need high puff disposable vapes, refillable pod devices, starter kits, or nicotine pouches like Velo and Zyn, our collection has been specially chosen to fulfill modern vaping demands. We serve clients in all seven Emirates in the UAE (Abu Dhabi, Dubai, Sharjah, Ajman, Umm Al Quwain, Ras Al Khaimah, and Fujairah). You can count on us for fast delivery and friendly customer service. You can shop with us online or in the shop, making Vape Stall your one-stop vape shop in the UAE. We offer fair prices, real products, and focus on making sure you are happy with your purchase and our service. At Vape Stall, we want to be your top choice for vaping in UAE. We offer quality products, trusted brands, and a easy shopping experience made for today’s vapers. Try Vape Stall and see how easy it is to enjoy premium vaping products.
             </p>
           </div>
 
@@ -264,3 +256,4 @@ export function OfficialStatusSection() {
     </div>
   );
 }
+
