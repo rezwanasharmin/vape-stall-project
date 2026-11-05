@@ -122,17 +122,22 @@ export const CategoryGrid: React.FC = () => {
 
         </div>
 
-        {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categoriesData.map((cat, index) => (
-            <Link
-              key={cat.id}
-              href={cat.link}
-              style={{ '--cc-delay': `${index * 0.14}s` } as React.CSSProperties}
-              className={`vap-cc__card group relative rounded-[22px] overflow-hidden aspect-[3/4.2] p-6 flex flex-col justify-between shadow-xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-slate-700/60 hover:border-[#b48648] ${
-                isVisible ? 'is-visible' : ''
-              }`}
-            >
+        {/* 4 Cards Grid - Responsive Magazine Grid matching vapstall.ae */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+          {categoriesData.map((cat, index) => {
+            const isFullWidthMobile = index === 0 || index === 3;
+
+            return (
+              <Link
+                key={cat.id}
+                href={cat.link}
+                style={{ '--cc-delay': `${index * 0.14}s` } as React.CSSProperties}
+                className={`vap-cc__card group relative rounded-[18px] sm:rounded-[22px] overflow-hidden ${
+                  isFullWidthMobile ? 'col-span-2 sm:col-span-1 lg:col-span-1 aspect-[16/9] sm:aspect-[3/4.2]' : 'col-span-1 aspect-[3/4.2]'
+                } p-4 sm:p-6 flex flex-col justify-between shadow-xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-slate-700/60 hover:border-[#b48648] ${
+                  isVisible ? 'is-visible' : ''
+                }`}
+              >
               
               {/* Background Image (Scales forward on hover) */}
               <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
@@ -242,7 +247,8 @@ export const CategoryGrid: React.FC = () => {
               </div>
 
             </Link>
-          ))}
+          );
+        })}
         </div>
 
       </div>

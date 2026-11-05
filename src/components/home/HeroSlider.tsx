@@ -189,9 +189,9 @@ export const HeroSlider: React.FC = () => {
         type="button"
         onClick={handlePrev}
         aria-label="Previous Slide"
-        className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/35 hover:bg-black/65 border border-white/20 hover:border-white/50 text-white flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-xl hover:scale-105 active:scale-90"
+        className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-8.5 h-8.5 sm:w-11 sm:h-11 rounded-full bg-black/35 hover:bg-black/65 border border-white/20 hover:border-white/50 text-white flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-xl hover:scale-105 active:scale-90"
       >
-        <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
       </button>
 
       {/* Next Navigation Arrow Button (Right edge) */}
@@ -199,9 +199,9 @@ export const HeroSlider: React.FC = () => {
         type="button"
         onClick={handleNext}
         aria-label="Next Slide"
-        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/35 hover:bg-black/65 border border-white/20 hover:border-white/50 text-white flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-xl hover:scale-105 active:scale-90"
+        className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-8.5 h-8.5 sm:w-11 sm:h-11 rounded-full bg-black/35 hover:bg-black/65 border border-white/20 hover:border-white/50 text-white flex items-center justify-center transition-all duration-200 backdrop-blur-md shadow-xl hover:scale-105 active:scale-90"
       >
-        <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
       </button>
 
       {/* Exact authentic bottom-curve matching vapstall.ae */}

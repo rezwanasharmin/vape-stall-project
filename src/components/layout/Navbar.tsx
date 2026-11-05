@@ -17,6 +17,7 @@ export const Navbar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   const filteredSearch = searchQuery.trim()
     ? products
@@ -138,8 +139,8 @@ export const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Center: Long White Search Bar with Dark Blue Search Button */}
-          <div className="flex-1 max-w-2xl mx-2 sm:mx-6 relative">
+          {/* Center: Long White Search Bar with Dark Blue Search Button (Desktop & Tablet) */}
+          <div className="hidden md:block flex-1 max-w-2xl mx-3 lg:mx-6 relative">
             <form onSubmit={handleSearchSubmit} className="relative w-full">
               <div className="relative flex items-center">
                 <input
@@ -160,7 +161,7 @@ export const Navbar: React.FC = () => {
                 {/* Right submit pill button (dark blue gradient with search icon) */}
                 <button
                   type="submit"
-                  className="absolute right-1.5 top-1 bottom-1 w-11 bg-gradient-to-r from-[#2d4f88] to-[#1A2F52] hover:from-[#355ea0] hover:to-[#22396a] text-white rounded-full flex items-center justify-center shadow-md transition-all active:scale-95"
+                  className="absolute right-1.5 top-1 bottom-1 w-11 bg-gradient-to-r from-[#2d4f88] to-[#1A2F52] hover:from-[#355ea0] hover:to-[#22396a] text-white rounded-full flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer"
                   aria-label="Submit Search"
                 >
                   <Search className="w-4 h-4 text-white stroke-[2.2]" />
@@ -202,8 +203,19 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Right Icons: Wishlist (with red '1' badge) + Account + Cart (Exact 20px / 44px matching vapstall.ae DevTools) */}
+          {/* Right Icons: Search (mobile) + Wishlist + Account + Cart */}
           <div className="flex items-center space-x-1 sm:space-x-2 text-white">
+            
+            {/* Mobile Search Toggle Icon */}
+            <button
+              type="button"
+              onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
+              className="flex items-center justify-center w-10 h-10 hover:text-[#ffb347] transition-colors md:hidden text-white"
+              title="Search"
+              aria-label="Search"
+            >
+              <Search className="w-5 h-5 text-white" />
+            </button>
             
             {/* Wishlist Icon (20x20 matching svg.icon.icon-accordion.icon-heart) */}
             <Link
@@ -283,6 +295,72 @@ export const Navbar: React.FC = () => {
 
         </div>
       </div>
+
+      {/* Mobile Search Dropdown Bar */}
+      {isMobileSearchOpen && (
+        <div className="md:hidden bg-[#11243e] px-4 py-3 border-t border-white/10 relative z-50">
+          <form onSubmit={handleSearchSubmit} className="relative w-full">
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                placeholder="Search products, brands..."
+                value={searchQuery}
+                autoFocus
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setShowSearchResults(true);
+                }}
+                onFocus={() => setShowSearchResults(true)}
+                className="w-full h-[44px] bg-white text-slate-800 text-[14px] rounded-full pl-10 pr-12 placeholder-[#839cb8] focus:outline-none shadow-sm"
+              />
+              <Search className="w-4 h-4 text-[#839cb8] absolute left-3.5 pointer-events-none stroke-[2]" />
+              <button
+                type="submit"
+                className="absolute right-1.5 top-1 bottom-1 w-9 bg-gradient-to-r from-[#2d4f88] to-[#1A2F52] text-white rounded-full flex items-center justify-center shadow-md active:scale-95 cursor-pointer"
+                aria-label="Submit Search"
+              >
+                <Search className="w-3.5 h-3.5 text-white stroke-[2.2]" />
+              </button>
+            </div>
+          </form>
+
+          {/* Mobile Search Suggestions Dropdown */}
+          {showSearchResults && filteredSearch.length > 0 && (
+            <div
+              className="mt-2 bg-white border border-slate-200 rounded-xl shadow-2xl p-2 z-50 overflow-hidden text-slate-800"
+              onMouseLeave={() => setShowSearchResults(false)}
+            >
+              <div className="text-[11px] font-bold text-slate-400 px-3 py-1.5 uppercase tracking-wider">
+                Suggestions
+              </div>
+              {filteredSearch.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/product/${item.handle}`}
+                  onClick={() => {
+                    setShowSearchResults(false);
+                    setIsMobileSearchOpen(false);
+                  }}
+                  className="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                >
+                  <div className="relative w-9 h-9 rounded bg-slate-100 flex-shrink-0 overflow-hidden border border-slate-200">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-contain p-1"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-slate-900 truncate">{item.name}</p>
+                    <p className="text-xs text-[#b45309] font-bold">{item.priceFormatted}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ─── ROW 2: Horizontal Menu Bar (Desktop) ─── */}
       <nav className="hidden lg:block border-t border-white/15">

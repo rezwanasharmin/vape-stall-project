@@ -72,8 +72,8 @@ export const MostPopularSection: React.FC<MostPopularSectionProps> = ({ products
           </p>
         </div>
 
-        {/* 4 Cards Grid - Exact size and style */}
-        <div className="vap-pg__grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
+        {/* 4 Cards Grid - Responsive 2-col on mobile & tablet, 4-col on desktop */}
+        <div className="vap-pg__grid grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {products.map((product, index) => (
             <div
               key={product.id}

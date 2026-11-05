@@ -64,17 +64,17 @@ export const FeaturesBar: React.FC = () => {
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* 4 Feature Items Grid */}
-        <div className="content-block grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        {/* 4 Feature Items Grid - 2x2 on mobile, 4 in row on desktop */}
+        <div className="content-block grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
           {features.map((item, index) => (
             <div
               key={index}
               style={{ '--i': index } as React.CSSProperties}
-              className="item group bg-[rgba(37,64,111,0.06)] hover:bg-[rgba(37,64,111,0.09)] border border-[#C8D5EC] hover:border-[#a0b8df] rounded-xl p-6 text-center transition-all duration-300 shadow-sm flex flex-col items-center justify-start"
+              className="item group bg-[rgba(37,64,111,0.06)] hover:bg-[rgba(37,64,111,0.09)] border border-[#C8D5EC] hover:border-[#a0b8df] rounded-xl p-3.5 sm:p-6 text-center transition-all duration-300 shadow-sm flex flex-col items-center justify-start"
             >
               {/* Centered Line Icon */}
-              <div className="icon h-10 flex items-center justify-center mb-3">
-                <div className="relative w-10 h-10 transition-transform duration-300 group-hover:scale-110">
+              <div className="icon h-8 sm:h-10 flex items-center justify-center mb-2 sm:mb-3">
+                <div className="relative w-8 h-8 sm:w-10 sm:h-10 transition-transform duration-300 group-hover:scale-110">
                   <Image
                     src={item.icon}
                     alt={item.alt}
@@ -85,12 +85,12 @@ export const FeaturesBar: React.FC = () => {
               </div>
 
               {/* Title */}
-              <h3 className="lbl text-[#25406F] text-[15px] sm:text-base font-bold mb-1.5 tracking-tight">
+              <h3 className="lbl text-[#25406F] text-[13.5px] sm:text-base font-bold mb-1 sm:mb-1.5 tracking-tight leading-tight">
                 {item.title}
               </h3>
 
               {/* Description */}
-              <p className="text text-[#64748b] text-xs leading-relaxed max-w-[240px] mx-auto font-normal">
+              <p className="text text-[#64748b] text-[11px] sm:text-xs leading-relaxed max-w-[240px] mx-auto font-normal">
                 {item.description}
               </p>
             </div>
