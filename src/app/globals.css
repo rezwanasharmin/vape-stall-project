@@ -3191,20 +3191,14 @@ p.lees-meer-text {
   overflow: hidden;
 }
 
-/* Footer Container Centering & Balanced Margins */
+/* Footer Page Width Matching Live Site Exactly (1396px at 1496px viewport) */
 .vap-footer .page-width {
-  max-width: 1240px;
+  max-width: var(--page-width, 1496px);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 1.5rem;
 }
 
-@media (min-width: 768px) {
-  .vap-footer .page-width {
-    padding: 0 40px;
-  }
-}
-
-@media (min-width: 1024px) {
+@media screen and (min-width: 750px) {
   .vap-footer .page-width {
     padding: 0 50px;
   }
@@ -3232,10 +3226,9 @@ p.lees-meer-text {
 /* Main grid */
 .vap-footer__main {
   display: grid;
-  grid-template-columns: 1.35fr 1.15fr 0.95fr;
-  gap: 56px;
+  grid-template-columns: 1.5fr 1.2fr 1fr;
+  gap: 64px;
   padding-bottom: 52px;
-  align-items: start;
 }
 
 /* ---- Brand Column ---- */
@@ -3249,8 +3242,8 @@ p.lees-meer-text {
   line-height: 0;
 }
 .vap-footer__logo-link img {
-  max-width: 90px;
-  width: 90px;
+  max-width: 100px;
+  width: 100px;
   height: auto;
   display: block;
   filter: brightness(1.1);
@@ -3263,11 +3256,11 @@ p.lees-meer-text {
 }
 .vap-footer__desc {
   margin: 18px 0 0;
-  font-size: 13.5px;
-  line-height: 1.82;
-  opacity: 0.8;
+  font-size: 14px;
+  line-height: 1.85;
+  opacity: 0.78;
   max-width: 320px;
-  color: #cbd5e1;
+  color: inherit;
 }
 
 /* Social icons */
@@ -3281,18 +3274,18 @@ p.lees-meer-text {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #ffffff;
+  color: inherit;
   text-decoration: none;
   transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 .vap-footer__social-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
   flex-shrink: 0;
 }
 .vap-footer__social-icon:hover {
@@ -3316,7 +3309,7 @@ p.lees-meer-text {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: #ffffff;
+  color: inherit;
   margin: 0 0 18px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
@@ -3346,11 +3339,11 @@ p.lees-meer-text {
   display: inline-flex;
   align-items: center;
   gap: 0;
-  color: #cbd5e1;
+  color: inherit;
   text-decoration: none;
   font-size: 14px;
-  opacity: 0.8;
-  transition: opacity 0.2s ease, padding-left 0.2s ease, color 0.2s ease;
+  opacity: 0.75;
+  transition: opacity 0.2s ease, padding-left 0.2s ease, gap 0.2s ease;
   position: relative;
 }
 .vap-footer__nav-link::before {
@@ -3367,7 +3360,6 @@ p.lees-meer-text {
 }
 .vap-footer__nav-link:hover {
   opacity: 1;
-  color: #ffffff;
   padding-left: 14px;
 }
 .vap-footer__nav-link:hover::before {
@@ -3394,7 +3386,7 @@ p.lees-meer-text {
   margin-bottom: 18px;
   font-size: 14px;
   line-height: 1.6;
-  opacity: 0.85;
+  opacity: 0.82;
 }
 .vap-footer__contact-icon {
   flex-shrink: 0;
@@ -3413,13 +3405,12 @@ p.lees-meer-text {
   height: 15px;
 }
 .vap-footer__contact-link {
-  color: #cbd5e1;
+  color: inherit;
   text-decoration: none;
-  transition: opacity 0.2s ease, color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 .vap-footer__contact-link:hover {
   opacity: 1;
-  color: #ffffff;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -3428,7 +3419,7 @@ p.lees-meer-text {
 .vap-footer__divider {
   height: 1px;
   background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 30%, rgba(255,255,255,0.18) 70%, transparent 100%);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   display: block !important;
 }
 
@@ -3437,24 +3428,22 @@ p.lees-meer-text {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
   flex-wrap: wrap;
   gap: 16px;
   padding-bottom: 30px;
 }
 .vap-footer__copyright {
   font-size: 13px;
-  opacity: 0.6;
+  opacity: 0.5;
   margin: 0;
   letter-spacing: 0.02em;
-  color: #cbd5e1;
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .vap-footer__main {
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 44px;
   }
   .vap-footer__brand {
     grid-column: 1 / -1;
@@ -3466,7 +3455,7 @@ p.lees-meer-text {
 
 @media (max-width: 767px) {
   .vap-footer {
-    padding-top: 48px;
+    padding-top: 50px;
   }
   .vap-footer__main {
     grid-template-columns: 1fr;
@@ -3481,8 +3470,8 @@ p.lees-meer-text {
   }
   .vap-footer__bottom {
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    align-items: flex-start;
+    gap: 14px;
     padding-bottom: 24px;
   }
 }

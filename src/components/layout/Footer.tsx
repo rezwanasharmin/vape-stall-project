@@ -15,10 +15,10 @@ export const Footer: React.FC = () => {
             <Link href="/" className="vap-footer__logo-link">
               <Image
                 src="/images/footer-logo.png"
-                alt="Logo of Vape Stall"
-                width={90}
-                height={90}
-                className="w-[90px] h-auto object-contain brightness-110"
+                alt="Logo of Vape Stall with a person holding a vape device on a white background"
+                width={100}
+                height={100}
+                className="w-[100px] h-auto object-contain brightness-110"
               />
             </Link>
 
