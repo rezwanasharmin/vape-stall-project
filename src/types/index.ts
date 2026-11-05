@@ -6,14 +6,17 @@ export interface Product {
   priceFormatted: string; // e.g. "Dhs. 49.00"
   originalPrice?: number;
   originalPriceFormatted?: string;
+  comparePrice?: number;
+  comparePriceFormatted?: string;
   savingsFormatted?: string;
   rating: number;
   reviewsCount: number;
   image: string; // local image path
   altImage?: string;
+  galleryImages?: string[];
   badge?: string;
   isOutOfStock?: boolean;
-  category: 'Disposable Vape' | 'Pod Systems' | 'E-Liquids' | 'Shisha / Hookah';
+  category: string;
   brand: string;
   puffs?: string;
   nicotine?: string;
