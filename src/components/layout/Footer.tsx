@@ -101,7 +101,7 @@ export const Footer: React.FC = () => {
             <div className="vap-footer__nav-col">
               <h3 className="vap-footer__col-title">Support</h3>
               <ul className="vap-footer__nav-list">
-                <li><a href="#about-us" onClick={(e) => e.preventDefault()} className="vap-footer__nav-link cursor-pointer">About us</a></li>
+                <li><Link href="/pages/about-us" className="vap-footer__nav-link">About us</Link></li>
                 <li><Link href="/terms" className="vap-footer__nav-link">Terms &amp; Conditions</Link></li>
                 <li><Link href="/blogs/news" className="vap-footer__nav-link">Latest Blog</Link></li>
                 <li><Link href="/contact" className="vap-footer__nav-link">Contact us</Link></li>
