@@ -60,7 +60,7 @@ export const AnnouncementBar: React.FC = () => {
             <span className="text-white/30 hidden sm:inline">|</span>
 
             <Link
-              href="/contact"
+              href="/pages/contact-us"
               className="hover:text-white hover:bg-white/15 px-2 py-1 rounded transition-colors hidden sm:inline whitespace-nowrap"
             >
               Contact Us

@@ -104,7 +104,7 @@ export const Footer: React.FC = () => {
                 <li><Link href="/pages/about-us" className="vap-footer__nav-link">About us</Link></li>
                 <li><Link href="/terms" className="vap-footer__nav-link">Terms &amp; Conditions</Link></li>
                 <li><Link href="/blogs/news" className="vap-footer__nav-link">Latest Blog</Link></li>
-                <li><Link href="/contact" className="vap-footer__nav-link">Contact us</Link></li>
+                <li><Link href="/pages/contact-us" className="vap-footer__nav-link">Contact us</Link></li>
                 <li><Link href="/#vapFaqSection" className="vap-footer__nav-link">FAQs</Link></li>
                 <li><Link href="/shipping" className="vap-footer__nav-link">Shipping &amp; Delivery</Link></li>
                 <li><Link href="/privacy" className="vap-footer__nav-link">Privacy Policy</Link></li>
