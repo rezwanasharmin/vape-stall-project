@@ -9,6 +9,10 @@ import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { QuickViewModal } from '@/components/product/QuickViewModal';
+import { CollectionSeoGuide } from '@/components/shop/CollectionSeoGuide';
+import { CollectionSpotFake } from '@/components/shop/CollectionSpotFake';
+import { CollectionFaq } from '@/components/shop/CollectionFaq';
+import { CollectionAuth } from '@/components/shop/CollectionAuth';
 import '@/app/vap-collection.css';
 
 function ShopContent() {
@@ -238,6 +242,39 @@ function ShopContent() {
     setTimeout(() => setToastMessage(null), 2500);
   };
 
+  const pageSize = 12;
+  const totalPages = Math.ceil(filteredProducts.length / pageSize) || 1;
+
+  const pagedProducts = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredProducts.slice(start, start + pageSize);
+  }, [filteredProducts, currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    if (typeof window !== 'undefined') {
+      const gridEl = document.getElementById('VcolGrid-container');
+      if (gridEl) {
+        gridEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const getPageNumbers = () => {
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    if (currentPage <= 3) {
+      return [1, 2, 3, '…', totalPages];
+    }
+    if (currentPage >= totalPages - 2) {
+      return [1, '…', totalPages - 2, totalPages - 1, totalPages];
+    }
+    return [1, '…', currentPage, '…', totalPages];
+  };
+
   return (
     <div className="bg-[#f4f7fc] min-h-screen text-[#25406f]">
       {/* ─── Breadcrumb Bar ─── */}
@@ -250,7 +287,7 @@ function ShopContent() {
             ›
           </span>
           <span className="vcol-breadcrumb__cur text-[#25406f] font-semibold" aria-current="page">
-            Shop
+            Vape Stall: Disposable Vape shop in UAE
           </span>
         </nav>
       </div>
@@ -666,7 +703,7 @@ function ShopContent() {
 
               {/* Product Count matching Screenshot 1 */}
               <p className="vcol-count text-[13.5px] text-[#25406f]/70 font-medium m-0">
-                <strong className="text-[#25406f] font-bold">89</strong> products
+                <strong className="text-[#25406f] font-bold">{filteredProducts.length}</strong> products
               </p>
             </div>
 
@@ -794,10 +831,11 @@ function ShopContent() {
             </div>
           ) : (
             <div
+              id="VcolGrid-container"
               className="vcol-grid grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5"
               style={{ '--vcol-cols': 3, '--vcol-cols-mobile': 2 } as React.CSSProperties}
             >
-              {filteredProducts.map((product, idx) => {
+              {pagedProducts.map((product, idx) => {
                 const wishlisted = isInWishlist(product.id);
                 return (
                   <div
@@ -974,152 +1012,80 @@ function ShopContent() {
             </div>
           )}
 
-          {/* PAGINATION: matching Screenshot 4 */}
-          <div className="vcol-pagination flex items-center justify-center gap-2 pt-10 pb-4">
-            <button
-              type="button"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              className={`vcol-page-arrow inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 rounded-lg text-[13.5px] font-semibold bg-white transition-colors ${
-                currentPage === 1 ? 'vcol-page-arrow--disabled opacity-35 cursor-not-allowed' : 'hover:bg-[#25406f] hover:text-white cursor-pointer'
-              }`}
-            >
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="10 4 6 8 10 12" />
-              </svg>
-              <span>Prev</span>
-            </button>
-
-            <div className="vcol-page-nums flex items-center gap-1.5">
+          {/* ─── PAGINATION (Interactive 1:1 with vapstall.ae) ─── */}
+          {totalPages > 1 && (
+            <nav className="vcol-pagination flex items-center justify-center gap-2 pt-10 pb-4" aria-label="Collection pages">
               <button
                 type="button"
-                onClick={() => setCurrentPage(1)}
-                className={`vcol-page-num w-9 h-9 flex items-center justify-center rounded-lg text-[13.5px] font-bold border transition-colors cursor-pointer ${
-                  currentPage === 1
-                    ? 'vcol-page-num--active bg-[#25406f] border-[#25406f] text-white shadow-sm'
-                    : 'bg-white border-slate-300 text-[#25406f] hover:bg-slate-50'
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                className={`vcol-page-arrow inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 rounded-lg text-[13.5px] font-semibold bg-white transition-colors ${
+                  currentPage === 1 ? 'vcol-page-arrow--disabled opacity-35 cursor-not-allowed' : 'hover:bg-[#25406f] hover:text-white cursor-pointer'
                 }`}
+                aria-label="Previous page"
               >
-                1
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="10 4 6 8 10 12" />
+                </svg>
+                <span>Prev</span>
               </button>
-              <button
-                type="button"
-                onClick={() => setCurrentPage(2)}
-                className={`vcol-page-num w-9 h-9 flex items-center justify-center rounded-lg text-[13.5px] font-bold border transition-colors cursor-pointer ${
-                  currentPage === 2
-                    ? 'vcol-page-num--active bg-[#25406f] border-[#25406f] text-white shadow-sm'
-                    : 'bg-white border-slate-300 text-[#25406f] hover:bg-slate-50'
-                }`}
-              >
-                2
-              </button>
-              <button
-                type="button"
-                onClick={() => setCurrentPage(3)}
-                className={`vcol-page-num w-9 h-9 flex items-center justify-center rounded-lg text-[13.5px] font-bold border transition-colors cursor-pointer ${
-                  currentPage === 3
-                    ? 'vcol-page-num--active bg-[#25406f] border-[#25406f] text-white shadow-sm'
-                    : 'bg-white border-slate-300 text-[#25406f] hover:bg-slate-50'
-                }`}
-              >
-                3
-              </button>
-              <span className="vcol-page-ellipsis px-1 text-slate-400 font-bold">…</span>
-              <button
-                type="button"
-                onClick={() => setCurrentPage(8)}
-                className={`vcol-page-num w-9 h-9 flex items-center justify-center rounded-lg text-[13.5px] font-bold border transition-colors cursor-pointer ${
-                  currentPage === 8
-                    ? 'vcol-page-num--active bg-[#25406f] border-[#25406f] text-white shadow-sm'
-                    : 'bg-white border-slate-300 text-[#25406f] hover:bg-slate-50'
-                }`}
-              >
-                8
-              </button>
-            </div>
 
-            <button
-              type="button"
-              disabled={currentPage === 8}
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, 8))}
-              className={`vcol-page-arrow inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 rounded-lg text-[13.5px] font-semibold bg-white transition-colors ${
-                currentPage === 8 ? 'vcol-page-arrow--disabled opacity-35 cursor-not-allowed' : 'hover:bg-[#25406f] hover:text-white cursor-pointer'
-              }`}
-            >
-              <span>Next</span>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 4 10 8 6 12" />
-              </svg>
-            </button>
-          </div>
-
-          {/* ─── COLLECTION GUIDE CARD: matching Screenshot 4 ─── */}
-          <div className="vcol-seo-desc vcol-seo-visible mt-12 mb-8 bg-white rounded-2xl border border-[#25406f]/10 shadow-lg overflow-hidden">
-            {/* Rainbow Accent Bar */}
-            <div className="vcol-seo-desc__accent h-1.5 bg-gradient-to-r from-[#25406f] via-[#f78804] to-[#25406f]" />
-            
-            {/* Eyebrow Pill */}
-            <div className="vcol-seo-desc__eyebrow inline-flex items-center gap-2 m-6 sm:m-8 mb-2 px-3.5 py-1.5 rounded-full bg-[#f78804]/10 text-[#f78804] text-[11px] font-bold uppercase tracking-widest border border-[#f78804]/20">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              <span>COLLECTION GUIDE</span>
-            </div>
-
-            {/* Guide Body */}
-            <div className="vcol-seo-desc__body p-6 sm:p-8 pt-2 text-[#25406f]/85 text-[14px] sm:text-[15px] leading-relaxed space-y-4">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#25406f] leading-tight pb-3 border-b border-[#25406f]/10">
-                Vape Stall: Disposable Vape shop in UAE – Authentic Brands &amp; Fast Delivery
-              </h2>
-              
-              <p className="text-justify">
-                Vape Stall is a reliable online vape store in UAE offering authentic vaping products from leading international brands for adult nicotine users across the country. Whether you want to buy disposable vape in UAE for everyday convenience or explore advanced rechargeable devices with higher puff counts, our collection is designed to match different vaping preferences and lifestyles.
-              </p>
-              
-              <p className="text-justify">
-                We stock a wide range of disposable vape devices, pod systems, nicotine salt disposable products, refillable vape kits, replacement pods, and vape accessories sourced from trusted manufacturers. Every product available at Vape Stall is selected for flavor quality, consistent vapor production, smooth throat hit performance, and dependable device reliability.
-              </p>
-
-              <h3 className="text-lg font-bold text-[#25406f] pt-4 border-t border-[#25406f]/10">
-                Authentic Disposable Vape Brands We Offer
-              </h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                <div className="bg-[#f8fafc] border border-slate-200 p-4 rounded-xl">
-                  <h4 className="font-bold text-[#25406f] text-sm mb-1">Elf Bar</h4>
-                  <p className="text-xs text-slate-600 leading-normal">
-                    Smooth airflow, rich flavor selection, and dependable battery performance. Models range from 10,000 to 40,000 puffs with mesh coil technology.
-                  </p>
-                </div>
-
-                <div className="bg-[#f8fafc] border border-slate-200 p-4 rounded-xl">
-                  <h4 className="font-bold text-[#25406f] text-sm mb-1">Al Fakher</h4>
-                  <p className="text-xs text-slate-600 leading-normal">
-                    Traditional shisha-inspired flavors brought into modern portable rechargeable devices like Crown Bar and E-Hose X.
-                  </p>
-                </div>
-
-                <div className="bg-[#f8fafc] border border-slate-200 p-4 rounded-xl">
-                  <h4 className="font-bold text-[#25406f] text-sm mb-1">Lost Mary</h4>
-                  <p className="text-xs text-slate-600 leading-normal">
-                    Compact style, vibrant dual mesh coils, high-puff smart indicators, and satisfying smooth nicotine delivery.
-                  </p>
-                </div>
-
-                <div className="bg-[#f8fafc] border border-slate-200 p-4 rounded-xl">
-                  <h4 className="font-bold text-[#25406f] text-sm mb-1">VOZOL</h4>
-                  <p className="text-xs text-slate-600 leading-normal">
-                    High capacity rechargeable smart devices, dual modes, digital displays, and innovative shisha vape flavors.
-                  </p>
-                </div>
+              <div className="vcol-page-nums flex items-center gap-1.5">
+                {getPageNumbers().map((item, idx) => {
+                  if (typeof item === 'string') {
+                    return (
+                      <span key={`ell-${idx}`} className="vcol-page-ellipsis px-1 text-slate-400 font-bold" aria-hidden="true">
+                        …
+                      </span>
+                    );
+                  }
+                  const isActive = item === currentPage;
+                  return (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => handlePageChange(item)}
+                      className={`vcol-page-num w-9 h-9 flex items-center justify-center rounded-lg text-[13.5px] font-bold border transition-colors cursor-pointer ${
+                        isActive
+                          ? 'vcol-page-num--active bg-[#25406f] border-[#25406f] text-white shadow-sm'
+                          : 'bg-white border-slate-300 text-[#25406f] hover:bg-slate-50'
+                      }`}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      {item}
+                    </button>
+                  );
+                })}
               </div>
-            </div>
-          </div>
+
+              <button
+                type="button"
+                disabled={currentPage === totalPages}
+                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                className={`vcol-page-arrow inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 rounded-lg text-[13.5px] font-semibold bg-white transition-colors ${
+                  currentPage === totalPages ? 'vcol-page-arrow--disabled opacity-35 cursor-not-allowed' : 'hover:bg-[#25406f] hover:text-white cursor-pointer'
+                }`}
+                aria-label="Next page"
+              >
+                <span>Next</span>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 4 10 8 6 12" />
+                </svg>
+              </button>
+            </nav>
+          )}
+
+          {/* ─── COLLECTION GUIDE (Full 1:1 authentic content) ─── */}
+          <CollectionSeoGuide />
 
         </div>
 
       </div>
+
+      {/* ─── FULL-WIDTH SECTIONS 1:1 WITH VAPSTALL.AE ─── */}
+      <CollectionSpotFake />
+      <CollectionFaq />
+      <CollectionAuth />
 
       {/* Mobile Drawer Overlay */}
       <div

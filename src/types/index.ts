@@ -4,17 +4,17 @@ export interface Product {
   handle: string;
   price: number; // in AED numeric e.g. 49.00
   priceFormatted: string; // e.g. "Dhs. 49.00"
-  originalPrice?: number;
-  originalPriceFormatted?: string;
-  comparePrice?: number;
-  comparePriceFormatted?: string;
-  savingsFormatted?: string;
+  originalPrice?: number | null;
+  originalPriceFormatted?: string | null;
+  comparePrice?: number | null;
+  comparePriceFormatted?: string | null;
+  savingsFormatted?: string | null;
   rating: number;
   reviewsCount: number;
   image: string; // local image path
   altImage?: string;
   galleryImages?: string[];
-  badge?: string;
+  badge?: string | null;
   isOutOfStock?: boolean;
   category: string;
   brand: string;
