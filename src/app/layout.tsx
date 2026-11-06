@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Outfit } from 'next/font/google';
 import './globals.css';
 import './component-whatsapp-float.css';
 import { CartProvider } from '@/context/CartContext';
@@ -9,6 +10,13 @@ import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { AgeVerificationModal } from '@/components/common/AgeVerificationModal';
 import { WhatsAppButton } from '@/components/common/WhatsAppButton';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+  variable: '--font-outfit',
+});
 
 export const metadata: Metadata = {
   title: 'Best authentic disposable vape store in UAE | Buy Vape in Dubai',
@@ -31,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-dark-bg text-gray-100 flex flex-col antialiased">
+    <html lang="en" className={outfit.variable}>
+      <body className={`${outfit.className} min-h-screen bg-dark-bg text-gray-100 flex flex-col antialiased`}>
         <CartProvider>
           <WishlistProvider>
             <AnnouncementBar />
