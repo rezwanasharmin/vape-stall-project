@@ -214,6 +214,40 @@ export default function ProductDetailPage() {
     ['Activation', 'Simple draw-activated (inhale activation) mechanism'],
   ];
 
+  // Vozol Star 6 FAQs
+  const vozolFaqs = [
+    {
+      id: 1,
+      q: 'How long does Vozol Star 40000 take to work?',
+      a: 'Vozol Star 40000 – Up to 40,000 Puffs, One of the Longest‑lasting Disposable Vapes in Dubai The average user can easily get several weeks of continued vaping out of it.',
+    },
+    {
+      id: 2,
+      q: 'Is the Vozol Star 40000 rechargeable?',
+      a: 'Yes , the device has an 850mAh rechargeable battery and USB-C fast charging . You can keep it charged without changing the unit .',
+    },
+    {
+      id: 3,
+      q: 'Is the airflow on Vozol star 40000 adjustable?',
+      a: 'It has an airflow slider. You can choose a tighter MTL draw or a looser, cloudier inhale. This gives you full control over your vaping style',
+    },
+    {
+      id: 4,
+      q: 'What nicotine strength does Vozol Star have?',
+      a: 'The Vozol Star 40000 delivers 20mg nicotine salt e‑liquid for smooth throat hits and well-rounded nicotine delivery for adult vapers.',
+    },
+    {
+      id: 5,
+      q: 'Does Vozol Star 40000 come with safety features?',
+      a: 'Safe and reliable device for adult nicotine consumers in Dubai and across UAE. It is leak-proof, protects against short circuits, and meets ESMA standards.',
+    },
+    {
+      id: 6,
+      q: 'Will the Vozol Star 40000 work well for MTL vaping?',
+      a: 'Yes, it is made for Mouth-to-Lung vaping. You get a cigarette-like draw with smooth nicotine satisfaction and adjustable airflow.',
+    },
+  ];
+
   // Kief King 17 flavors
   const kiefKingFlavorsList = [
     ['Double Apple', 'Traditional red & green apple shisha flavor.'],
@@ -249,8 +283,38 @@ export default function ProductDetailPage() {
     ['Safety Features', 'Short-circuit protection, overcharge safeguards, and leak-proof engineering'],
   ];
 
+  // Kief King 5 FAQs
+  const kiefKingFaqs = [
+    {
+      id: 1,
+      q: 'How long does the Kief King 35000 last?',
+      a: 'For moderate users, the device can last several weeks to months, which makes it one of the most long lasting disposable vapes in UAE market and a top 35000 puff vape dubai choice.',
+    },
+    {
+      id: 2,
+      q: 'Is the Kief King 35000 rechargeable?',
+      a: 'Yes. It’s a type c rechargeable vape with a powerful 1100mAh battery and quick charging. A full charge will give you longer uninterrupted sessions.',
+    },
+    {
+      id: 3,
+      q: 'What flavors does Kief King 35000 come in?',
+      a: 'The most popular flavors are Double Apple, Blueberry Raspberry, Grape, Lady Killer, Love 66, Lychee Ice, Mango, Peach Ice, Strawberry and Watermelon.',
+    },
+    {
+      id: 4,
+      q: 'What makes Kief King different from other disposables?',
+      a: 'It is a disposable vape with a mesh coil and advanced atomizer technology, producing thick vapor clouds and consistent flavor clarity for thousands of puffs.',
+    },
+    {
+      id: 5,
+      q: 'Where can I buy Kief King 35000 in Dubai?',
+      a: 'You can buy kief king 35000 vape dubai from Vape Stall, either in-store or order online. We offer fast service, 24-hour vape delivery in Dubai, and reliable coverage throughout the UAE.',
+    },
+  ];
+
   const currentFlavorsList = isVozol ? vozolFlavorsList : kiefKingFlavorsList;
   const currentSpecsTable = isVozol ? vozolSpecsTable : kiefKingSpecsTable;
+  const currentFaqs = isVozol ? vozolFaqs : kiefKingFaqs;
 
   const relatedList = allProducts
     .filter((p) => p.id !== product.id && p.category === product.category)
@@ -794,21 +858,47 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
 
-                  {/* Why Choose Section */}
-                  <div className="pt-6 space-y-2">
+                  {/* Why Choose Section (Light-blue cards with dark blue checkmarks) */}
+                  <div className="pt-6 space-y-3">
                     <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
                       Why choose Vozol Star 40000 Puff Vape
                     </h3>
-                    <p>
-                      When choosing a vape, think beyond puffs. Focus on creating a reliable, flavorful, and tailored experience for each session. The Vozol Star 40K is designed to push the limits of endurance and pairs the precision of dual mesh coils with adjustable airflow control and intelligent LED monitoring to deliver a vape to fit your style.
+                    <p className="text-slate-600 text-xs sm:text-sm">
+                      When choosing a vape, think beyond puffs. Focus on creating a reliable, flavorful, and tailored experience for each session. The Vozol Star 40K is designed to push the limits of endurance and pairs the precision of dual mesh coils with adjustable airflow control and intelligent LED monitoring to deliver a vape to fit your style. With smooth nicotine delivery to a bold flavor clarity, Vozol star is made to satisfy the demands of Dubai vapers who want both performance and ease of use.
                     </p>
-                    <ul className="space-y-1.5 list-disc pl-5 pt-2 text-slate-700">
-                      <li><strong>Smart LED Screen:</strong> Built-in LED screen displays real-time battery life and e-liquid levels.</li>
-                      <li><strong>Flavor clarity:</strong> Dual mesh coil technology brings out the depth and consistency of each flavor.</li>
-                      <li><strong>Smooth Nicotine Delivery:</strong> Star 40K has a smoothness and satisfaction level at 20mg nicotine strength.</li>
-                      <li><strong>Adjustable airflow:</strong> A built-in airflow slider lets you dial in your draw.</li>
-                      <li><strong>Trusted Reliability:</strong> 100% ESMA compliant with leak-proof and safety features.</li>
-                    </ul>
+                    
+                    <div className="space-y-2.5 pt-2">
+                      {[
+                        'Smart LED Screen: Built-in LED screen displays real-time battery life and e-liquid levels. It is an easy but powerful method to keep your vaping experience in your hands.',
+                        'Flavor clarity: Dual mesh coil technology brings out the depth and consistency of each flavor, from cooling mint to exotic fruit blends. The coil produces a steady vapor without dry hits, bringing out the richness in each flavor blend.',
+                        'Smooth Nicotine Delivery: Star 40K has a smoothness and satisfaction level at 20mg nicotine strength. It is engineered to provide a uniform throat hit that feels natural and consistent throughout all 40,000 puffs.',
+                        'Adjustable airflow: A built in airflow slider lets you dial in your draw. If you like a tight MTL draw or a looser, cloudier hit, the Star 40K can be instantly adjusted to your liking.',
+                        'Trusted Reliability: This Vozol disposable vape is 100% ESMA compliant. It has leak-proof and safety features. It\'s made to meet UAE quality and performance standards.'
+                      ].map((item, i) => (
+                        <div key={i} className="bg-[#edf3fa] border border-[#c8d5ec] rounded-xl p-3.5 sm:p-4 flex items-center gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
+                          <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <p className="text-slate-600 text-xs sm:text-sm pt-2">
+                      Vape Stall online store has Vozol Star 40000 puff vape for sale in Dubai, UAE with fast shipping, cash on delivery and same day delivery options. Buy Vozol Star 40000 puff vape in Dubai online and get it delivered to your doorstep with ease.
+                    </p>
+
+                    {/* Extra Heading */}
+                    <div className="pt-4 space-y-2">
+                      <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                        Buy Vozol Star 40000 Puff Vape in UAE
+                      </h3>
+                      <p className="text-slate-600 text-xs sm:text-sm">
+                        The Vozol Star 40000 Puff Vape features dual mesh coil heating, adjustable airflow, LED screen display, USB-C fast charging, and advanced safety features. It has 850mAh rechargeable battery, large prefilled reservoir and up to 40,000 puffs. That makes it a device for vapers who are seeking for customizable performance and long-lasting satisfaction.
+                      </p>
+                      <p className="text-slate-600 text-xs sm:text-sm">
+                        Ready to elevate your sessions? Buy Vozol Star 40000 puff 20mg nicotine vape in UAE today with same day delivery, cash on delivery options and get the best price for Vozol Star 40K in AED. Order now from the Vape Stall, trusted vape shops in UAE and enjoy a premium disposable electronic cigarette with innovation, safety and flavor variety.
+                      </p>
+                    </div>
+
                   </div>
                 </div>
               ) : (
@@ -952,7 +1042,7 @@ export default function ProductDetailPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <span className="inline-block bg-[#25406f]/10 text-[#25406F] border border-[#25406F]/20 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
-            Got Questions?
+            GOT QUESTIONS?
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#1a2a4a] mb-2">
             Frequently Asked Questions
@@ -985,33 +1075,7 @@ export default function ProductDetailPage() {
 
           {/* Right Accordion List */}
           <div className="lg:col-span-8 space-y-3">
-            {[
-              {
-                id: 1,
-                q: `How long does the ${product.name} last?`,
-                a: `For moderate users, the device can last several weeks to months, with ${product.puffs || 'high puff count'} making it one of the most long lasting disposable vapes in UAE market.`,
-              },
-              {
-                id: 2,
-                q: `Is the ${product.name} rechargeable?`,
-                a: 'Yes. It features USB Type-C fast charging with a high capacity battery to give you longer uninterrupted sessions.',
-              },
-              {
-                id: 3,
-                q: `What flavors are available?`,
-                a: `Popular flavors include ${currentFlavorsList.slice(0, 8).map((f) => f[0]).join(', ')}, and many more.`,
-              },
-              {
-                id: 4,
-                q: `What makes this device special?`,
-                a: 'It is engineered with advanced dual mesh coil technology and consistent flavor delivery for rich clouds throughout all puffs.',
-              },
-              {
-                id: 5,
-                q: `Where can I buy in Dubai?`,
-                a: 'You can buy directly from Vape Stall with fast 24-hour vape delivery in Dubai and reliable coverage throughout the UAE.',
-              },
-            ].map((faq) => {
+            {currentFaqs.map((faq) => {
               const isOpen = openFaq === faq.id;
               return (
                 <div
@@ -1056,18 +1120,9 @@ export default function ProductDetailPage() {
          ======================================================== */}
       <section className="max-w-[1360px] mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
         <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#1a2b49]">
-              You May Also Like
-            </h2>
-          </div>
-          <Link
-            href="/collections/vape-stall-disposable-vape-shop-in-uae"
-            className="text-xs font-bold text-[#25406F] hover:underline flex items-center gap-1"
-          >
-            <span>View All</span>
-            <span>&rarr;</span>
-          </Link>
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1a2b49]">
+            You may also like
+          </h2>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
