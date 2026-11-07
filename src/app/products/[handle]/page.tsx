@@ -62,6 +62,10 @@ export default function ProductDetailPage() {
     product.handle?.includes('vozol-star-40000') ||
     product.name?.toLowerCase().includes('vozol star');
 
+  const isKiefKing =
+    product.handle?.includes('kief-king-35000') ||
+    product.name?.toLowerCase().includes('kief king');
+
   const { addToCart, setIsCartOpen } = useCart();
 
   // Dynamic gallery images
@@ -690,45 +694,46 @@ export default function ProductDetailPage() {
       {/* ========================================================
           4. TABBED SECTION (DESCRIPTION, SPECIFICATION, SHIPPING)
          ======================================================== */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 py-6">
-        <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-[#e2e8f0]/90 shadow-sm">
-          
-          {/* Tab Headers */}
-          <div className="flex items-center gap-6 sm:gap-8 border-b border-slate-200 pb-2 mb-8 overflow-x-auto">
+      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 py-8">
+        
+        {/* Tab Headers */}
+        <div className="border-b border-[#e5e7eb] mb-8">
+          <div className="flex items-center gap-6 sm:gap-10 overflow-x-auto">
             <button
               type="button"
               onClick={() => setActiveTab('description')}
-              className={`pb-2.5 text-sm sm:text-base font-bold transition-all border-b-2 whitespace-nowrap ${
+              className={`pb-3.5 text-sm sm:text-base transition-all border-b-2 whitespace-nowrap ${
                 activeTab === 'description'
-                  ? 'border-[#e59b2d] text-[#1a2b49]'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
+                  ? 'border-[#e59b2d] text-[#1a2b49] font-bold'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 font-medium'
+              } -mb-[2px]`}
             >
               Description
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('specification')}
-              className={`pb-2.5 text-sm sm:text-base font-bold transition-all border-b-2 whitespace-nowrap ${
+              className={`pb-3.5 text-sm sm:text-base transition-all border-b-2 whitespace-nowrap ${
                 activeTab === 'specification'
-                  ? 'border-[#e59b2d] text-[#1a2b49]'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
+                  ? 'border-[#e59b2d] text-[#1a2b49] font-bold'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 font-medium'
+              } -mb-[2px]`}
             >
               Specification
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('shipping')}
-              className={`pb-2.5 text-sm sm:text-base font-bold transition-all border-b-2 whitespace-nowrap ${
+              className={`pb-3.5 text-sm sm:text-base transition-all border-b-2 whitespace-nowrap ${
                 activeTab === 'shipping'
-                  ? 'border-[#e59b2d] text-[#1a2b49]'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
+                  ? 'border-[#e59b2d] text-[#1a2b49] font-bold'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 font-medium'
+              } -mb-[2px]`}
             >
               Shipping and Delivery
             </button>
           </div>
+        </div>
 
           {/* TAB 1: DESCRIPTION */}
           {activeTab === 'description' && (
@@ -857,26 +862,44 @@ export default function ProductDetailPage() {
                 /* KIEF KING / DEFAULT DESCRIPTION */
                 <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
                   <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1a2b49]">
-                    {`Buy ${product.name} in UAE – Ultra High Puff Mesh Coil Device`}
+                    {isKiefKing
+                      ? 'Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE – Ultra High Puff Mesh Coil Device'
+                      : `Buy ${product.name} in UAE – Ultra High Puff Mesh Coil Device`}
                   </h2>
                   <p>
-                    {product.description ||
-                      'If you are searching for a disposable vape that combines advanced technology and high puff capacity, this device is made to meet this need. It ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff.'}
+                    {isKiefKing
+                      ? 'If you are searching for a disposable vape that combines advanced technology and high puff capacity, The Kief King 35000 puffs disposable vape is made to meet this need. It has a sleek body, mesh coil atomizer, Type-C rechargeable battery and extraordinary 35,000 puff count. This is a modern vape device and it ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff. This disposable vape stands out in the Dubai vape market as a high puff disposable vape. The Kief King 35k is built for convenience and performance.'
+                      : (product.description ||
+                        'If you are searching for a disposable vape that combines advanced technology and high puff capacity, this device is made to meet this need. It ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff.')}
                   </p>
                   <p>
-                    You can Buy {product.name} in UAE from{' '}
-                    <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
-                      Vape Stall
-                    </Link>
-                    . We offer low prices and fast shipping cash on delivery across UAE.
+                    {isKiefKing ? (
+                      <>
+                        You can Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE from{' '}
+                        <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
+                          Vape Stall
+                        </Link>
+                        . We offer low prices and fast shipping. Kief King vape can be a good choice if you are looking for a kief king high puff vape, a long lasting disposable vape, or just want to enjoy strong shisha flavors. It is also a popular kief king disposable vape uae option for adult users.
+                      </>
+                    ) : (
+                      <>
+                        You can Buy {product.name} in UAE from{' '}
+                        <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
+                          Vape Stall
+                        </Link>
+                        . We offer low prices and fast shipping cash on delivery across UAE.
+                      </>
+                    )}
                   </p>
 
                   <div className="pt-2">
                     <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
-                      Product Overview
+                      {isKiefKing ? 'Kief King 35000 – Product Overview' : 'Product Overview'}
                     </h3>
                     <p>
-                      This premium disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor.
+                      {isKiefKing
+                        ? 'The Kief King disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor.'
+                        : 'This premium disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor.'}
                     </p>
                   </div>
 
@@ -928,11 +951,11 @@ export default function ProductDetailPage() {
 
           {/* TAB 2: SPECIFICATION */}
           {activeTab === 'specification' && (
-            <div className="text-slate-800 space-y-4 text-sm max-w-2xl mx-auto py-2">
+            <div className="text-slate-800 space-y-4 text-sm max-w-3xl mx-auto py-2">
               <h3 className="text-lg font-bold text-[#1a2b49] mb-4">{product.name} Specifications:</h3>
-              <div className="bg-[#f8fafc] p-6 rounded-2xl border border-slate-200 space-y-3">
+              <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
                 {currentSpecsTable.map(([feat, det]: [string, string]) => (
-                  <div key={feat} className="flex justify-between py-2 border-b border-slate-200 last:border-b-0">
+                  <div key={feat} className="flex justify-between py-3">
                     <span className="font-semibold text-slate-600">{feat}</span>
                     <span className="font-bold text-[#1a2b49]">{det}</span>
                   </div>
@@ -982,8 +1005,6 @@ export default function ProductDetailPage() {
               </div>
             </div>
           )}
-
-        </div>
       </section>
 
       {/* ========================================================
