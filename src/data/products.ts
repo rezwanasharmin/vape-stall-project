@@ -129,18 +129,31 @@ export const products: Product[] = [
     "reviewsCount": 50,
     "image": "/images/products/myle-meta-max-18000.png",
     "altImage": "/images/products/myle-meta-max-frozen-mango.png",
+    "galleryImages": [
+      "/images/products/myle-meta-max-18000.png",
+      "/images/products/myle-meta-max-frozen-mango.png",
+      "/images/products/buy-myle-meta-max-18000-puff-50mg-disposable-vape-in-uae.png",
+      "/images/products/buy-myle-meta-max-18000-puff-50mg-disposable-vape-in-uae-alt.png"
+    ],
     "category": "Disposable Vape",
     "brand": "Myle",
     "puffs": "18000 Puffs",
     "nicotine": "50mg",
     "inStock": true,
     "flavors": [
+      "Select Flavour",
       "Frozen Mango",
       "Blueberry Ice",
       "Watermelon Ice",
       "Strawberry Kiwi",
       "Double Mint",
-      "Grape Ice"
+      "Grape Ice",
+      "Miami Mint",
+      "Sweet Peach",
+      "Red Apple",
+      "Pink Lemonade",
+      "Sweet Tobacco",
+      "Cuban Tobacco"
     ],
     "description": "Buy Myle Meta Max 18000 Puff 50mg Disposable Vape in UAE online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates. Cash on Delivery (COD) available."
   },

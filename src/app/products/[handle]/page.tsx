@@ -66,6 +66,10 @@ export default function ProductDetailPage() {
     product.handle?.includes('kief-king-35000') ||
     product.name?.toLowerCase().includes('kief king');
 
+  const isMyle =
+    product.handle?.includes('myle-meta-max') ||
+    product.name?.toLowerCase().includes('myle meta max');
+
   const { addToCart, setIsCartOpen } = useCart();
 
   // Dynamic gallery images
@@ -89,8 +93,19 @@ export default function ProductDetailPage() {
     '/images/products/kief-king-watermelon.png',
   ];
 
+  const myleGallery = [
+    '/images/products/myle-meta-max-18000.png',
+    '/images/products/myle-meta-max-frozen-mango.png',
+    '/images/products/buy-myle-meta-max-18000-puff-50mg-disposable-vape-in-uae.png',
+    '/images/products/buy-myle-meta-max-18000-puff-50mg-disposable-vape-in-uae-alt.png',
+  ];
+
   const gallery = isVozol
     ? vozolGallery
+    : isMyle
+    ? myleGallery
+    : isKiefKing
+    ? kiefKingGallery
     : product.galleryImages && product.galleryImages.length > 0
     ? product.galleryImages
     : kiefKingGallery;
@@ -269,8 +284,47 @@ export default function ProductDetailPage() {
     ['Safety Features', 'Short-circuit protection, overcharge safeguards, and leak-proof engineering'],
   ];
 
-  const currentFlavorsList: [string, string][] = isVozol ? vozolFlavorsList : kiefKingFlavorsList;
-  const currentSpecsTable: [string, string][] = isVozol ? vozolSpecsTable : kiefKingSpecsTable;
+  // Myle Meta Max 12 flavors
+  const myleFlavorsList: [string, string][] = [
+    ['Frozen Mango', 'Sweet tropical mango chilled with arctic ice.'],
+    ['Blueberry Ice', 'Sweet wild blueberries rounded off with frosty menthol.'],
+    ['Watermelon Ice', 'Crisp juicy watermelon infused with an icy breeze.'],
+    ['Strawberry Kiwi', 'Sweet ripe strawberries blended with tangy kiwi.'],
+    ['Double Mint', 'Intense cool spearmint and peppermint burst.'],
+    ['Grape Ice', 'Lush dark concord grapes with cooling sensation.'],
+    ['Miami Mint', 'Refreshing citrus mint inspired by Miami beaches.'],
+    ['Sweet Peach', 'Sun-ripened juicy peach sweetness.'],
+    ['Red Apple', 'Crisp and sweet freshly picked red apples.'],
+    ['Pink Lemonade', 'Zesty lemons mixed with sweet summer berries.'],
+    ['Sweet Tobacco', 'Rich earthy tobacco softened with subtle sweet notes.'],
+    ['Cuban Tobacco', 'Robust authentic Cuban cigar blend with aromatic smoke.'],
+  ];
+
+  // Myle Meta Max specs table
+  const myleSpecsTable: [string, string][] = [
+    ['Puff Count', 'Up to 18,000 puffs'],
+    ['Nicotine Strength', '50mg (5%) salt nicotine'],
+    ['E‑Liquid Capacity', '18ml prefilled reservoir'],
+    ['Battery Capacity', '850mAh internal rechargeable battery'],
+    ['Charging System', 'USB Type-C fast charging'],
+    ['Coil Type', 'Dual Mesh coil technology'],
+    ['Display', 'Integrated LCD smart screen (Battery & E-Liquid)'],
+    ['Airflow', 'Adjustable airflow control (MTL & DTL)'],
+    ['Activation', 'Simple draw-activated (button-less) mechanism'],
+    ['Safety Features', 'Anti-leak architecture, short-circuit protection, overcharge safeguards'],
+  ];
+
+  const currentFlavorsList: [string, string][] = isVozol
+    ? vozolFlavorsList
+    : isMyle
+    ? myleFlavorsList
+    : kiefKingFlavorsList;
+
+  const currentSpecsTable: [string, string][] = isVozol
+    ? vozolSpecsTable
+    : isMyle
+    ? myleSpecsTable
+    : kiefKingSpecsTable;
 
   const relatedList = allProducts
     .filter((p) => p.id !== product.id && p.category === product.category)
@@ -425,7 +479,13 @@ export default function ProductDetailPage() {
               {/* Specification Box (Light blue with orange vertical bar) */}
               <div className="bg-[#f3f6fb] border-l-4 border-[#F5A623] rounded-r-xl p-4 sm:p-5 text-xs text-[#374151] leading-relaxed space-y-1.5 my-2">
                 <p className="font-bold text-[#1a2b49] text-[13px] mb-2">
-                  {isVozol ? "Vozol Star 40000 Specification's:" : `${product.brand || 'Product'} Specification's:`}
+                  {isVozol
+                    ? "Vozol Star 40000 Specification's:"
+                    : isMyle
+                    ? "Myle Meta Max 18000 Specification's:"
+                    : isKiefKing
+                    ? "Kief King 35000 Specification's:"
+                    : `${product.brand || 'Product'} Specification's:`}
                 </p>
                 {isVozol ? (
                   <ul className="space-y-1 pl-1">
@@ -438,6 +498,17 @@ export default function ProductDetailPage() {
                     <li>• <strong className="font-bold text-[#1a2b49]">Airflow:</strong> Variable draw resistance control system</li>
                     <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> MTL (Mouth to Lung) performance</li>
                     <li>• <strong className="font-bold text-[#1a2b49]">Display:</strong> LED smart screen tracking battery life and e-liquid</li>
+                  </ul>
+                ) : isMyle ? (
+                  <ul className="space-y-1 pl-1">
+                    <li>• <strong className="font-bold text-[#1a2b49]">Puff Count:</strong> Up to 18,000 puffs</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Nicotine Strength:</strong> 50mg (5%) salt nicotine</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">E Liquid:</strong> 18ml prefilled reservoir</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Battery:</strong> 850mAh rechargeable battery</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Charging system:</strong> USB Type-C fast charging</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Coil Type:</strong> Dual Mesh coil technology</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Display:</strong> LCD smart screen (Battery & E-Liquid)</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> MTL & DTL adjustable airflow</li>
                   </ul>
                 ) : (
                   <ul className="space-y-1 pl-1">
@@ -860,6 +931,130 @@ export default function ProductDetailPage() {
                       </p>
                     </div>
 
+                  </div>
+                </div>
+              ) : isMyle ? (
+                /* MYLE META MAX 18000 DESCRIPTION */
+                <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
+                  <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1a2b49]">
+                    Buy Myle Meta Max 18000 Puff 50mg Disposable Vape in UAE – Advanced Dual Mesh Smart Display Vape
+                  </h2>
+                  <p>
+                    If you are searching for a high-performance disposable vape that combines advanced technology and generous puff capacity, the Myle Meta Max 18000 puffs disposable vape is designed to deliver top satisfaction. It features a sleek ergonomic body, dual mesh coil atomizer, 850mAh Type-C rechargeable battery, and up to 18,000 flavorful puffs. This modern device ensures consistent flavor delivery, dense vapor clouds, and a smooth throat hit with 50mg salt nicotine from first to last puff. The Myle Meta Max 18k stands out in the UAE vape market for its premium reliability and innovation.
+                  </p>
+                  <p>
+                    You can Buy Myle Meta Max 18000 Puff 50mg Disposable Vape in UAE from{' '}
+                    <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
+                      Vape Stall
+                    </Link>
+                    . We offer authentic devices, competitive prices, and fast same-day shipping across Dubai and all 7 Emirates. Whether you seek long-lasting convenience or intense fruit and mint flavors, the Myle Meta Max is the premier choice for adult vapers.
+                  </p>
+
+                  <div className="pt-2">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                      Myle Meta Max 18000 – Product Overview
+                    </h3>
+                    <div className="space-y-4 text-slate-700 leading-relaxed text-xs sm:text-sm">
+                      <p>
+                        The Myle Meta Max 18000 disposable vape is engineered for vapers seeking maximum endurance, precision airflow control, and rich flavor clarity. Its pocket-friendly design makes it comfortable to carry anywhere across Dubai and the UAE. Equipped with dual mesh coil technology, it heats e-liquid evenly to produce full-bodied vapor and rich flavor reproduction without dry hits. Its 850mAh built-in battery fast charges via Type-C, while the large 18ml prefilled tank ensures weeks of uninterrupted vaping sessions with satisfying 50mg nicotine salt hits.
+                      </p>
+                      <p>
+                        Stay in complete control of your vaping session with the integrated smart LCD display that accurately shows real-time battery life and remaining e-liquid levels. An adjustable airflow slider allows you to effortlessly transition between a restricted Mouth-to-Lung (MTL) draw and an airy Direct-to-Lung (DTL) experience according to your preference.
+                      </p>
+                      <p>
+                        This high-capacity vape is built with multi-layered leak-proof architecture, short-circuit prevention, and overcharge protection to guarantee dependable operation. The Myle Meta Max 18000 fully complies with UAE ESMA standards for electronic cigarette products and provides peace of mind for quality-conscious consumers.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Available Flavors Section */}
+                  <div className="pt-4">
+                    <h3 className="text-base sm:text-lg font-bold text-[#1a2b49] mb-4">
+                      Available Flavours
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+                      {myleFlavorsList.map(([name, desc]: [string, string]) => (
+                        <div
+                          key={name}
+                          onClick={() => handleFlavorChange(name)}
+                          className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-sm group"
+                        >
+                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
+                          <p className="text-xs sm:text-[13px] text-slate-700 leading-snug">
+                            <strong className="font-semibold text-slate-800">{name}</strong> – {desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Key Features & Specifications Table */}
+                  <div className="pt-6">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                      Key Features &amp; Specifications
+                    </h3>
+                    <div className="overflow-x-auto rounded-xl border border-slate-200">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-[#1d335d] text-white">
+                            <th className="p-3.5 font-bold w-1/4 text-center">Feature</th>
+                            <th className="p-3.5 font-bold w-3/4 text-center">Details</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
+                          {myleSpecsTable.map(([feat, det]: [string, string]) => (
+                            <tr key={feat}>
+                              <td className="p-3 text-center font-bold bg-slate-50">{feat}</td>
+                              <td className="p-3 text-center font-semibold">{det}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Why Choose Section */}
+                  <div className="space-y-6 pt-6">
+                    <div className="space-y-3">
+                      <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                        Why Choose Myle Meta Max 18000 Puff Vape?
+                      </h3>
+                      <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                        The Myle Meta Max 18000 combines cutting-edge vape engineering, smart LCD monitoring, and exceptional flavor craftsmanship. Designed for adult consumers demanding quality and longevity, it offers unmatched value in the UAE disposable vape landscape.
+                      </p>
+                      <div className="space-y-2 pt-1">
+                        {[
+                          'Mega 18,000 puff capacity for weeks of smooth, satisfying vaping.',
+                          'Dual mesh coil system ensuring maximum flavor clarity and cloud density.',
+                          'Real-time smart LCD screen monitoring battery life and e-liquid level.',
+                          '850mAh rechargeable battery with rapid USB Type-C fast charging.',
+                          'Adjustable airflow control to customize between tight MTL and loose DTL draws.',
+                          '100% leak-proof build and ESMA compliant safety safeguards.',
+                          'Available at Vape Stall with guaranteed authenticity and same-day Dubai delivery.'
+                        ].map((item, i) => (
+                          <div key={i} className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 transition-colors">
+                            <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
+                            <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 pt-2">
+                      <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                        Order Myle Meta Max 18000 Puff Disposable Vape in UAE
+                      </h3>
+                      <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                        Order your genuine Myle Meta Max 18000 Puff 50mg Disposable Vape today from{' '}
+                        <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
+                          Vape Stall
+                        </Link>
+                        , the trusted online vape store in Dubai, UAE. We provide fast same-day delivery in Dubai, Sharjah, and Ajman, and rapid express delivery to Abu Dhabi, Al Ain, Fujairah, and Ras Al Khaimah.
+                      </p>
+                      <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                        Enjoy flexible payment options including Cash on Delivery (COD) and card payments, backed by our 100% authenticity guarantee and responsive customer support.
+                      </p>
+                    </div>
                   </div>
                 </div>
               ) : (
