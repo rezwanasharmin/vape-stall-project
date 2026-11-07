@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
@@ -251,14 +251,14 @@ export default function AboutUsContent() {
         Vape Stall is your trusted vape shop in UAE, offering genuine disposable vapes, pod systems, vape kits, nicotine pouches, and accessories from top brands like Elf Bar, Lost Mary, VOZOL, HQD, and Al Fakher. Based in Dubai, we deliver across all seven Emirates with fair prices, authentic products, and friendly service.
       </p>
       <div className="vap-about-hero__actions">
-        <a href="/shop" className="vap-about-hero__btn vap-about-hero__btn--primary">
+        <Link href="/shop" className="vap-about-hero__btn vap-about-hero__btn--primary">
           Shop Now
           <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-        <a href="/contact" className="vap-about-hero__btn vap-about-hero__btn--secondary">
+        </Link>
+        <Link href="/pages/contact-us" className="vap-about-hero__btn vap-about-hero__btn--secondary">
           Get In Touch
           <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
+        </Link>
       </div>
     </div>
 
@@ -579,14 +579,14 @@ export default function AboutUsContent() {
     <h2>Ready to Elevate Your<br /><span>Vape Experience?</span></h2>
     <p>Browse premium devices, e-liquids, and accessories — delivered fast across all seven UAE emirates.</p>
     <div className="vap-about-cta__actions">
-      <a href="/shop" className="vap-about-cta__btn vap-about-cta__btn--primary">
+      <Link href="/shop" className="vap-about-cta__btn vap-about-cta__btn--primary">
         Shop the Collection
         <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-      <a href="/contact" className="vap-about-cta__btn vap-about-cta__btn--secondary">
+      </Link>
+      <Link href="/pages/contact-us" className="vap-about-cta__btn vap-about-cta__btn--secondary">
         Talk to an Expert
         <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
+      </Link>
     </div>
   </div>
 </section>

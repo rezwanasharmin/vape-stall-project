@@ -129,3 +129,4 @@ export const CollectionFaq: React.FC = () => {
     </section>
   );
 };
+

@@ -422,7 +422,7 @@ export const Navbar: React.FC = () => {
           <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-white/80">
             <span>Help: +971 55 168 8299</span>
             <div className="flex space-x-3">
-              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Contact</Link>
+              <Link href="/pages/contact-us" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Contact</Link>
             </div>
           </div>
         </div>

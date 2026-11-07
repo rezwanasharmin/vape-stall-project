@@ -156,3 +156,4 @@ export const CollectionSpotFake: React.FC = () => {
     </section>
   );
 };
+

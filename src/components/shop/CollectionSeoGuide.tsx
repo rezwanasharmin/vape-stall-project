@@ -168,3 +168,4 @@ export const CollectionSeoGuide: React.FC = () => {
     </div>
   );
 };
+

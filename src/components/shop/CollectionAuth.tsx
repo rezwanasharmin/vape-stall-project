@@ -259,3 +259,4 @@ export const CollectionAuth: React.FC = () => {
     </section>
   );
 };
+
