@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   Star,
-  Check,
   Plus,
   Minus,
   MessageCircle,
@@ -18,7 +17,6 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Share2,
   ZoomIn,
 } from 'lucide-react';
 import { products } from '@/data/products';
@@ -29,7 +27,7 @@ import { ProductCard } from '@/components/product/ProductCard';
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const handle = params?.handle as string;
+  const handle = (params?.handle as string) || '';
 
   // Find product across both product sources
   const allProducts = [...products, ...shopProducts];
@@ -41,12 +39,26 @@ export default function ProductDetailPage() {
         `buy-${p.handle}` === handle ||
         p.handle?.includes(handle || '')
     ) ||
-    products[1]; // fallback to Kief King 35000
+    products[1]; // fallback
+
+  const isVozol =
+    product.handle?.includes('vozol-star-40000') ||
+    product.name?.toLowerCase().includes('vozol star');
 
   const { addToCart, setIsCartOpen } = useCart();
 
-  // Authentic 7 gallery images
-  const gallery = [
+  // Dynamic gallery images
+  const vozolGallery = [
+    '/images/products/vozol-star-main.png',
+    '/images/products/vozol-star-blueberry-ice.png',
+    '/images/products/vozol-star-blueberry-watermelon.png',
+    '/images/products/vozol-star-coolmint.png',
+    '/images/products/vozol-star-mango-ice.png',
+    '/images/products/vozol-star-peach-ice.png',
+    '/images/products/vozol-star-strawberry-kiwi.png',
+  ];
+
+  const kiefKingGallery = [
     '/images/products/kief-king-main.png',
     '/images/products/kief-king-cola-lime-flv.png',
     '/images/products/kief-king-grape.png',
@@ -56,7 +68,13 @@ export default function ProductDetailPage() {
     '/images/products/kief-king-watermelon.png',
   ];
 
-  const [selectedImage, setSelectedImage] = useState<string>(gallery[0]);
+  const gallery = isVozol
+    ? vozolGallery
+    : product.galleryImages && product.galleryImages.length > 0
+    ? product.galleryImages
+    : kiefKingGallery;
+
+  const [selectedImage, setSelectedImage] = useState<string>(gallery[0] || product.image);
   const [selectedFlavor, setSelectedFlavor] = useState<string>('Select Flavour');
   const [quantityType, setQuantityType] = useState<'1pc' | '5pc'>('1pc');
   const [quantity, setQuantity] = useState<number>(1);
@@ -69,8 +87,15 @@ export default function ProductDetailPage() {
   const [showZoomModal, setShowZoomModal] = useState<boolean>(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
 
+  // When product changes, reset selected image to the first in gallery
+  useEffect(() => {
+    setSelectedImage(gallery[0] || product.image);
+    setCurrentSlideIndex(0);
+    setSelectedFlavor('Select Flavour');
+  }, [product.id, isVozol]);
+
   // Pricing
-  const unitPrice = quantityType === '1pc' ? product.price : 235.0;
+  const unitPrice = quantityType === '1pc' ? product.price : product.price * 5 - 10;
   const totalPrice = (unitPrice * quantity).toFixed(2);
 
   // Sticky Add-To-Cart trigger
@@ -86,14 +111,23 @@ export default function ProductDetailPage() {
   }, []);
 
   // Flavor to image mapping
-  const flavorImageMap: Record<string, string> = {
-    'Cola Lime': '/images/products/kief-king-cola-lime-flv.png',
-    'Grape': '/images/products/kief-king-grape.png',
-    'Gum Mint': '/images/products/kief-king-gum-mint.png',
-    'Lemon Lime': '/images/products/kief-king-lemon-lime.png',
-    'Strawberry': '/images/products/kief-king-strawberry.png',
-    'Watermelon': '/images/products/kief-king-watermelon.png',
-  };
+  const flavorImageMap: Record<string, string> = isVozol
+    ? {
+        'Blueberry Ice': '/images/products/vozol-star-blueberry-ice.png',
+        'Blueberry Watermelon': '/images/products/vozol-star-blueberry-watermelon.png',
+        'Cool Mint': '/images/products/vozol-star-coolmint.png',
+        'Mango Ice': '/images/products/vozol-star-mango-ice.png',
+        'Peach Ice': '/images/products/vozol-star-peach-ice.png',
+        'Strawberry Kiwi': '/images/products/vozol-star-strawberry-kiwi.png',
+      }
+    : {
+        'Cola Lime': '/images/products/kief-king-cola-lime-flv.png',
+        'Grape': '/images/products/kief-king-grape.png',
+        'Gum Mint': '/images/products/kief-king-gum-mint.png',
+        'Lemon Lime': '/images/products/kief-king-lemon-lime.png',
+        'Strawberry': '/images/products/kief-king-strawberry.png',
+        'Watermelon': '/images/products/kief-king-watermelon.png',
+      };
 
   const handleFlavorChange = (flavor: string) => {
     setSelectedFlavor(flavor);
@@ -103,13 +137,15 @@ export default function ProductDetailPage() {
   };
 
   const handlePrevThumb = () => {
-    setCurrentSlideIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1));
-    setSelectedImage(gallery[(currentSlideIndex > 0 ? currentSlideIndex - 1 : gallery.length - 1)]);
+    const nextIdx = currentSlideIndex > 0 ? currentSlideIndex - 1 : gallery.length - 1;
+    setCurrentSlideIndex(nextIdx);
+    setSelectedImage(gallery[nextIdx]);
   };
 
   const handleNextThumb = () => {
-    setCurrentSlideIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0));
-    setSelectedImage(gallery[(currentSlideIndex < gallery.length - 1 ? currentSlideIndex + 1 : 0)]);
+    const nextIdx = currentSlideIndex < gallery.length - 1 ? currentSlideIndex + 1 : 0;
+    setCurrentSlideIndex(nextIdx);
+    setSelectedImage(gallery[nextIdx]);
   };
 
   const handleAddToCart = () => {
@@ -136,6 +172,85 @@ export default function ProductDetailPage() {
     window.open(`https://wa.me/971551688299?text=${message}`, '_blank');
     setIsWaModalOpen(false);
   };
+
+  // Vozol Star 24 flavors
+  const vozolFlavorsList = [
+    ['Blueberry Ice', 'Sweet blueberry with a blast of icy coolness.'],
+    ['Bluerazz Ice', 'Sharp blue raspberry with a chill.'],
+    ['Cool Mint', 'Fresh minty freshness, clean exhale.'],
+    ['Grape Ice', 'A strong grape taste with a cool finish.'],
+    ['Mango Ice', 'Tropical mango richness with a chilled undertone.'],
+    ['Mango Peach', 'Tropical mango blended with juicy peach.'],
+    ['Peach Ice', 'Smooth rounded peach with icy coolness.'],
+    ['Strawberry Ice', 'Classic strawberry with a cool finish.'],
+    ['Strawberry Kiwi', 'Sweet strawberry paired with tight kiwi.'],
+    ['Strawberry Watermelon', 'Juicy strawberry, crunchy watermelon.'],
+    ['Tobacco', 'Classic tobacco delivery, smooth.'],
+    ['Watermelon Ice', 'Crisp watermelon with a blast of icy coolness.'],
+    ['Blueberry Mint', 'Sweet blueberry with refreshing mint.'],
+    ['Blueberry Watermelon', 'Juicy fruit combo with sweetness in harmony.'],
+    ['Cherry Cola', 'Cola with a hint of cherry.'],
+    ['Cherimoya Grapefruit Berries', 'Exotic fruit blend with a tangy berry finish.'],
+    ['Melon Gum', 'Sweet melon candy-like chewiness.'],
+    ['Melon Ice', 'Exotic melon with cool undertones.'],
+    ['Sour Apple Ice', 'Tart apple with a cool exhale.'],
+    ['Streamelon Peach', 'Melon and Peach combined for a smooth finish.'],
+    ['Watermelon Bubblegum', 'Sweet bubblegum with a watermelon taste.'],
+    ['Watermelon Grape Boysenberry', 'Boldly satisfying complex fruit trio.'],
+    ['Watermelon Raspberry', 'Juicy watermelon and tart raspberry.'],
+    ['Watermelon Sour Peach', 'Peach combined with a sweet and sour flavor of watermelon.'],
+  ];
+
+  // Vozol Star specs table
+  const vozolSpecsTable = [
+    ['Puff Count', 'Up to 40,000 puffs'],
+    ['Nicotine Strength', '20mg nicotine salt'],
+    ['Battery Capacity', 'Built-in rechargeable 850mAh battery'],
+    ['Charging System', 'USB Type-C fast charging'],
+    ['Coil Type', 'Advanced Dual Mesh coil architecture'],
+    ['Airflow', 'Variable draw resistance control system'],
+    ['Vaping Style', 'MTL (Mouth to Lung) performance'],
+    ['Display', 'LED smart screen tracking battery life and e-liquid indicators'],
+    ['Activation', 'Simple draw-activated (inhale activation) mechanism'],
+  ];
+
+  // Kief King 17 flavors
+  const kiefKingFlavorsList = [
+    ['Double Apple', 'Traditional red & green apple shisha flavor.'],
+    ['Gum Mint', 'Sweet bubblegum freshness with cooling spearmint.'],
+    ['Cola Lime', 'Fizzy cola uplifted by citrus lime.'],
+    ['Mango', 'Tropical ripe mango with smooth inhale.'],
+    ['Strawberry', 'Sweet single fruit strawberry like taste.'],
+    ['Watermelon', 'The flavor of pure, ripe watermelon.'],
+    ['Blueberry Raspberry', 'Tart blueberry and raspberry fusion.'],
+    ['Strawberry Banana', 'Ripe strawberry like and creamy bananas'],
+    ['Watermelon Strawberry', 'Crisp watermelon blended with sweet strawberry.'],
+    ['Peach Ice', 'Juicy peach rounded off with menthol chill.'],
+    ['Lemon Lime', 'Sharp citrus duo with refreshing burst.'],
+    ['Love 66', 'Iconic shisha mix of watermelon, honeydew, passion fruit & mint.'],
+    ['Lady Killer', 'Tropical mango and melon fusion with cooling finish.'],
+    ['Dubai Pistachio', 'Creamy pistachio dessert profile.'],
+    ['Lychee Ice', 'Exotic lychee sweetness with icy coolness.'],
+    ['Hydro Energy', 'Bold energy drink flavor with tangy kick.'],
+    ['Grape', 'Rich purple grape sweetness with bold clouds.'],
+  ];
+
+  // Kief King specs table
+  const kiefKingSpecsTable = [
+    ['Puff Count', 'Up to 35,000 puffs'],
+    ['Nicotine Strength', '3mg (0.3%)'],
+    ['E‑Liquid Capacity', 'Prefilled reservoir'],
+    ['Battery', '1100mAh internal rechargeable battery'],
+    ['Charging System', 'USB Type-C fast charging'],
+    ['Coil Type', 'Advanced Mesh coil technology'],
+    ['Vaping Style', 'DTL (Direct to Lung) performance'],
+    ['Design', 'Leak‑proof, compact, and highly portable architecture'],
+    ['Activation', 'Simple draw-activated (inhale) mechanism'],
+    ['Safety Features', 'Short-circuit protection, overcharge safeguards, and leak-proof engineering'],
+  ];
+
+  const currentFlavorsList = isVozol ? vozolFlavorsList : kiefKingFlavorsList;
+  const currentSpecsTable = isVozol ? vozolSpecsTable : kiefKingSpecsTable;
 
   const relatedList = allProducts
     .filter((p) => p.id !== product.id && p.category === product.category)
@@ -260,7 +375,7 @@ export default function ProductDetailPage() {
               
               {/* Vendor Eyebrow Badge */}
               <span className="inline-block bg-[#eef3f9] text-[#25406F] text-[11px] font-bold tracking-wider uppercase px-3 py-1 rounded-full">
-                VAPE STALL
+                {product.brand?.toUpperCase() || 'VAPE STALL'}
               </span>
 
               {/* Title */}
@@ -276,7 +391,7 @@ export default function ProductDetailPage() {
                   ))}
                 </div>
                 <span className="text-xs text-slate-500 font-medium">
-                  4.8 ({product.reviewsCount || 57} reviews)
+                  {product.rating ? product.rating.toFixed(1) : '4.8'} ({product.reviewsCount || 57} reviews)
                 </span>
               </div>
 
@@ -290,17 +405,31 @@ export default function ProductDetailPage() {
               {/* Specification Box (Light blue with orange vertical bar) */}
               <div className="bg-[#f3f6fb] border-l-4 border-[#F5A623] rounded-r-xl p-4 sm:p-5 text-xs text-[#374151] leading-relaxed space-y-1.5 my-2">
                 <p className="font-bold text-[#1a2b49] text-[13px] mb-2">
-                  Kief King 35000 Specification's:
+                  {isVozol ? "Vozol Star 40000 Specification's:" : `${product.brand || 'Product'} Specification's:`}
                 </p>
-                <ul className="space-y-1 pl-1">
-                  <li>• <strong className="font-bold text-[#1a2b49]">Puff Count:</strong> Up to 35,000 puffs</li>
-                  <li>• <strong className="font-bold text-[#1a2b49]">Nicotine Strength:</strong> 3mg (0.3%)</li>
-                  <li>• <strong className="font-bold text-[#1a2b49]">E Liquid:</strong> Prefilled</li>
-                  <li>• <strong className="font-bold text-[#1a2b49]">Battery:</strong> 1100mAh rechargeable battery</li>
-                  <li>• <strong className="font-bold text-[#1a2b49]">Charging system:</strong> USB Type-C Fast charging</li>
-                  <li>• <strong className="font-bold text-[#1a2b49]">Coil Type:</strong> Mesh coil</li>
-                  <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> DTL(Direct to Lung)</li>
-                </ul>
+                {isVozol ? (
+                  <ul className="space-y-1 pl-1">
+                    <li>• <strong className="font-bold text-[#1a2b49]">Puff Count:</strong> Up to 40,000 puffs</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Nicotine Strength:</strong> 20mg nicotine salt</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">E Liquid:</strong> Pre-filled E-Liquid</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Battery:</strong> Built-in rechargeable 850mAh battery</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Charging system:</strong> USB Type-C Fast charging</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Coil Type:</strong> Advanced Dual Mesh coil architecture</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Airflow:</strong> Variable draw resistance control system</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> MTL (Mouth to Lung) performance</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Display:</strong> LED smart screen tracking battery life and e-liquid</li>
+                  </ul>
+                ) : (
+                  <ul className="space-y-1 pl-1">
+                    <li>• <strong className="font-bold text-[#1a2b49]">Puff Count:</strong> {product.puffs || 'Up to 35,000 puffs'}</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Nicotine Strength:</strong> {product.nicotine || '3mg (0.3%)'}</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">E Liquid:</strong> Prefilled</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Battery:</strong> 1100mAh rechargeable battery</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Charging system:</strong> USB Type-C Fast charging</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Coil Type:</strong> Mesh coil</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> DTL(Direct to Lung)</li>
+                  </ul>
+                )}
               </div>
 
               {/* Flavor Selector */}
@@ -316,29 +445,13 @@ export default function ProductDetailPage() {
                     className="w-full appearance-none bg-white border border-slate-300 hover:border-[#F5A623] text-slate-700 text-sm rounded-full px-5 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#F5A623]/30 focus:border-[#F5A623] transition-colors cursor-pointer shadow-xs"
                   >
                     <option value="Select Flavour">Select Flavour</option>
-                    {[
-                      'Lady Killer',
-                      'Love 66',
-                      'Dubai Pistachio',
-                      'Double Apple',
-                      'Cola Lime',
-                      'Gum Mint',
-                      'Hydro Energy',
-                      'Lychee Ice',
-                      'Peach Ice',
-                      'Watermelon Strawberry',
-                      'Blueberry Raspberry',
-                      'Strawberry Banana',
-                      'Lemon Lime',
-                      'Watermelon',
-                      'Strawberry',
-                      'Mango',
-                      'Grape'
-                    ].map((flavor) => (
-                      <option key={flavor} value={flavor}>
-                        {flavor}
-                      </option>
-                    ))}
+                    {(product.flavors && product.flavors.length > 0 ? product.flavors : currentFlavorsList.map((f) => f[0]))
+                      .filter((f) => f !== 'Select Flavour')
+                      .map((flavor) => (
+                        <option key={flavor} value={flavor}>
+                          {flavor}
+                        </option>
+                      ))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#F5A623]">
                     <ChevronDown className="w-4 h-4 stroke-[2.5]" />
@@ -603,188 +716,185 @@ export default function ProductDetailPage() {
 
           {/* TAB 1: DESCRIPTION */}
           {activeTab === 'description' && (
-            <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
-              <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1a2b49]">
-                Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE – Ultra High Puff Mesh Coil Device
-              </h2>
-              
-              <p>
-                If you are searching for a disposable vape that combines advanced technology and high puff capacity, The Kief King 35000 puffs disposable vape is made to meet this need. It has a sleek body, mesh coil atomizer, Type‑C rechargeable battery and extraordinary 35,000 puff count. This is a modern vape device and it ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff. This disposable vape stands out in the Dubai vape market as a high puff disposable vape. The Kief King 35k is built for convenience and performance.
-              </p>
+            <div>
+              {isVozol ? (
+                /* VOZOL STAR 40000 DESCRIPTION */
+                <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
+                  <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1a2b49]">
+                    Buy Vozol Star 40000 puff 20mg nicotine vape in UAE – High Puff, Hassle Free, Everyday Companion
+                  </h2>
+                  <p>
+                    The Vozol Star 40000 Puff Vape in Dubai is built to last longer and designed to enhance flavor with technology. Dual mesh coil heating and adjustable airflow give you a precise experience. The LED smart display shows important information. Plus, the USB-C rechargeable battery ensures convenience with every puff.
+                  </p>
+                  <p>
+                    Buy Vozol Star 40000 puff 20mg nicotine vape in UAE at{' '}
+                    <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
+                      Vape Stall
+                    </Link>{' '}
+                    with fast shipping cash on delivery and same day delivery across UAE and enjoy authentic performance without compromise.
+                  </p>
 
-              <p>
-                You can Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE from{' '}
-                <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
-                  Vape Stall
-                </Link>
-                . We offer low prices and fast shipping. Kief King vape can be a good choice if you are looking for a kief king high puff vape, a long lasting disposable vape, or just want to enjoy strong shisha flavors. It is also a popular kief king disposable vape uae option for adult users.
-              </p>
+                  <div className="pt-2">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                      Product overview
+                    </h3>
+                    <p>
+                      The Vozol Star 40k Puff Vape redefines disposable vaping by combining capacity, control and flavor clarity. It features a dual mesh coil system that enhances flavor, and an adjustable airflow so you can dial in each blend from tight MTL hits to wide open airy clouds.
+                    </p>
+                    <p className="mt-3">
+                      Keep up to date with real‑time battery and e‑liquid levels on the LED smart screen and enjoy uninterrupted sessions with the 850mAh rechargeable battery and USB‑C fast charging. The Star 40K provides a reliable satisfaction that can last for weeks of use with 40,000 puffs and 20mg nicotine strength.
+                    </p>
+                    <p className="mt-3">
+                      What makes it special is how its technology interacts with flavors. Airflow tweaks amplify the coolness of Cool Mint and Watermelon Ice and other cool blends; mesh coil heating adds richness to fruit-forward flavors like Mango Peach and Strawberry Watermelon; and bold flavors like Cherry Cola or Sour Apple Ice show how Vozol 40K lifts daring profiles with smooth, balanced vapor.
+                    </p>
+                    <p className="mt-3">
+                      It’s a flavor-performance platform for the discerning Dubai vapers who want precision, versatility and a flavor journey that evolves with every puff.
+                    </p>
+                  </div>
 
-              {/* Product Overview Section */}
-              <div className="pt-2">
-                <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
-                  Kief King 35000 – Product Overview
-                </h3>
-                <p>
-                  The Kief King disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor. Its Type‑C rechargeable battery supports extended use, on the other hand large prefilled e‑liquid reservoir and high capacity e-liquid setup guarantee long sessions without flavor fade. With nicotine 3mg strength balances smooth throat hits and long vaping sessions. That makes it a strong smoking alternative for adult vape users. The inhale activated device system eliminates buttons and offers an easy natural draw. It works as a convenient prefilled vape device for everyday use.
-                </p>
-                <p className="mt-3">
-                  This high puff capacity vape offers safety features like leak proof design, short circuit prevention, and overcharge safeguards ensure reliability across thousands of draws. Kief King 35000 complies with ESMA standards UAE for disposable electronic cigarette products and aligns with UAE vape regulations.
-                </p>
-                <p className="mt-3">
-                  Kief King 35000 offers a variety of flavor experience designed for every kind of vaper. Whether you prefer classic Double Apple, Grape, fruity blends like Strawberry, Mango, and Blueberry Raspberry or exotic mixes such as Love 66 and Lady Killer, offers a wide flavor portfolio designed to satisfy diverse tastes. Combined with its mesh coil atomizer, every flavor profile is delivered with clarity, richness, and smooth exhale. This makes it a dependable vaping device in the growing vaping culture UAE.
-                </p>
-              </div>
-
-              {/* Available Flavours Section */}
-              <div className="pt-4">
-                <h3 className="text-base font-bold text-[#1a2b49] mb-4">
-                  Available Flavours
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-                  {[
-                    ['Double Apple', 'Traditional red & green apple shisha flavor.'],
-                    ['Gum Mint', 'Sweet bubblegum freshness with cooling spearmint.'],
-                    ['Cola Lime', 'Fizzy cola uplifted by citrus lime.'],
-                    ['Mango', 'Tropical ripe mango with smooth inhale.'],
-                    ['Strawberry', 'Sweet single fruit strawberry like taste.'],
-                    ['Watermelon', 'The flavor of pure, ripe watermelon.'],
-                    ['Blueberry Raspberry', 'Tart blueberry and raspberry fusion.'],
-                    ['Strawberry Banana', 'Ripe strawberry like and creamy bananas'],
-                    ['Watermelon Strawberry', 'Crisp watermelon blended with sweet strawberry.'],
-                    ['Peach Ice', 'Juicy peach rounded off with menthol chill.'],
-                    ['Lemon Lime', 'Sharp citrus duo with refreshing burst.'],
-                    ['Love 66', 'Iconic shisha mix of watermelon, honeydew, passion fruit & mint.'],
-                    ['Lady Killer', 'Tropical mango and melon fusion with cooling finish.'],
-                    ['Dubai Pistachio', 'Creamy pistachio dessert profile.'],
-                    ['Lychee Ice', 'Exotic lychee sweetness with icy coolness.'],
-                    ['Hydro Energy', 'Bold energy drink flavor with tangy kick.'],
-                    ['Grape', 'Rich purple grape sweetness with bold clouds.'],
-                  ].map(([name, desc]) => (
-                    <div key={name} className="bg-[#edf3fa] border border-[#c8d5ec] rounded-lg p-3 flex items-start gap-2.5">
-                      <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0"></span>
-                      <p className="text-xs text-slate-700 leading-snug">
-                        <strong className="font-bold text-[#1a2b49]">{name}</strong> – {desc}
-                      </p>
+                  {/* Available Flavors Section */}
+                  <div className="pt-4">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-base font-bold text-[#1a2b49] mb-4">
+                      Available Flavors
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                      {vozolFlavorsList.map(([name, desc]) => (
+                        <div key={name} className="bg-[#edf3fa] border border-[#c8d5ec] rounded-lg p-3 flex items-start gap-2.5">
+                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0"></span>
+                          <p className="text-xs text-slate-700 leading-snug">
+                            <strong className="font-bold text-[#1a2b49]">{name}</strong> – {desc}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Key Features & Specifications Table */}
+                  <div className="pt-6">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                      Key Features &amp; Specifications
+                    </h3>
+                    <div className="overflow-x-auto rounded-xl border border-slate-200">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-[#1d335d] text-white">
+                            <th className="p-3.5 font-bold w-1/4 text-center">Feature</th>
+                            <th className="p-3.5 font-bold w-3/4 text-center">Details</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
+                          {vozolSpecsTable.map(([feat, det]) => (
+                            <tr key={feat}>
+                              <td className="p-3 text-center font-bold bg-slate-50">{feat}</td>
+                              <td className="p-3 text-center font-semibold">{det}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Why Choose Section */}
+                  <div className="pt-6 space-y-2">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                      Why choose Vozol Star 40000 Puff Vape
+                    </h3>
+                    <p>
+                      When choosing a vape, think beyond puffs. Focus on creating a reliable, flavorful, and tailored experience for each session. The Vozol Star 40K is designed to push the limits of endurance and pairs the precision of dual mesh coils with adjustable airflow control and intelligent LED monitoring to deliver a vape to fit your style.
+                    </p>
+                    <ul className="space-y-1.5 list-disc pl-5 pt-2 text-slate-700">
+                      <li><strong>Smart LED Screen:</strong> Built-in LED screen displays real-time battery life and e-liquid levels.</li>
+                      <li><strong>Flavor clarity:</strong> Dual mesh coil technology brings out the depth and consistency of each flavor.</li>
+                      <li><strong>Smooth Nicotine Delivery:</strong> Star 40K has a smoothness and satisfaction level at 20mg nicotine strength.</li>
+                      <li><strong>Adjustable airflow:</strong> A built-in airflow slider lets you dial in your draw.</li>
+                      <li><strong>Trusted Reliability:</strong> 100% ESMA compliant with leak-proof and safety features.</li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                /* KIEF KING / DEFAULT DESCRIPTION */
+                <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
+                  <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1a2b49]">
+                    {`Buy ${product.name} in UAE – Ultra High Puff Mesh Coil Device`}
+                  </h2>
+                  <p>
+                    {product.description ||
+                      'If you are searching for a disposable vape that combines advanced technology and high puff capacity, this device is made to meet this need. It ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff.'}
+                  </p>
+                  <p>
+                    You can Buy {product.name} in UAE from{' '}
+                    <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
+                      Vape Stall
+                    </Link>
+                    . We offer low prices and fast shipping cash on delivery across UAE.
+                  </p>
 
-              {/* Key Features & Specifications Table */}
-              <div className="pt-6">
-                <h3 className="text-lg font-bold text-[#1a2b49] mb-3">
-                  Key Features &amp; Specifications
-                </h3>
-                <div className="overflow-x-auto rounded-xl border border-slate-200">
-                  <table className="w-full text-left text-xs border-collapse">
-                    <thead>
-                      <tr className="bg-[#1d335d] text-white">
-                        <th className="p-3.5 font-bold w-1/4 text-center">Feature</th>
-                        <th className="p-3.5 font-bold w-3/4 text-center">Details</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Puff Count</td>
-                        <td className="p-3 text-center">Up to 35,000 puffs</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Nicotine Strength</td>
-                        <td className="p-3 text-center font-bold">3mg (0.3%)</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">E‑Liquid Capacity</td>
-                        <td className="p-3 text-center font-bold">Prefilled reservoir</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Battery</td>
-                        <td className="p-3 text-center font-bold">1100mAh internal rechargeable battery</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Charging System</td>
-                        <td className="p-3 text-center font-bold">USB Type-C fast charging</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Coil Type</td>
-                        <td className="p-3 text-center font-bold">Advanced Mesh coil technology</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Vaping Style</td>
-                        <td className="p-3 text-center font-bold">DTL (Direct to Lung) performance</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Design</td>
-                        <td className="p-3 text-center font-bold">Leak‑proof, compact, and highly portable architecture</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Activation</td>
-                        <td className="p-3 text-center font-bold">Simple draw-activated (inhale) mechanism</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 text-center font-bold bg-slate-50">Safety Features</td>
-                        <td className="p-3 text-center font-bold">Short-circuit protection, overcharge safeguards, and leak-proof engineering</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div className="pt-2">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                      Product Overview
+                    </h3>
+                    <p>
+                      This premium disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor.
+                    </p>
+                  </div>
+
+                  {/* Available Flavors Section */}
+                  <div className="pt-4">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-base font-bold text-[#1a2b49] mb-4">
+                      Available Flavours
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                      {currentFlavorsList.map(([name, desc]) => (
+                        <div key={name} className="bg-[#edf3fa] border border-[#c8d5ec] rounded-lg p-3 flex items-start gap-2.5">
+                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0"></span>
+                          <p className="text-xs text-slate-700 leading-snug">
+                            <strong className="font-bold text-[#1a2b49]">{name}</strong> – {desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Key Features & Specifications Table */}
+                  <div className="pt-6">
+                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                      Key Features &amp; Specifications
+                    </h3>
+                    <div className="overflow-x-auto rounded-xl border border-slate-200">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-[#1d335d] text-white">
+                            <th className="p-3.5 font-bold w-1/4 text-center">Feature</th>
+                            <th className="p-3.5 font-bold w-3/4 text-center">Details</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
+                          {currentSpecsTable.map(([feat, det]) => (
+                            <tr key={feat}>
+                              <td className="p-3 text-center font-bold bg-slate-50">{feat}</td>
+                              <td className="p-3 text-center font-semibold">{det}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              {/* Why Choose Section */}
-              <div className="pt-6 space-y-2">
-                <h3 className="text-lg font-bold text-[#1a2b49]">
-                  Why Choose Kief King 35000 Puff Vape?
-                </h3>
-                <p>
-                  The Kief King 35000 is built for vapers who want maximum longevity and bold flavor delivery in one device. This vape is positioned in the high puff capacity disposable vape category. It combines mesh coil technology, Type‑C rechargeable convenience, and shisha‑inspired blends to create a disposable vape that feels powerful yet easy to use.
-                </p>
-                <ul className="space-y-1.5 list-disc pl-5 pt-2 text-slate-700">
-                  <li><strong>Mega puff capacity:</strong> 35,000 puffs designed for uninterrupted, long‑lasting sessions.</li>
-                  <li><strong>Mesh coil performance:</strong> Smooth vapor with clear, rich flavor notes.</li>
-                  <li><strong>Rechargeable convenience:</strong> Type C charging ensures extended usability.</li>
-                  <li><strong>Bold shisha flavors:</strong> Inspired Shisha blends like Double Apple, Love 66, Lady Killer, and Dubai Pistachio.</li>
-                  <li><strong>Lifestyle fit:</strong> Designed for adult vapers who enjoy long sessions and cloud chasing.</li>
-                  <li><strong>Reliability:</strong> Leak‑proof build and consistent performance across flavors.</li>
-                  <li><strong>Available at Vape Stall:</strong> Authentic devices, fast delivery in Dubai, and the best deal in UAE.</li>
-                </ul>
-              </div>
-
+              )}
             </div>
           )}
 
           {/* TAB 2: SPECIFICATION */}
           {activeTab === 'specification' && (
             <div className="text-slate-800 space-y-4 text-sm max-w-2xl mx-auto py-2">
-              <h3 className="text-lg font-bold text-[#1a2b49] mb-4">Kief King 35000 Specification's:</h3>
+              <h3 className="text-lg font-bold text-[#1a2b49] mb-4">{product.name} Specifications:</h3>
               <div className="bg-[#f8fafc] p-6 rounded-2xl border border-slate-200 space-y-3">
-                <div className="flex justify-between py-2 border-b border-slate-200">
-                  <span className="font-semibold text-slate-600">Puff Count</span>
-                  <span className="font-bold text-[#1a2b49]">Up to 35,000 puffs</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-200">
-                  <span className="font-semibold text-slate-600">Nicotine Strength</span>
-                  <span className="font-bold text-[#1a2b49]">3mg (0.3%)</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-200">
-                  <span className="font-semibold text-slate-600">E-Liquid</span>
-                  <span className="font-bold text-[#1a2b49]">Prefilled Tank</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-200">
-                  <span className="font-semibold text-slate-600">Battery</span>
-                  <span className="font-bold text-[#1a2b49]">1100mAh Rechargeable</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-200">
-                  <span className="font-semibold text-slate-600">Charging System</span>
-                  <span className="font-bold text-[#1a2b49]">USB Type-C Fast Charging</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-slate-200">
-                  <span className="font-semibold text-slate-600">Coil Type</span>
-                  <span className="font-bold text-[#1a2b49]">Mesh Coil</span>
-                </div>
-                <div className="flex justify-between py-2">
-                  <span className="font-semibold text-slate-600">Vaping Style</span>
-                  <span className="font-bold text-[#1a2b49]">DTL (Direct to Lung)</span>
-                </div>
+                {currentSpecsTable.map(([feat, det]) => (
+                  <div key={feat} className="flex justify-between py-2 border-b border-slate-200 last:border-b-0">
+                    <span className="font-semibold text-slate-600">{feat}</span>
+                    <span className="font-bold text-[#1a2b49]">{det}</span>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -878,28 +988,28 @@ export default function ProductDetailPage() {
             {[
               {
                 id: 1,
-                q: 'How long does the Kief King 35000 last?',
-                a: 'For moderate users, the device can last several weeks to months, which makes it one of the most long lasting disposable vapes in UAE market and a top 35000 puff vape dubai choice.',
+                q: `How long does the ${product.name} last?`,
+                a: `For moderate users, the device can last several weeks to months, with ${product.puffs || 'high puff count'} making it one of the most long lasting disposable vapes in UAE market.`,
               },
               {
                 id: 2,
-                q: 'Is the Kief King 35000 rechargeable?',
-                a: 'Yes. It’s a type c rechargeable vape with a powerful 1100mAh battery and quick charging. A full charge will give you longer uninterrupted sessions.',
+                q: `Is the ${product.name} rechargeable?`,
+                a: 'Yes. It features USB Type-C fast charging with a high capacity battery to give you longer uninterrupted sessions.',
               },
               {
                 id: 3,
-                q: 'What flavors does Kief King 35000 come in?',
-                a: 'The most popular flavors are Double Apple, Blueberry Raspberry, Grape, Lady Killer, Love 66, Lychee Ice, Mango, Peach Ice, Strawberry and Watermelon.',
+                q: `What flavors are available?`,
+                a: `Popular flavors include ${currentFlavorsList.slice(0, 8).map((f) => f[0]).join(', ')}, and many more.`,
               },
               {
                 id: 4,
-                q: 'What makes Kief King different from other disposables?',
-                a: 'It is a disposable vape with a mesh coil and advanced atomizer technology, producing thick vapor clouds and consistent flavor clarity for thousands of puffs.',
+                q: `What makes this device special?`,
+                a: 'It is engineered with advanced dual mesh coil technology and consistent flavor delivery for rich clouds throughout all puffs.',
               },
               {
                 id: 5,
-                q: 'Where can I buy Kief King 35000 in Dubai?',
-                a: 'You can buy kief king 35000 vape dubai from Vape Stall, either in-store or order online. We offer fast service, 24-hour vape delivery in Dubai, and reliable coverage throughout the UAE.',
+                q: `Where can I buy in Dubai?`,
+                a: 'You can buy directly from Vape Stall with fast 24-hour vape delivery in Dubai and reliable coverage throughout the UAE.',
               },
             ].map((faq) => {
               const isOpen = openFaq === faq.id;
