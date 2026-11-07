@@ -775,15 +775,19 @@ export default function ProductDetailPage() {
 
                   {/* Available Flavors Section */}
                   <div className="pt-4">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-base font-bold text-[#1a2b49] mb-4">
-                      Available Flavors
+                    <h3 className="text-base sm:text-lg font-bold text-[#1a2b49] mb-4">
+                      Available Flavours
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-                      {vozolFlavorsList.map(([name, desc]) => (
-                        <div key={name} className="bg-[#edf3fa] border border-[#c8d5ec] rounded-lg p-3 flex items-start gap-2.5">
-                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0"></span>
-                          <p className="text-xs text-slate-700 leading-snug">
-                            <strong className="font-bold text-[#1a2b49]">{name}</strong> – {desc}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+                      {vozolFlavorsList.map(([name, desc]: [string, string]) => (
+                        <div
+                          key={name}
+                          onClick={() => handleFlavorChange(name)}
+                          className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-sm group"
+                        >
+                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
+                          <p className="text-xs sm:text-[13px] text-slate-700 leading-snug">
+                            <strong className="font-semibold text-slate-800">{name}</strong> – {desc}
                           </p>
                         </div>
                       ))}
@@ -896,24 +900,40 @@ export default function ProductDetailPage() {
                     <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
                       {isKiefKing ? 'Kief King 35000 – Product Overview' : 'Product Overview'}
                     </h3>
-                    <p>
-                      {isKiefKing
-                        ? 'The Kief King disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor.'
-                        : 'This premium disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor.'}
-                    </p>
+                    {isKiefKing ? (
+                      <div className="space-y-4 text-slate-700 leading-relaxed text-xs sm:text-sm">
+                        <p>
+                          The Kief King disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor. Its Type-C rechargeable battery supports extended use, on the other hand large prefilled e-liquid reservoir and high capacity e-liquid setup guarantee long sessions without flavor fade. With nicotine 3mg strength balances smooth throat hits and long vaping sessions. That makes it a strong smoking alternative for adult vape users. The inhale activated device system eliminates buttons and offers an easy natural draw. It works as a convenient prefilled vape device for everyday use.
+                        </p>
+                        <p>
+                          This high puff capacity vape offers safety features like leak proof design, short circuit prevention, and overcharge safeguards ensure reliability across thousands of draws. Kief King 35000 complies with ESMA standards UAE for disposable electronic cigarette products and aligns with UAE vape regulations.
+                        </p>
+                        <p>
+                          Kief King 35000 offers a variety of flavor experience designed for every kind of vaper. Whether you prefer classic Double Apple, Grape, fruity blends like Strawberry, Mango, and Blueberry Raspberry or exotic mixes such as Love 66 and Lady Killer, offers a wide flavor portfolio designed to satisfy diverse tastes. Combined with its mesh coil atomizer, every flavor profile is delivered with clarity, richness, and smooth exhale. This makes it a dependable vaping device in the growing vaping culture UAE.
+                        </p>
+                      </div>
+                    ) : (
+                      <p>
+                        This premium disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor.
+                      </p>
+                    )}
                   </div>
 
                   {/* Available Flavors Section */}
                   <div className="pt-4">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-base font-bold text-[#1a2b49] mb-4">
+                    <h3 className="text-base sm:text-lg font-bold text-[#1a2b49] mb-4">
                       Available Flavours
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
                       {currentFlavorsList.map(([name, desc]: [string, string]) => (
-                        <div key={name} className="bg-[#edf3fa] border border-[#c8d5ec] rounded-lg p-3 flex items-start gap-2.5">
-                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0"></span>
-                          <p className="text-xs text-slate-700 leading-snug">
-                            <strong className="font-bold text-[#1a2b49]">{name}</strong> – {desc}
+                        <div
+                          key={name}
+                          onClick={() => handleFlavorChange(name)}
+                          className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-sm group"
+                        >
+                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
+                          <p className="text-xs sm:text-[13px] text-slate-700 leading-snug">
+                            <strong className="font-semibold text-slate-800">{name}</strong> – {desc}
                           </p>
                         </div>
                       ))}
@@ -944,6 +964,57 @@ export default function ProductDetailPage() {
                       </table>
                     </div>
                   </div>
+
+                  {isKiefKing && (
+                    <div className="space-y-6 pt-6">
+                      <div className="space-y-3">
+                        <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                          Why Choose Kief King 35000 Puff Vape?
+                        </h3>
+                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                          The Kief King 35000 is built for vapers who want maximum longevity and bold flavor delivery in one device. This vape is positioned in the high puff capacity disposable vape category. It combines mesh coil technology, Type-C rechargeable convenience, and shisha-inspired blends to create a disposable vape that feels powerful yet easy to use. This disposable vape device fits users searching for a rechargeable disposable vape, mesh coil disposable vape, and type c rechargeable vape in one package.
+                        </p>
+                        <div className="space-y-2 pt-1">
+                          {[
+                            'Mega puff capacity: 35,000 puffs designed for uninterrupted, long-lasting sessions.',
+                            'Mesh coil performance: Smooth vapor with clear, rich flavor notes.',
+                            'Rechargeable convenience: type c charging ensures extended usability.',
+                            'Bold shisha flavors: Inspired Shisha blends like Double Apple, Love 66, Lady Killer, and Dubai Pistachio.',
+                            'Lifestyle fit: Designed for adult vapers who enjoy long sessions and cloud chasing.',
+                            'Reliability: Leak-proof build and consistent performance across flavors with leak proof vape device protection.',
+                            'Available at Vape Stall: Authentic devices, fast delivery in Dubai, and the best deal on Kief King 35000 in UAE from an online vape store UAE and trusted premium vape brand collection.'
+                          ].map((item, i) => (
+                            <div key={i} className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 transition-colors">
+                              <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
+                              <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3 pt-2">
+                        <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                          Order Kief King 35000 Puffs Disposable Vape in UAE
+                        </h3>
+                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                          The Kief King 35000 puffs disposable vape dubai option is an elegant high puff capacity vape that brings together technology, flavor, and lifestyle. It stands out in the high puff disposable vape category with mesh coil atomizer, Type-C rechargeable battery, low nicotine and massive 35,000 puff count. Delivers smooth throat hits, bold shisha flavors and consistent vapor clouds for weeks of uninterrupted use. This vape is made with leak-proof design and modern portability. It is one of the most reliable long-lasting disposable vapes in Dubai.
+                        </p>
+                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                          You can buy kief king vape online from{' '}
+                          <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
+                            Vape Stall
+                          </Link>
+                          , with fast service and vape delivery Dubai available across the UAE. Cash on Delivery is also available in Dubai, Palm Jumeirah, Sharjah, Abu Dhabi, Ajman, Umm Al Quwain, Ras Al Khaimah, and Fujairah with discount pricing, ensuring convenience and value wherever you are. This makes it a trusted Kief King UAE choice.
+                        </p>
+                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                          Vape Stall provides guaranteed authenticity and kief king 35000 price dubai kept competitive. Seasonal discounts, market best prices and attractive deals are always available, including cheap kief king vape uae offers.
+                        </p>
+                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                          Ready to enjoy a 35,000 puff shisha-style vape from a trusted Dubai vape store? Explore and buy Kief King 35000 Puffs 3mg Disposable Vape in UAE from Vape Stall and take advantage of same-day delivery across Dubai and UAE, friendly customer support and real deals.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
