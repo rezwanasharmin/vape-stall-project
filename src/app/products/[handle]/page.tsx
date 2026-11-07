@@ -1217,13 +1217,20 @@ export default function ProductDetailPage() {
 
           {/* TAB 2: SPECIFICATION */}
           {activeTab === 'specification' && (
-            <div className="text-slate-800 space-y-4 text-sm max-w-3xl mx-auto py-2">
-              <h3 className="text-lg font-bold text-[#1a2b49] mb-4">{product.name} Specifications:</h3>
-              <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
+            <div className="bg-[#f6f9fd] border border-[#e2e8f0] border-l-4 border-l-[#f5a623] rounded-2xl p-6 sm:p-8">
+              <h3 className="text-base sm:text-lg font-bold text-[#1a2b49] mb-5">
+                {product.name.replace(/ in UAE/i, '')} Specification&apos;s:
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
                 {currentSpecsTable.map(([feat, det]: [string, string]) => (
-                  <div key={feat} className="flex justify-between py-3">
-                    <span className="font-semibold text-slate-600">{feat}</span>
-                    <span className="font-bold text-[#1a2b49]">{det}</span>
+                  <div
+                    key={feat}
+                    className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3.5 sm:p-4 flex items-center gap-2.5 shadow-xs transition-colors"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-[#f59e0b] flex-shrink-0"></span>
+                    <p className="text-xs sm:text-sm text-slate-700 leading-snug">
+                      <strong className="font-bold text-[#1a2b49]">{feat}:</strong> {det}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -1232,42 +1239,70 @@ export default function ProductDetailPage() {
 
           {/* TAB 3: SHIPPING AND DELIVERY */}
           {activeTab === 'shipping' && (
-            <div className="text-slate-800 space-y-6 text-sm max-w-3xl mx-auto py-2 leading-relaxed">
-              <h2 className="text-xl font-bold text-[#1a2b49] border-b border-slate-200 pb-3">
+            <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
+              <h2 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] uppercase">
                 SHOPPING &amp; DELIVERY POLICY
               </h2>
 
-              <div className="space-y-2">
-                <h3 className="text-base font-bold text-[#25406F]">Delivery Terms (Dubai, Sharjah &amp; Ajman)</h3>
-                <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                  <li>Enjoy <strong>same-day delivery, 7 days a week</strong>.</li>
-                  <li>Delivery within Dubai: <strong>3–4 hours</strong>.</li>
-                  <li>Sharjah &amp; Ajman: <strong>Same-day delivery (10:00 AM to 10:00 PM)</strong>; delays may occur due to traffic.</li>
-                  <li>Delivery hours: <strong>Monday to Sunday (10:00 AM – 11:00 PM)</strong>. On Fridays, delivery starts from <strong>2:00 PM</strong>.</li>
-                  <li><strong>Free delivery</strong> on orders above AED 350.</li>
-                  <li><strong>AED 25 delivery fee</strong> applies to orders below AED 350.</li>
-                  <li>Orders placed <strong>after 11:30 PM</strong> will be delivered the following day.</li>
-                  <li>We accept <strong>cash on delivery and card payments</strong>.</li>
-                  <li>A <strong>minimum order of AED 80</strong> is required.</li>
-                </ul>
+              <div className="space-y-3">
+                <h3 className="font-bold text-[#1a2b49] text-base">
+                  Delivery Terms (Dubai, Sharjah &amp; Ajman)
+                </h3>
+                <div className="space-y-2.5">
+                  {[
+                    'Enjoy same-day delivery, 7 days a week.',
+                    'Delivery within Dubai: 3–4 hours.',
+                    'Sharjah & Ajman: Same-day delivery (10:00 AM to 10:00 PM); delays may occur due to traffic.',
+                    'Delivery hours: Monday to Sunday (10:00 AM – 11:00 PM). On Fridays, delivery starts from 2:00 PM.',
+                    'Free delivery on orders above AED 350.',
+                    'AED 25 delivery fee applies to orders below AED 350.',
+                    'Orders placed after 11:30 PM will be delivered the following day.',
+                    'We accept cash on delivery and card payments.',
+                    'A minimum order of AED 80 is required.'
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white border border-[#e2e8f0] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 shadow-xs"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
+                      <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="space-y-2 pt-2">
-                <h3 className="text-base font-bold text-[#25406F]">Delivery in Abu Dhabi, Al Ain, Fujairah &amp; Ras Al Khaimah</h3>
-                <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                  <li>Estimated delivery time: <strong>up to 6 working days</strong> (Sunday closed).</li>
-                  <li>Orders placed <strong>after 2:00 PM</strong> will be processed for next-day delivery.</li>
-                  <li>Orders confirmed <strong>before 1:00 PM</strong> may be delivered the same day.</li>
-                  <li><strong>Cash on delivery only</strong> (card payment is not available in these locations).</li>
-                  <li><strong>Free delivery</strong> on orders above AED 350.</li>
-                </ul>
+              <div className="space-y-3 pt-2">
+                <h3 className="font-bold text-[#1a2b49] text-base">
+                  Delivery in Abu Dhabi, Al Ain, Fujairah &amp; Ras Al Khaimah
+                </h3>
+                <div className="space-y-2.5">
+                  {[
+                    'Estimated delivery time: up to 6 working days (Sunday closed).',
+                    'Orders placed after 2:00 PM will be processed for next-day delivery.',
+                    'Orders confirmed before 1:00 PM may be delivered the same day.',
+                    'Cash on delivery only (card payment is not available in these locations).',
+                    'Free delivery on orders above AED 350.'
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white border border-[#e2e8f0] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 shadow-xs"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
+                      <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="space-y-2 pt-2">
-                <h3 className="text-base font-bold text-[#25406F]">Local Pick-Up Option</h3>
-                <p>
-                  Available <strong>7 days a week (10:30 AM – 10:00 PM)</strong>. Both cash and card payments accepted. Our team will contact you with the exact pick-up location details after order confirmation.
-                </p>
+              <div className="space-y-3 pt-2">
+                <h3 className="font-bold text-[#1a2b49] text-base">
+                  Local Pick-Up Option
+                </h3>
+                <div className="bg-white border border-[#e2e8f0] rounded-xl p-3.5 sm:p-4 shadow-xs">
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    Available <strong>7 days a week (10:30 AM – 10:00 PM)</strong>. Both cash and card payments accepted. Our team will contact you with the exact pick-up location details after order confirmation.
+                  </p>
+                </div>
               </div>
             </div>
           )}
