@@ -25,7 +25,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         // If clicking on a button or link, don't trigger wrapper link
         const target = e.target as HTMLElement;
         if (!target.closest('button') && !target.closest('a')) {
-          window.location.href = `/product/${product.handle}`;
+          window.location.href = `/products/${product.handle}`;
         }
       }}
     >
@@ -81,24 +81,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         </div>
 
         {/* Quick View Bar (Slides up on hover) */}
-        <div
+        <Link
+          href={`/products/${product.handle}`}
           onClick={(e) => {
             e.stopPropagation();
-            if (onQuickView) onQuickView(product);
           }}
           className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#25406F]/90 via-[#25406F]/70 to-transparent pt-6 sm:pt-8 pb-2 sm:pb-3 px-2 sm:px-3 flex items-center justify-center translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10 cursor-pointer"
         >
           <span className="text-white text-[11px] sm:text-[12px] font-bold tracking-widest uppercase drop-shadow-sm">
             Quick View
           </span>
-        </div>
+        </Link>
       </div>
 
       {/* Product Information */}
       <div className="pt-2 sm:pt-3.5 pb-0.5 sm:pb-1 flex flex-col flex-1">
         {/* Title */}
         <h3 className="text-[13px] sm:text-[16px] font-semibold text-[#000000] line-clamp-2 leading-[1.3] sm:leading-[1.38] min-h-[34px] sm:min-h-[44px] h-[34px] sm:h-[44px] group-hover:text-[#25406F] transition-colors">
-          <Link href={`/product/${product.handle}`} onClick={(e) => e.stopPropagation()}>
+          <Link href={`/products/${product.handle}`} onClick={(e) => e.stopPropagation()}>
             {product.name}
           </Link>
         </h3>
