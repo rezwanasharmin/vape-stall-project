@@ -142,7 +142,7 @@ export const FAQSection: React.FC = () => {
                 is happy to help you.
               </p>
 
-              <Link href="/contact" className="vap-faq-cta">
+              <Link href="/pages/contact-us" className="vap-faq-cta">
                 <span className="vap-faq-cta-text">Contact Support</span>
                 <span className="vap-faq-cta-icon" aria-hidden="true">
                   <svg

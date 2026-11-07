@@ -23,6 +23,7 @@ import { products } from '@/data/products';
 import { shopProducts } from '@/data/shopProducts';
 import { useCart } from '@/context/CartContext';
 import { ProductCard } from '@/components/product/ProductCard';
+import { FAQSection } from '@/components/home/FAQSection';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -79,7 +80,6 @@ export default function ProductDetailPage() {
   const [quantityType, setQuantityType] = useState<'1pc' | '5pc'>('1pc');
   const [quantity, setQuantity] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<'description' | 'specification' | 'shipping'>('description');
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [isWaModalOpen, setIsWaModalOpen] = useState<boolean>(false);
   const [waCity, setWaCity] = useState<string>('Dubai');
   const [waAddress, setWaAddress] = useState<string>('');
@@ -174,7 +174,7 @@ export default function ProductDetailPage() {
   };
 
   // Vozol Star 24 flavors
-  const vozolFlavorsList = [
+  const vozolFlavorsList: [string, string][] = [
     ['Blueberry Ice', 'Sweet blueberry with a blast of icy coolness.'],
     ['Bluerazz Ice', 'Sharp blue raspberry with a chill.'],
     ['Cool Mint', 'Fresh minty freshness, clean exhale.'],
@@ -202,7 +202,7 @@ export default function ProductDetailPage() {
   ];
 
   // Vozol Star specs table
-  const vozolSpecsTable = [
+  const vozolSpecsTable: [string, string][] = [
     ['Puff Count', 'Up to 40,000 puffs'],
     ['Nicotine Strength', '20mg nicotine salt'],
     ['Battery Capacity', 'Built-in rechargeable 850mAh battery'],
@@ -214,42 +214,8 @@ export default function ProductDetailPage() {
     ['Activation', 'Simple draw-activated (inhale activation) mechanism'],
   ];
 
-  // Vozol Star 6 FAQs
-  const vozolFaqs = [
-    {
-      id: 1,
-      q: 'How long does Vozol Star 40000 take to work?',
-      a: 'Vozol Star 40000 – Up to 40,000 Puffs, One of the Longest‑lasting Disposable Vapes in Dubai The average user can easily get several weeks of continued vaping out of it.',
-    },
-    {
-      id: 2,
-      q: 'Is the Vozol Star 40000 rechargeable?',
-      a: 'Yes , the device has an 850mAh rechargeable battery and USB-C fast charging . You can keep it charged without changing the unit .',
-    },
-    {
-      id: 3,
-      q: 'Is the airflow on Vozol star 40000 adjustable?',
-      a: 'It has an airflow slider. You can choose a tighter MTL draw or a looser, cloudier inhale. This gives you full control over your vaping style',
-    },
-    {
-      id: 4,
-      q: 'What nicotine strength does Vozol Star have?',
-      a: 'The Vozol Star 40000 delivers 20mg nicotine salt e‑liquid for smooth throat hits and well-rounded nicotine delivery for adult vapers.',
-    },
-    {
-      id: 5,
-      q: 'Does Vozol Star 40000 come with safety features?',
-      a: 'Safe and reliable device for adult nicotine consumers in Dubai and across UAE. It is leak-proof, protects against short circuits, and meets ESMA standards.',
-    },
-    {
-      id: 6,
-      q: 'Will the Vozol Star 40000 work well for MTL vaping?',
-      a: 'Yes, it is made for Mouth-to-Lung vaping. You get a cigarette-like draw with smooth nicotine satisfaction and adjustable airflow.',
-    },
-  ];
-
   // Kief King 17 flavors
-  const kiefKingFlavorsList = [
+  const kiefKingFlavorsList: [string, string][] = [
     ['Double Apple', 'Traditional red & green apple shisha flavor.'],
     ['Gum Mint', 'Sweet bubblegum freshness with cooling spearmint.'],
     ['Cola Lime', 'Fizzy cola uplifted by citrus lime.'],
@@ -270,7 +236,7 @@ export default function ProductDetailPage() {
   ];
 
   // Kief King specs table
-  const kiefKingSpecsTable = [
+  const kiefKingSpecsTable: [string, string][] = [
     ['Puff Count', 'Up to 35,000 puffs'],
     ['Nicotine Strength', '3mg (0.3%)'],
     ['E‑Liquid Capacity', 'Prefilled reservoir'],
@@ -283,38 +249,8 @@ export default function ProductDetailPage() {
     ['Safety Features', 'Short-circuit protection, overcharge safeguards, and leak-proof engineering'],
   ];
 
-  // Kief King 5 FAQs
-  const kiefKingFaqs = [
-    {
-      id: 1,
-      q: 'How long does the Kief King 35000 last?',
-      a: 'For moderate users, the device can last several weeks to months, which makes it one of the most long lasting disposable vapes in UAE market and a top 35000 puff vape dubai choice.',
-    },
-    {
-      id: 2,
-      q: 'Is the Kief King 35000 rechargeable?',
-      a: 'Yes. It’s a type c rechargeable vape with a powerful 1100mAh battery and quick charging. A full charge will give you longer uninterrupted sessions.',
-    },
-    {
-      id: 3,
-      q: 'What flavors does Kief King 35000 come in?',
-      a: 'The most popular flavors are Double Apple, Blueberry Raspberry, Grape, Lady Killer, Love 66, Lychee Ice, Mango, Peach Ice, Strawberry and Watermelon.',
-    },
-    {
-      id: 4,
-      q: 'What makes Kief King different from other disposables?',
-      a: 'It is a disposable vape with a mesh coil and advanced atomizer technology, producing thick vapor clouds and consistent flavor clarity for thousands of puffs.',
-    },
-    {
-      id: 5,
-      q: 'Where can I buy Kief King 35000 in Dubai?',
-      a: 'You can buy kief king 35000 vape dubai from Vape Stall, either in-store or order online. We offer fast service, 24-hour vape delivery in Dubai, and reliable coverage throughout the UAE.',
-    },
-  ];
-
-  const currentFlavorsList = isVozol ? vozolFlavorsList : kiefKingFlavorsList;
-  const currentSpecsTable = isVozol ? vozolSpecsTable : kiefKingSpecsTable;
-  const currentFaqs = isVozol ? vozolFaqs : kiefKingFaqs;
+  const currentFlavorsList: [string, string][] = isVozol ? vozolFlavorsList : kiefKingFlavorsList;
+  const currentSpecsTable: [string, string][] = isVozol ? vozolSpecsTable : kiefKingSpecsTable;
 
   const relatedList = allProducts
     .filter((p) => p.id !== product.id && p.category === product.category)
@@ -509,9 +445,9 @@ export default function ProductDetailPage() {
                     className="w-full appearance-none bg-white border border-slate-300 hover:border-[#F5A623] text-slate-700 text-sm rounded-full px-5 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#F5A623]/30 focus:border-[#F5A623] transition-colors cursor-pointer shadow-xs"
                   >
                     <option value="Select Flavour">Select Flavour</option>
-                    {(product.flavors && product.flavors.length > 0 ? product.flavors : currentFlavorsList.map((f) => f[0]))
-                      .filter((f) => f !== 'Select Flavour')
-                      .map((flavor) => (
+                    {(product.flavors && product.flavors.length > 0 ? product.flavors : currentFlavorsList.map((f: [string, string]) => f[0]))
+                      .filter((f: string) => f !== 'Select Flavour')
+                      .map((flavor: string) => (
                         <option key={flavor} value={flavor}>
                           {flavor}
                         </option>
@@ -934,7 +870,7 @@ export default function ProductDetailPage() {
                       Available Flavours
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-                      {currentFlavorsList.map(([name, desc]) => (
+                      {currentFlavorsList.map(([name, desc]: [string, string]) => (
                         <div key={name} className="bg-[#edf3fa] border border-[#c8d5ec] rounded-lg p-3 flex items-start gap-2.5">
                           <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0"></span>
                           <p className="text-xs text-slate-700 leading-snug">
@@ -959,7 +895,7 @@ export default function ProductDetailPage() {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
-                          {currentSpecsTable.map(([feat, det]) => (
+                          {currentSpecsTable.map(([feat, det]: [string, string]) => (
                             <tr key={feat}>
                               <td className="p-3 text-center font-bold bg-slate-50">{feat}</td>
                               <td className="p-3 text-center font-semibold">{det}</td>
@@ -979,7 +915,7 @@ export default function ProductDetailPage() {
             <div className="text-slate-800 space-y-4 text-sm max-w-2xl mx-auto py-2">
               <h3 className="text-lg font-bold text-[#1a2b49] mb-4">{product.name} Specifications:</h3>
               <div className="bg-[#f8fafc] p-6 rounded-2xl border border-slate-200 space-y-3">
-                {currentSpecsTable.map(([feat, det]) => (
+                {currentSpecsTable.map(([feat, det]: [string, string]) => (
                   <div key={feat} className="flex justify-between py-2 border-b border-slate-200 last:border-b-0">
                     <span className="font-semibold text-slate-600">{feat}</span>
                     <span className="font-bold text-[#1a2b49]">{det}</span>
@@ -1035,85 +971,9 @@ export default function ProductDetailPage() {
       </section>
 
       {/* ========================================================
-          5. FAQ ACCORDION SECTION
+          5. FAQ ACCORDION SECTION (FROM HOME PAGE)
          ======================================================== */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 py-8" aria-label="Frequently Asked Questions">
-        
-        {/* Header */}
-        <div className="text-center mb-8">
-          <span className="inline-block bg-[#25406f]/10 text-[#25406F] border border-[#25406F]/20 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
-            GOT QUESTIONS?
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1a2a4a] mb-2">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-slate-600 text-sm max-w-lg mx-auto">
-            Everything you need to know about this product.
-          </p>
-        </div>
-
-        {/* Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          
-          {/* Side Support Card */}
-          <div className="lg:col-span-4 bg-[#25406f] rounded-2xl p-6 sm:p-8 text-center text-white shadow-md relative overflow-hidden">
-            <div className="w-16 h-16 rounded-full bg-white/15 mx-auto flex items-center justify-center mb-4">
-              <span className="text-2xl font-bold text-white">?</span>
-            </div>
-            <h3 className="text-lg font-bold mb-2">Still have questions?</h3>
-            <p className="text-xs text-slate-200 leading-relaxed mb-6">
-              Can't find the answer you're looking for? Our support team is happy to help.
-            </p>
-            <Link
-              href="/pages/contact-us"
-              className="inline-flex items-center gap-2 bg-[#b48648] hover:bg-[#c9973d] text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-sm"
-            >
-              <span>Contact Support</span>
-              <span>&rarr;</span>
-            </Link>
-          </div>
-
-          {/* Right Accordion List */}
-          <div className="lg:col-span-8 space-y-3">
-            {currentFaqs.map((faq) => {
-              const isOpen = openFaq === faq.id;
-              return (
-                <div
-                  key={faq.id}
-                  className="bg-white border border-[#e8edf5] rounded-xl overflow-hidden shadow-xs transition-all"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaq(isOpen ? null : faq.id)}
-                    className="w-full flex items-center justify-between p-4 sm:p-5 text-left text-sm sm:text-base font-semibold text-[#1a2a4a] hover:bg-[#f9fafc] transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                        isOpen ? 'bg-[#25406f] text-white' : 'bg-[#25406f]/10 text-[#25406f]'
-                      }`}>
-                        {faq.id}
-                      </span>
-                      <span>{faq.q}</span>
-                    </div>
-                    <ChevronDown
-                      className={`w-4 h-4 text-[#25406f] transition-transform duration-300 flex-shrink-0 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-                  {isOpen && (
-                    <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 border-t border-slate-100 leading-relaxed bg-[#fbfcfd]">
-                      {faq.a}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-        </div>
-
-      </section>
+      <FAQSection />
 
       {/* ========================================================
           6. RELATED PRODUCTS ("You may also like")
