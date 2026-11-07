@@ -812,9 +812,9 @@ export default function ProductDetailPage() {
               {isVozol ? (
                 /* VOZOL STAR 40000 DESCRIPTION */
                 <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
-                  <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1a2b49]">
+                  <h1 className="text-xl sm:text-2xl font-extrabold text-center text-[#25406f]">
                     Buy Vozol Star 40000 puff 20mg nicotine vape in UAE – High Puff, Hassle Free, Everyday Companion
-                  </h2>
+                  </h1>
                   <p>
                     The Vozol Star 40000 Puff Vape in Dubai is built to last longer and designed to enhance flavor with technology. Dual mesh coil heating and adjustable airflow give you a precise experience. The LED smart display shows important information. Plus, the USB-C rechargeable battery ensures convenience with every puff.
                   </p>
@@ -827,9 +827,9 @@ export default function ProductDetailPage() {
                   </p>
 
                   <div className="pt-2">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                    <h2 className="vap-heading-highlight">
                       Product overview
-                    </h3>
+                    </h2>
                     <p>
                       The Vozol Star 40k Puff Vape redefines disposable vaping by combining capacity, control and flavor clarity. It features a dual mesh coil system that enhances flavor, and an adjustable airflow so you can dial in each blend from tight MTL hits to wide open airy clouds.
                     </p>
@@ -846,7 +846,7 @@ export default function ProductDetailPage() {
 
                   {/* Available Flavors Section */}
                   <div className="pt-4">
-                    <h3 className="text-base sm:text-lg font-bold text-[#1a2b49] mb-4">
+                    <h3 className="text-base sm:text-lg font-bold text-[#25406f] mb-4">
                       Available Flavours
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
@@ -854,11 +854,11 @@ export default function ProductDetailPage() {
                         <div
                           key={name}
                           onClick={() => handleFlavorChange(name)}
-                          className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-sm group"
+                          className="bg-[#f8faff] border border-[#e2eaf5] hover:border-[#f5a623] hover:shadow-[0_6px_20px_rgba(245,166,35,0.15)] hover:bg-[#fffef8] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs group"
                         >
-                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
+                          <span className="w-2 h-2 rounded-full bg-gradient-to-br from-[#f5a623] to-[#d4870a] shadow-[0_0_0_3px_rgba(245,166,35,0.18)] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
                           <p className="text-xs sm:text-[13px] text-slate-700 leading-snug">
-                            <strong className="font-semibold text-slate-800">{name}</strong> – {desc}
+                            <strong className="font-bold text-[#25406f]">{name}</strong> – {desc}
                           </p>
                         </div>
                       ))}
@@ -867,9 +867,9 @@ export default function ProductDetailPage() {
 
                   {/* Key Features & Specifications Table */}
                   <div className="pt-6">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                    <h2 className="vap-heading-highlight">
                       Key Features &amp; Specifications
-                    </h3>
+                    </h2>
                     <div className="overflow-x-auto rounded-xl border border-slate-200">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
@@ -892,9 +892,9 @@ export default function ProductDetailPage() {
 
                   {/* Why Choose Section (Light-blue cards with dark blue checkmarks) */}
                   <div className="pt-6 space-y-3">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                    <h2 className="vap-heading-highlight">
                       Why choose Vozol Star 40000 Puff Vape
-                    </h3>
+                    </h2>
                     <p className="text-slate-600 text-xs sm:text-sm">
                       When choosing a vape, think beyond puffs. Focus on creating a reliable, flavorful, and tailored experience for each session. The Vozol Star 40K is designed to push the limits of endurance and pairs the precision of dual mesh coils with adjustable airflow control and intelligent LED monitoring to deliver a vape to fit your style. With smooth nicotine delivery to a bold flavor clarity, Vozol star is made to satisfy the demands of Dubai vapers who want both performance and ease of use.
                     </p>
@@ -907,9 +907,13 @@ export default function ProductDetailPage() {
                         'Adjustable airflow: A built in airflow slider lets you dial in your draw. If you like a tight MTL draw or a looser, cloudier hit, the Star 40K can be instantly adjusted to your liking.',
                         'Trusted Reliability: This Vozol disposable vape is 100% ESMA compliant. It has leak-proof and safety features. It\'s made to meet UAE quality and performance standards.'
                       ].map((item, i) => (
-                        <div key={i} className="bg-[#edf3fa] border border-[#c8d5ec] rounded-xl p-3.5 sm:p-4 flex items-center gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
-                          <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                        <div key={i} className="bg-[#f0f5fb] border border-[#d4e1f4] hover:bg-[#e8f0fb] hover:border-[#25406f] rounded-xl p-3.5 sm:p-4 flex items-center gap-3 transition-colors">
+                          <div className="w-5 h-5 rounded-full bg-[#25406f] flex items-center justify-center flex-shrink-0">
+                            <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 10 8" fill="none">
+                              <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </div>
+                          <p className="text-xs sm:text-sm text-[#374151] leading-snug">{item}</p>
                         </div>
                       ))}
                     </div>
@@ -920,9 +924,9 @@ export default function ProductDetailPage() {
 
                     {/* Extra Heading */}
                     <div className="pt-4 space-y-2">
-                      <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                      <h2 className="vap-heading-highlight">
                         Buy Vozol Star 40000 Puff Vape in UAE
-                      </h3>
+                      </h2>
                       <p className="text-slate-600 text-xs sm:text-sm">
                         The Vozol Star 40000 Puff Vape features dual mesh coil heating, adjustable airflow, LED screen display, USB-C fast charging, and advanced safety features. It has 850mAh rechargeable battery, large prefilled reservoir and up to 40,000 puffs. That makes it a device for vapers who are seeking for customizable performance and long-lasting satisfaction.
                       </p>
@@ -936,9 +940,9 @@ export default function ProductDetailPage() {
               ) : isMyle ? (
                 /* MYLE META MAX 18000 DESCRIPTION */
                 <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
-                  <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1a2b49]">
+                  <h1 className="text-xl sm:text-2xl font-extrabold text-center text-[#25406f]">
                     Buy Myle Meta Max 18000 Puff 50mg Disposable Vape in UAE – Advanced Dual Mesh Smart Display Vape
-                  </h2>
+                  </h1>
                   <p>
                     If you are searching for a high-performance disposable vape that combines advanced technology and generous puff capacity, the Myle Meta Max 18000 puffs disposable vape is designed to deliver top satisfaction. It features a sleek ergonomic body, dual mesh coil atomizer, 850mAh Type-C rechargeable battery, and up to 18,000 flavorful puffs. This modern device ensures consistent flavor delivery, dense vapor clouds, and a smooth throat hit with 50mg salt nicotine from first to last puff. The Myle Meta Max 18k stands out in the UAE vape market for its premium reliability and innovation.
                   </p>
@@ -951,9 +955,9 @@ export default function ProductDetailPage() {
                   </p>
 
                   <div className="pt-2">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                    <h2 className="vap-heading-highlight">
                       Myle Meta Max 18000 – Product Overview
-                    </h3>
+                    </h2>
                     <div className="space-y-4 text-slate-700 leading-relaxed text-xs sm:text-sm">
                       <p>
                         The Myle Meta Max 18000 disposable vape is engineered for vapers seeking maximum endurance, precision airflow control, and rich flavor clarity. Its pocket-friendly design makes it comfortable to carry anywhere across Dubai and the UAE. Equipped with dual mesh coil technology, it heats e-liquid evenly to produce full-bodied vapor and rich flavor reproduction without dry hits. Its 850mAh built-in battery fast charges via Type-C, while the large 18ml prefilled tank ensures weeks of uninterrupted vaping sessions with satisfying 50mg nicotine salt hits.
@@ -969,7 +973,7 @@ export default function ProductDetailPage() {
 
                   {/* Available Flavors Section */}
                   <div className="pt-4">
-                    <h3 className="text-base sm:text-lg font-bold text-[#1a2b49] mb-4">
+                    <h3 className="text-base sm:text-lg font-bold text-[#25406f] mb-4">
                       Available Flavours
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
@@ -977,11 +981,11 @@ export default function ProductDetailPage() {
                         <div
                           key={name}
                           onClick={() => handleFlavorChange(name)}
-                          className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-sm group"
+                          className="bg-[#f8faff] border border-[#e2eaf5] hover:border-[#f5a623] hover:shadow-[0_6px_20px_rgba(245,166,35,0.15)] hover:bg-[#fffef8] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs group"
                         >
-                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
+                          <span className="w-2 h-2 rounded-full bg-gradient-to-br from-[#f5a623] to-[#d4870a] shadow-[0_0_0_3px_rgba(245,166,35,0.18)] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
                           <p className="text-xs sm:text-[13px] text-slate-700 leading-snug">
-                            <strong className="font-semibold text-slate-800">{name}</strong> – {desc}
+                            <strong className="font-bold text-[#25406f]">{name}</strong> – {desc}
                           </p>
                         </div>
                       ))}
@@ -990,9 +994,9 @@ export default function ProductDetailPage() {
 
                   {/* Key Features & Specifications Table */}
                   <div className="pt-6">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                    <h2 className="vap-heading-highlight">
                       Key Features &amp; Specifications
-                    </h3>
+                    </h2>
                     <div className="overflow-x-auto rounded-xl border border-slate-200">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
@@ -1016,9 +1020,9 @@ export default function ProductDetailPage() {
                   {/* Why Choose Section */}
                   <div className="space-y-6 pt-6">
                     <div className="space-y-3">
-                      <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                      <h2 className="vap-heading-highlight">
                         Why Choose Myle Meta Max 18000 Puff Vape?
-                      </h3>
+                      </h2>
                       <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
                         The Myle Meta Max 18000 combines cutting-edge vape engineering, smart LCD monitoring, and exceptional flavor craftsmanship. Designed for adult consumers demanding quality and longevity, it offers unmatched value in the UAE disposable vape landscape.
                       </p>
@@ -1032,18 +1036,22 @@ export default function ProductDetailPage() {
                           '100% leak-proof build and ESMA compliant safety safeguards.',
                           'Available at Vape Stall with guaranteed authenticity and same-day Dubai delivery.'
                         ].map((item, i) => (
-                          <div key={i} className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 transition-colors">
-                            <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
-                            <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                          <div key={i} className="bg-[#f0f5fb] border border-[#d4e1f4] hover:bg-[#e8f0fb] hover:border-[#25406f] rounded-xl p-3.5 sm:p-4 flex items-center gap-3 transition-colors">
+                            <div className="w-5 h-5 rounded-full bg-[#25406f] flex items-center justify-center flex-shrink-0">
+                              <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 10 8" fill="none">
+                                <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </div>
+                            <p className="text-xs sm:text-sm text-[#374151] leading-snug">{item}</p>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     <div className="space-y-3 pt-2">
-                      <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                      <h2 className="vap-heading-highlight">
                         Order Myle Meta Max 18000 Puff Disposable Vape in UAE
-                      </h3>
+                      </h2>
                       <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
                         Order your genuine Myle Meta Max 18000 Puff 50mg Disposable Vape today from{' '}
                         <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
@@ -1060,11 +1068,11 @@ export default function ProductDetailPage() {
               ) : (
                 /* KIEF KING / DEFAULT DESCRIPTION */
                 <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
-                  <h2 className="text-xl sm:text-2xl font-bold text-center text-[#1a2b49]">
+                  <h1 className="text-xl sm:text-2xl font-extrabold text-center text-[#25406f]">
                     {isKiefKing
                       ? 'Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE – Ultra High Puff Mesh Coil Device'
                       : `Buy ${product.name} in UAE – Ultra High Puff Mesh Coil Device`}
-                  </h2>
+                  </h1>
                   <p>
                     {isKiefKing
                       ? 'If you are searching for a disposable vape that combines advanced technology and high puff capacity, The Kief King 35000 puffs disposable vape is made to meet this need. It has a sleek body, mesh coil atomizer, Type-C rechargeable battery and extraordinary 35,000 puff count. This is a modern vape device and it ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff. This disposable vape stands out in the Dubai vape market as a high puff disposable vape. The Kief King 35k is built for convenience and performance.'
@@ -1092,9 +1100,9 @@ export default function ProductDetailPage() {
                   </p>
 
                   <div className="pt-2">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                    <h2 className="vap-heading-highlight">
                       {isKiefKing ? 'Kief King 35000 – Product Overview' : 'Product Overview'}
-                    </h3>
+                    </h2>
                     {isKiefKing ? (
                       <div className="space-y-4 text-slate-700 leading-relaxed text-xs sm:text-sm">
                         <p>
@@ -1116,7 +1124,7 @@ export default function ProductDetailPage() {
 
                   {/* Available Flavors Section */}
                   <div className="pt-4">
-                    <h3 className="text-base sm:text-lg font-bold text-[#1a2b49] mb-4">
+                    <h3 className="text-base sm:text-lg font-bold text-[#25406f] mb-4">
                       Available Flavours
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
@@ -1124,11 +1132,11 @@ export default function ProductDetailPage() {
                         <div
                           key={name}
                           onClick={() => handleFlavorChange(name)}
-                          className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-sm group"
+                          className="bg-[#f8faff] border border-[#e2eaf5] hover:border-[#f5a623] hover:shadow-[0_6px_20px_rgba(245,166,35,0.15)] hover:bg-[#fffef8] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs group"
                         >
-                          <span className="w-2 h-2 rounded-full bg-[#f59e0b] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
+                          <span className="w-2 h-2 rounded-full bg-gradient-to-br from-[#f5a623] to-[#d4870a] shadow-[0_0_0_3px_rgba(245,166,35,0.18)] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
                           <p className="text-xs sm:text-[13px] text-slate-700 leading-snug">
-                            <strong className="font-semibold text-slate-800">{name}</strong> – {desc}
+                            <strong className="font-bold text-[#25406f]">{name}</strong> – {desc}
                           </p>
                         </div>
                       ))}
@@ -1137,9 +1145,9 @@ export default function ProductDetailPage() {
 
                   {/* Key Features & Specifications Table */}
                   <div className="pt-6">
-                    <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] mb-3">
+                    <h2 className="vap-heading-highlight">
                       Key Features &amp; Specifications
-                    </h3>
+                    </h2>
                     <div className="overflow-x-auto rounded-xl border border-slate-200">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
@@ -1163,9 +1171,9 @@ export default function ProductDetailPage() {
                   {isKiefKing && (
                     <div className="space-y-6 pt-6">
                       <div className="space-y-3">
-                        <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                        <h2 className="vap-heading-highlight">
                           Why Choose Kief King 35000 Puff Vape?
-                        </h3>
+                        </h2>
                         <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
                           The Kief King 35000 is built for vapers who want maximum longevity and bold flavor delivery in one device. This vape is positioned in the high puff capacity disposable vape category. It combines mesh coil technology, Type-C rechargeable convenience, and shisha-inspired blends to create a disposable vape that feels powerful yet easy to use. This disposable vape device fits users searching for a rechargeable disposable vape, mesh coil disposable vape, and type c rechargeable vape in one package.
                         </p>
@@ -1179,18 +1187,22 @@ export default function ProductDetailPage() {
                             'Reliability: Leak-proof build and consistent performance across flavors with leak proof vape device protection.',
                             'Available at Vape Stall: Authentic devices, fast delivery in Dubai, and the best deal on Kief King 35000 in UAE from an online vape store UAE and trusted premium vape brand collection.'
                           ].map((item, i) => (
-                            <div key={i} className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 transition-colors">
-                              <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
-                              <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                            <div key={i} className="bg-[#f0f5fb] border border-[#d4e1f4] hover:bg-[#e8f0fb] hover:border-[#25406f] rounded-xl p-3.5 sm:p-4 flex items-center gap-3 transition-colors">
+                              <div className="w-5 h-5 rounded-full bg-[#25406f] flex items-center justify-center flex-shrink-0">
+                                <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 10 8" fill="none">
+                                  <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                              </div>
+                              <p className="text-xs sm:text-sm text-[#374151] leading-snug">{item}</p>
                             </div>
                           ))}
                         </div>
                       </div>
 
                       <div className="space-y-3 pt-2">
-                        <h3 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49]">
+                        <h2 className="vap-heading-highlight">
                           Order Kief King 35000 Puffs Disposable Vape in UAE
-                        </h3>
+                        </h2>
                         <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
                           The Kief King 35000 puffs disposable vape dubai option is an elegant high puff capacity vape that brings together technology, flavor, and lifestyle. It stands out in the high puff disposable vape category with mesh coil atomizer, Type-C rechargeable battery, low nicotine and massive 35,000 puff count. Delivers smooth throat hits, bold shisha flavors and consistent vapor clouds for weeks of uninterrupted use. This vape is made with leak-proof design and modern portability. It is one of the most reliable long-lasting disposable vapes in Dubai.
                         </p>
@@ -1217,19 +1229,20 @@ export default function ProductDetailPage() {
 
           {/* TAB 2: SPECIFICATION */}
           {activeTab === 'specification' && (
-            <div className="bg-[#f6f9fd] border border-[#e2e8f0] border-l-4 border-l-[#f5a623] rounded-2xl p-6 sm:p-8">
-              <h3 className="text-base sm:text-lg font-bold text-[#1a2b49] mb-5">
+            <div className="bg-gradient-to-br from-[#f8faff] to-[#f0f5fd] border border-[#e2eaf5] border-l-4 border-l-[#f5a623] rounded-r-2xl rounded-l-none p-6 sm:p-8 shadow-[0_2px_14px_rgba(37,64,111,0.08)]">
+              <h3 className="font-bold text-[#25406f] text-base pb-3 mb-5 border-b border-[#dce6f5] flex items-center gap-2">
+                <span className="w-[3px] h-5 bg-gradient-to-b from-[#f5a623] to-[#b48648] rounded-xs inline-block"></span>
                 {product.name.replace(/ in UAE/i, '')} Specification&apos;s:
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
                 {currentSpecsTable.map(([feat, det]: [string, string]) => (
                   <div
                     key={feat}
-                    className="bg-white border border-[#e2e8f0] hover:border-[#f5a623] rounded-xl p-3.5 sm:p-4 flex items-center gap-2.5 shadow-xs transition-colors"
+                    className="bg-white border border-[#e2eaf5] hover:border-[#f5a623] hover:shadow-[0_2px_8px_rgba(245,166,35,0.12)] rounded-lg p-3 sm:p-3.5 flex items-center gap-3 transition-all"
                   >
-                    <span className="w-2 h-2 rounded-full bg-[#f59e0b] flex-shrink-0"></span>
-                    <p className="text-xs sm:text-sm text-slate-700 leading-snug">
-                      <strong className="font-bold text-[#1a2b49]">{feat}:</strong> {det}
+                    <span className="w-2 h-2 rounded-full bg-gradient-to-br from-[#f5a623] to-[#d4870a] shadow-[0_0_0_2px_rgba(245,166,35,0.2)] flex-shrink-0"></span>
+                    <p className="text-xs sm:text-sm text-[#374151] leading-snug">
+                      <strong className="font-bold text-[#25406f]">{feat}:</strong> {det}
                     </p>
                   </div>
                 ))}
@@ -1240,15 +1253,15 @@ export default function ProductDetailPage() {
           {/* TAB 3: SHIPPING AND DELIVERY */}
           {activeTab === 'shipping' && (
             <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
-              <h2 className="border-l-4 border-[#e59b2d] pl-3 text-lg font-bold text-[#1a2b49] uppercase">
+              <h2 className="vap-heading-highlight uppercase">
                 SHOPPING &amp; DELIVERY POLICY
               </h2>
 
               <div className="space-y-3">
-                <h3 className="font-bold text-[#1a2b49] text-base">
+                <h3 className="font-bold text-[#25406f] text-base">
                   Delivery Terms (Dubai, Sharjah &amp; Ajman)
                 </h3>
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {[
                     'Enjoy same-day delivery, 7 days a week.',
                     'Delivery within Dubai: 3–4 hours.',
@@ -1262,20 +1275,24 @@ export default function ProductDetailPage() {
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className="bg-white border border-[#e2e8f0] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 shadow-xs"
+                      className="bg-[#f8faff] border border-[#e8eef7] hover:bg-[#eef4ff] hover:border-[#c8d9f0] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 transition-colors"
                     >
-                      <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
-                      <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                      <div className="w-5 h-5 rounded-full bg-[#25406f] flex items-center justify-center flex-shrink-0">
+                        <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 10 8" fill="none">
+                          <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#374151] leading-snug">{item}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="space-y-3 pt-2">
-                <h3 className="font-bold text-[#1a2b49] text-base">
+                <h3 className="font-bold text-[#25406f] text-base">
                   Delivery in Abu Dhabi, Al Ain, Fujairah &amp; Ras Al Khaimah
                 </h3>
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {[
                     'Estimated delivery time: up to 6 working days (Sunday closed).',
                     'Orders placed after 2:00 PM will be processed for next-day delivery.',
@@ -1285,20 +1302,24 @@ export default function ProductDetailPage() {
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className="bg-white border border-[#e2e8f0] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 shadow-xs"
+                      className="bg-[#f8faff] border border-[#e8eef7] hover:bg-[#eef4ff] hover:border-[#c8d9f0] rounded-xl p-3 sm:p-3.5 flex items-center gap-3 transition-colors"
                     >
-                      <CheckCircle2 className="w-5 h-5 text-[#25406F] flex-shrink-0" />
-                      <p className="text-xs sm:text-sm text-slate-700 leading-snug">{item}</p>
+                      <div className="w-5 h-5 rounded-full bg-[#25406f] flex items-center justify-center flex-shrink-0">
+                        <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 10 8" fill="none">
+                          <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#374151] leading-snug">{item}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="space-y-3 pt-2">
-                <h3 className="font-bold text-[#1a2b49] text-base">
+                <h3 className="font-bold text-[#25406f] text-base">
                   Local Pick-Up Option
                 </h3>
-                <div className="bg-white border border-[#e2e8f0] rounded-xl p-3.5 sm:p-4 shadow-xs">
+                <div className="bg-[#f8faff] border border-[#e8eef7] rounded-xl p-3.5 sm:p-4 shadow-xs">
                   <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
                     Available <strong>7 days a week (10:30 AM – 10:00 PM)</strong>. Both cash and card payments accepted. Our team will contact you with the exact pick-up location details after order confirmation.
                   </p>

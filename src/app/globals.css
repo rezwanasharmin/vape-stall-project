@@ -3622,3 +3622,51 @@ p.lees-meer-text {
     padding-bottom: 24px;
   }
 }
+
+/* ── Product Description Panel Styles (vapstall.ae exact) ── */
+.vap-heading-highlight {
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 700;
+  color: #25406f;
+  margin: 1.8rem 0 1rem;
+  padding: 0.6rem 1.2rem;
+  border-left: 4px solid #F5A623;
+  background: linear-gradient(90deg, rgba(245, 166, 35, 0.08) 0%, rgba(245, 166, 35, 0.02) 65%, transparent 100%);
+  border-radius: 0 6px 6px 0;
+  line-height: 1.35;
+  display: block;
+}
+
+.vap-check-item {
+  background: #f8faff;
+  border: 1px solid #e8eef7;
+  border-radius: 8px;
+  padding: 0.75rem 1rem 0.75rem 2.8rem;
+  position: relative;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #374151;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.vap-check-item:hover {
+  background: #eef4ff;
+  border-color: #c8d9f0;
+}
+
+.vap-check-item::before {
+  content: "";
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: #25406f;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 9px 7px;
+}
+
