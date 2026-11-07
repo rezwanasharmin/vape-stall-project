@@ -28,19 +28,35 @@ import { FAQSection } from '@/components/home/FAQSection';
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const handle = (params?.handle as string) || '';
+  const rawHandle = (params?.handle as string) || '';
+  const decodedHandle = decodeURIComponent(rawHandle).trim().toLowerCase();
+  const slugifiedHandle = decodedHandle.replace(/[\s_]+/g, '-');
 
   // Find product across both product sources
   const allProducts = [...products, ...shopProducts];
   const product =
-    allProducts.find((p) => p.handle === handle) ||
-    allProducts.find(
-      (p) =>
-        p.handle === handle?.replace(/^buy-/, '') ||
-        `buy-${p.handle}` === handle ||
-        p.handle?.includes(handle || '')
-    ) ||
-    products[1]; // fallback
+    allProducts.find((p) => {
+      const pHandle = (p.handle || '').toLowerCase();
+      const pSlug = pHandle.replace(/[\s_]+/g, '-');
+      return (
+        pHandle === rawHandle.toLowerCase() ||
+        pHandle === decodedHandle ||
+        pSlug === slugifiedHandle ||
+        pSlug === slugifiedHandle.replace(/^buy-/, '') ||
+        `buy-${pSlug}` === slugifiedHandle
+      );
+    }) ||
+    allProducts.find((p) => {
+      const pSlug = (p.handle || '').toLowerCase().replace(/[\s_]+/g, '-');
+      const pName = (p.name || '').toLowerCase();
+      return (
+        pSlug.includes(slugifiedHandle) ||
+        slugifiedHandle.includes(pSlug) ||
+        pName.includes(decodedHandle) ||
+        decodedHandle.includes(pName)
+      );
+    }) ||
+    products[0];
 
   const isVozol =
     product.handle?.includes('vozol-star-40000') ||
