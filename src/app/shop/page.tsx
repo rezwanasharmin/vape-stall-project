@@ -9,7 +9,7 @@ import { offerProducts } from '@/data/offerProducts';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
-import { QuickViewModal } from '@/components/product/QuickViewModal';
+import { useQuickView } from '@/context/QuickViewContext';
 import { CollectionSeoGuide } from '@/components/shop/CollectionSeoGuide';
 import { OfferCollectionSeoGuide } from '@/components/shop/OfferCollectionSeoGuide';
 import { CollectionSpotFake } from '@/components/shop/CollectionSpotFake';
@@ -38,6 +38,22 @@ function ShopContent() {
     );
   }, [slug, pathname, initialQuery]);
 
+  // Determine if this is the Disposable Vape collection page (/collections/buy-disposable-vape-uae)
+  const isDisposableCollection = useMemo(() => {
+    return (
+      slug === 'buy-disposable-vape-uae' ||
+      pathname === '/collections/buy-disposable-vape-uae'
+    );
+  }, [slug, pathname]);
+
+  // Determine if this is the Shisha/Hookah Disposable collection page (/collections/relx-disposable-vape-shop-in-dubai)
+  const isShishaCollection = useMemo(() => {
+    return (
+      slug === 'relx-disposable-vape-shop-in-dubai' ||
+      pathname === '/collections/relx-disposable-vape-shop-in-dubai'
+    );
+  }, [slug, pathname]);
+
   const baseProducts = useMemo(() => {
     return isOffersCollection ? offerProducts : shopProducts;
   }, [isOffersCollection]);
@@ -47,6 +63,7 @@ function ShopContent() {
 
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const quickView = useQuickView();
 
   // Filter States
   const [selectedAvailabilities, setSelectedAvailabilities] = useState<string[]>([]);
@@ -54,7 +71,11 @@ function ShopContent() {
   const [priceTo, setPriceTo] = useState<string>(defaultMaxPrice);
   const [appliedPriceRange, setAppliedPriceRange] = useState<[number, number]>([0, defaultMaxPriceNum]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialCategory ? [initialCategory] : []
+    initialCategory
+      ? [initialCategory]
+      : (isDisposableCollection
+          ? ['Disposable vape']
+          : (isShishaCollection ? ['Shisha / Hookah', 'Rechargeable disposable (DTL) shisha vape'] : []))
   );
   const [selectedNicotines, setSelectedNicotines] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>(
@@ -64,7 +85,6 @@ function ShopContent() {
   const [sortBy, setSortBy] = useState<string>('most-relevant');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Sync price bounds when collection changes
@@ -371,7 +391,13 @@ function ShopContent() {
             ›
           </span>
           <span className="vcol-breadcrumb__cur text-[#25406f] font-semibold" aria-current="page">
-            {isOffersCollection ? 'Offer' : 'Vape Stall: Disposable Vape shop in UAE'}
+            {isOffersCollection
+              ? 'Offer'
+              : isDisposableCollection
+              ? 'Buy Disposable Vape in UAE'
+              : isShishaCollection
+              ? 'Shisha/Hookah Disposable'
+              : 'Vape Stall: Disposable Vape shop in UAE'}
           </span>
         </nav>
       </div>
@@ -1007,9 +1033,9 @@ function ShopContent() {
                           <button
                             type="button"
                             onClick={(e) => {
-                              e.preventDefault();
                               e.stopPropagation();
-                              setQuickViewProduct(product);
+                              e.preventDefault();
+                              quickView?.openQuickView(product);
                             }}
                             className="text-white text-[11px] font-extrabold tracking-widest uppercase bg-black/60 hover:bg-[#b48648] px-4 py-1.5 rounded-full backdrop-blur-sm transition-all duration-200 shadow-md transform hover:scale-105 cursor-pointer"
                           >
@@ -1068,22 +1094,28 @@ function ShopContent() {
                             )}
                           </div>
 
-                          {/* Quick View / Add to Cart button matching screenshot light blue / cart icon */}
+                          {/* Authentic Cart Button 1:1 with vapstall.ae */}
                           <button
                             type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setQuickViewProduct(product);
-                            }}
-                            className="w-9 h-9 rounded-full bg-[#eef4ff] hover:bg-[#25406f] text-[#25406f] hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm active:scale-90 cursor-pointer"
+                            className="vap-cart"
+                            data-vap-qv-open={product.id}
                             aria-label={`Quick view ${product.name}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              quickView?.openQuickView(product);
+                            }}
+                            title="Quick view"
                           >
-                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                              <circle cx="9" cy="21" r="1" />
-                              <circle cx="20" cy="21" r="1" />
-                              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                            </svg>
+                            <img
+                              className="vap-cart-icon"
+                              src="/images/products/vap-icon-cart.svg"
+                              width={18}
+                              height={18}
+                              alt=""
+                              aria-hidden="true"
+                              loading="lazy"
+                            />
                           </button>
                         </div>
 
@@ -1178,14 +1210,6 @@ function ShopContent() {
         }`}
         onClick={() => setIsMobileDrawerOpen(false)}
       />
-
-      {/* Quick View Modal */}
-      {quickViewProduct && (
-        <QuickViewModal
-          product={quickViewProduct}
-          onClose={() => setQuickViewProduct(null)}
-        />
-      )}
 
       {/* Toast Notification */}
       {toastMessage && (

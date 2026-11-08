@@ -3,9 +3,9 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react';
 import { Product } from '@/types';
-import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useQuickView } from '@/context/QuickViewContext';
 
@@ -15,13 +15,16 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }) => {
+  const router = useRouter();
   const { toggleWishlist, isInWishlist } = useWishlist();
-  const isWishlisted = isInWishlist(product.id);
   const quickView = useQuickView();
+  const isWishlisted = isInWishlist(product.id);
+
+  const productUrl = `/products/${product.handle}`;
 
   const handleOpenQuickView = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
+    e.preventDefault();
     if (onQuickView) {
       onQuickView(product);
     } else if (quickView?.openQuickView) {
@@ -33,10 +36,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
     <div
       className="group relative bg-white border border-[#d9d9d9] hover:border-transparent rounded-[14px] sm:rounded-[18px] p-2 sm:p-3.5 pb-3 sm:pb-4 flex flex-col justify-between h-full w-full transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(37,64,111,0.16)] cursor-pointer"
       onClick={(e) => {
-        // If clicking on a button or link, don't trigger wrapper link
+        // If clicking on a button or link, don't trigger wrapper navigation
         const target = e.target as HTMLElement;
         if (!target.closest('button') && !target.closest('a')) {
-          window.location.href = `/products/${product.handle}`;
+          router.push(productUrl);
         }
       }}
     >
@@ -57,7 +60,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         />
       </button>
 
-      {/* Top Right: Animated Badge (e.g. 7% OFF | 1 Box on Card 4) */}
+      {/* Top Right: Animated Badge */}
       {product.badge && (
         <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20 animate-vap-badge pointer-events-none">
           <span className="bg-[#dc2626] text-white text-[9px] sm:text-[11px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
@@ -66,10 +69,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         </div>
       )}
 
-      {/* Product Image Area with Smooth Flip & Zoom Animation - Larger Aspect Ratio */}
+      {/* Product Image Area with Pedestal & Hover Image */}
       <div className="relative overflow-hidden rounded-[10px] sm:rounded-[12px] aspect-[1/1.08] w-full flex items-center justify-center bg-[#fafafa]">
-        {/* Primary Image (No inner padding so pedestal and devices are big) */}
-        <div className="w-full h-full relative">
+        <Link href={productUrl} className="w-full h-full relative block" onClick={(e) => e.stopPropagation()}>
           <Image
             src={product.image}
             alt={product.name}
@@ -79,7 +81,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             priority={false}
           />
 
-          {/* Secondary / Flavor Splash Hover Image with smooth zoom and fade animation */}
+          {/* Secondary / Hover Image */}
           {product.altImage && (
             <Image
               src={product.altImage}
@@ -89,26 +91,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
               className="object-contain absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-95 group-hover:scale-106"
             />
           )}
-        </div>
+        </Link>
 
-        {/* Quick View Bar (Slides up on hover) */}
-        <button
-          type="button"
-          onClick={handleOpenQuickView}
-          className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#25406F]/90 via-[#25406F]/70 to-transparent pt-6 sm:pt-8 pb-2 sm:pb-3 px-2 sm:px-3 flex items-center justify-center translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10 cursor-pointer"
-          aria-label={`Quick view ${product.name}`}
+        {/* Quick View Bar (Slides up on hover -> Navigates to Product Page) */}
+        <Link
+          href={productUrl}
+          onClick={(e) => e.stopPropagation()}
+          className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#25406F]/95 via-[#25406F]/75 to-transparent pt-6 sm:pt-8 pb-2 sm:pb-3 px-2 sm:px-3 flex items-center justify-center translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10 cursor-pointer"
+          aria-label={`View ${product.name}`}
         >
           <span className="text-white text-[11px] sm:text-[12px] font-bold tracking-widest uppercase drop-shadow-sm">
             Quick View
           </span>
-        </button>
+        </Link>
       </div>
 
       {/* Product Information */}
       <div className="pt-2 sm:pt-3.5 pb-0.5 sm:pb-1 flex flex-col flex-1">
         {/* Title */}
         <h3 className="text-[13px] sm:text-[16px] font-semibold text-[#000000] line-clamp-2 leading-[1.3] sm:leading-[1.38] min-h-[34px] sm:min-h-[44px] h-[34px] sm:h-[44px] group-hover:text-[#25406F] transition-colors">
-          <Link href={`/products/${product.handle}`} onClick={(e) => e.stopPropagation()}>
+          <Link href={productUrl} onClick={(e) => e.stopPropagation()}>
             {product.name}
           </Link>
         </h3>
@@ -132,7 +134,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           </span>
         </div>
 
-        {/* Stock Status Badge Slot - uniform spacing */}
+        {/* Stock Status Badge Slot */}
         <div className="min-h-[18px] sm:min-h-[26px] flex items-center mt-1 sm:mt-1.5">
           {product.isOutOfStock ? (
             <span className="bg-[#fee2e2] text-[#991b1b] text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-md inline-block leading-tight">
@@ -141,7 +143,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           ) : null}
         </div>
 
-        {/* Price & Quick View Cart Action */}
+        {/* Price & Cart Icon Button (Opens Quick View Modal) */}
         <div className="mt-auto pt-2 sm:pt-3 flex items-center justify-between border-t border-slate-100 min-h-[42px] sm:min-h-[52px]">
           <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-0.5">
             {product.originalPriceFormatted && (
@@ -159,26 +161,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             )}
           </div>
 
+          {/* Authentic Cart Button 1:1 with vapstall.ae */}
           <button
             type="button"
-            onClick={handleOpenQuickView}
-            className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-[#f1f5f9] hover:bg-[#25406F] text-[#25406F] hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm active:scale-95 flex-shrink-0 cursor-pointer"
+            className="vap-cart"
+            data-vap-qv-open={product.id}
             aria-label={`Quick view ${product.name}`}
+            onClick={handleOpenQuickView}
             title="Quick view"
           >
-            <svg
-              className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
+            <img
+              className="vap-cart-icon"
+              src="/images/products/vap-icon-cart.svg"
+              width={18}
+              height={18}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
           </button>
         </div>
       </div>

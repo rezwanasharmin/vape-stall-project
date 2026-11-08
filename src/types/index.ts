@@ -22,6 +22,7 @@ export interface Product {
   nicotine?: string;
   inStock: boolean;
   flavors: string[];
+  quantityTypes?: string[];
   description: string;
 }
 

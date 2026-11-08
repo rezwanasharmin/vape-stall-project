@@ -21,9 +21,12 @@ import {
 } from 'lucide-react';
 import { products } from '@/data/products';
 import { shopProducts } from '@/data/shopProducts';
+import { offerProducts } from '@/data/offerProducts';
+import { leftProducts, rightProducts, WellnessProduct } from '@/components/home/WellnessSection';
 import { useCart } from '@/context/CartContext';
 import { ProductCard } from '@/components/product/ProductCard';
 import { FAQSection } from '@/components/home/FAQSection';
+import { Product } from '@/types';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -32,8 +35,40 @@ export default function ProductDetailPage() {
   const decodedHandle = decodeURIComponent(rawHandle).trim().toLowerCase();
   const slugifiedHandle = decodedHandle.replace(/[\s_]+/g, '-');
 
-  // Find product across both product sources
-  const allProducts = [...products, ...shopProducts];
+  // Adapt wellness products into full Product interface
+  const wellnessAdapted: Product[] = [...leftProducts, ...rightProducts].map((wp: WellnessProduct) => ({
+    id: wp.id,
+    name: wp.name || wp.title,
+    handle: wp.link.replace('/products/', ''),
+    price: wp.numericPrice,
+    priceFormatted: wp.price,
+    comparePriceFormatted: wp.oldPrice || wp.comparePrice,
+    rating: 5.0,
+    reviewsCount: 42,
+    image: wp.img,
+    galleryImages: wp.galleryImages,
+    category: 'Disposable Vape',
+    brand: (wp.name || wp.title).includes('Al Fakher')
+      ? 'Al Fakher'
+      : (wp.name || wp.title).includes('Elf bar') || (wp.name || wp.title).includes('Elf Bar')
+      ? 'Elf Bar'
+      : (wp.name || wp.title).includes('Waka')
+      ? 'Waka'
+      : (wp.name || wp.title).includes('Ice King')
+      ? 'Ice King'
+      : (wp.name || wp.title).includes('Nasty')
+      ? 'Nasty'
+      : 'Vape Stall',
+    puffs: (wp.name || wp.title).match(/\d+[\s,]*[kK]?\s*[pP]uff/i)?.[0] || '25000 Puffs',
+    nicotine: (wp.name || wp.title).match(/\d+mg/i)?.[0] || '20mg',
+    inStock: !wp.isSoldOut,
+    flavors: wp.flavors,
+    description: `Buy ${wp.title} in UAE online from Vape Stall. Guaranteed 100% authentic with fast same-day delivery in Dubai, Abu Dhabi, and across all UAE Emirates.`
+  }));
+
+  // Find product across all product sources
+  const allProducts: Product[] = [...products, ...shopProducts, ...offerProducts, ...wellnessAdapted];
+
   const product =
     allProducts.find((p) => {
       const pHandle = (p.handle || '').toLowerCase();
@@ -72,7 +107,7 @@ export default function ProductDetailPage() {
 
   const { addToCart, setIsCartOpen } = useCart();
 
-  // Dynamic gallery images
+  // Dynamic gallery images per product
   const vozolGallery = [
     '/images/products/vozol-star-main.png',
     '/images/products/vozol-star-blueberry-ice.png',
@@ -108,9 +143,11 @@ export default function ProductDetailPage() {
     ? kiefKingGallery
     : product.galleryImages && product.galleryImages.length > 0
     ? product.galleryImages
-    : kiefKingGallery;
+    : [product.image, product.altImage].filter(Boolean) as string[];
 
-  const [selectedImage, setSelectedImage] = useState<string>(gallery[0] || product.image);
+  const safeGallery = gallery.length > 0 ? gallery : [product.image];
+
+  const [selectedImage, setSelectedImage] = useState<string>(safeGallery[0] || product.image);
   const [selectedFlavor, setSelectedFlavor] = useState<string>('Select Flavour');
   const [quantityType, setQuantityType] = useState<'1pc' | '5pc'>('1pc');
   const [quantity, setQuantity] = useState<number>(1);
@@ -124,13 +161,15 @@ export default function ProductDetailPage() {
 
   // When product changes, reset selected image to the first in gallery
   useEffect(() => {
-    setSelectedImage(gallery[0] || product.image);
+    setSelectedImage(safeGallery[0] || product.image);
     setCurrentSlideIndex(0);
     setSelectedFlavor('Select Flavour');
-  }, [product.id, isVozol]);
+  }, [product.id, product.handle]);
 
-  // Pricing
-  const unitPrice = quantityType === '1pc' ? product.price : product.price * 5 - 10;
+  // Pricing normalization (in case legacy product price was 0.49 instead of 49.00)
+  const rawPrice = product.price || 49;
+  const basePrice = rawPrice < 1 ? rawPrice * 100 : rawPrice;
+  const unitPrice = quantityType === '1pc' ? basePrice : basePrice * 5 - 10;
   const totalPrice = (unitPrice * quantity).toFixed(2);
 
   // Sticky Add-To-Cart trigger
@@ -155,14 +194,20 @@ export default function ProductDetailPage() {
         'Peach Ice': '/images/products/vozol-star-peach-ice.png',
         'Strawberry Kiwi': '/images/products/vozol-star-strawberry-kiwi.png',
       }
-    : {
+    : isKiefKing
+    ? {
         'Cola Lime': '/images/products/kief-king-cola-lime-flv.png',
         'Grape': '/images/products/kief-king-grape.png',
         'Gum Mint': '/images/products/kief-king-gum-mint.png',
         'Lemon Lime': '/images/products/kief-king-lemon-lime.png',
         'Strawberry': '/images/products/kief-king-strawberry.png',
         'Watermelon': '/images/products/kief-king-watermelon.png',
-      };
+      }
+    : isMyle
+    ? {
+        'Frozen Mango': '/images/products/myle-meta-max-frozen-mango.png',
+      }
+    : {};
 
   const handleFlavorChange = (flavor: string) => {
     setSelectedFlavor(flavor);
@@ -172,15 +217,15 @@ export default function ProductDetailPage() {
   };
 
   const handlePrevThumb = () => {
-    const nextIdx = currentSlideIndex > 0 ? currentSlideIndex - 1 : gallery.length - 1;
+    const nextIdx = currentSlideIndex > 0 ? currentSlideIndex - 1 : safeGallery.length - 1;
     setCurrentSlideIndex(nextIdx);
-    setSelectedImage(gallery[nextIdx]);
+    setSelectedImage(safeGallery[nextIdx]);
   };
 
   const handleNextThumb = () => {
-    const nextIdx = currentSlideIndex < gallery.length - 1 ? currentSlideIndex + 1 : 0;
+    const nextIdx = currentSlideIndex < safeGallery.length - 1 ? currentSlideIndex + 1 : 0;
     setCurrentSlideIndex(nextIdx);
-    setSelectedImage(gallery[nextIdx]);
+    setSelectedImage(safeGallery[nextIdx]);
   };
 
   const handleAddToCart = () => {
@@ -314,17 +359,52 @@ export default function ProductDetailPage() {
     ['Safety Features', 'Anti-leak architecture, short-circuit protection, overcharge safeguards'],
   ];
 
+  // Dynamic flavors tailored for any other product
+  const genericFlavorsList: [string, string][] = (
+    product.flavors && product.flavors.length > 0
+      ? product.flavors.filter((f) => f !== 'Select Flavour')
+      : ['Blueberry Ice', 'Watermelon Ice', 'Mango Peach', 'Strawberry Kiwi', 'Double Mint', 'Grape Ice', 'Cola Lime']
+  ).map((flv: string) => [flv, `Authentic ${flv} blend delivering smooth vapor, rich aroma, and pure flavor satisfaction.`]);
+
+  // Dynamic specs table tailored for any other product
+  const genericSpecsTable: [string, string][] = [
+    ['Puff Count', product.puffs || 'High Capacity Puffs'],
+    ['Nicotine Strength', product.nicotine || '20mg / 50mg'],
+    ['Brand', product.brand || 'Vape Stall'],
+    ['Category', product.category || 'Disposable Vape'],
+    ['E-Liquid Capacity', 'Pre-filled reservoir'],
+    ['Battery', 'Built-in high-efficiency rechargeable battery'],
+    ['Charging System', 'USB Type-C Fast Charging'],
+    ['Coil Type', 'Advanced Mesh Coil Architecture'],
+    ['Vaping Style', 'MTL / DTL smooth draw'],
+    ['Activation', 'Draw-activated (inhale mechanism)'],
+    ['Safety Safeguards', 'Short-circuit protection, overcharge cutoff, anti-leak design'],
+  ];
+
   const currentFlavorsList: [string, string][] = isVozol
     ? vozolFlavorsList
     : isMyle
     ? myleFlavorsList
-    : kiefKingFlavorsList;
+    : isKiefKing
+    ? kiefKingFlavorsList
+    : genericFlavorsList;
 
   const currentSpecsTable: [string, string][] = isVozol
     ? vozolSpecsTable
     : isMyle
     ? myleSpecsTable
-    : kiefKingSpecsTable;
+    : isKiefKing
+    ? kiefKingSpecsTable
+    : genericSpecsTable;
+
+  // Short name for specifications box heading
+  const shortSpecsTitle = (() => {
+    if (isVozol) return "Vozol Star 40000 Specification's:";
+    if (isMyle) return "Myle Meta Max 18000 Specification's:";
+    if (isKiefKing) return "Kief King 35000 Specification's:";
+    const parts = product.name.split(' ');
+    return `${parts.slice(0, 3).join(' ')} Specification's:`;
+  })();
 
   const relatedList = allProducts
     .filter((p) => p.id !== product.id && p.category === product.category)
@@ -369,11 +449,24 @@ export default function ProductDetailPage() {
         <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-[#e2e8f0]/90 shadow-[0_2px_16px_rgba(37,64,111,0.05)]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 items-start">
             
-            {/* LEFT: MEDIA GALLERY */}
+            {/* LEFT: MEDIA GALLERY WITH PEDESTAL */}
             <div className="lg:col-span-6 space-y-4">
               
-              {/* Main Image Stage */}
+              {/* Main Image Stage (Circular Pedestal with Vape Stall watermark) */}
               <div className="relative aspect-square w-full rounded-2xl bg-[#ffffff] flex items-center justify-center p-4 sm:p-6 overflow-hidden group">
+                
+                {/* Vape Stall Logo Watermark (Top Right) */}
+                <div className="absolute top-4 right-4 z-10 w-12 h-12 opacity-35 pointer-events-none">
+                  <Image
+                    src="/images/header-logo.png"
+                    alt="Watermark"
+                    width={48}
+                    height={48}
+                    className="object-contain"
+                  />
+                </div>
+
+                {/* Primary Image */}
                 <Image
                   src={selectedImage}
                   alt={product.name}
@@ -387,7 +480,7 @@ export default function ProductDetailPage() {
                   type="button"
                   onClick={() => setShowZoomModal(true)}
                   aria-label="Zoom image"
-                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 hover:bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#25406F] transition-all shadow-sm"
+                  className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/80 hover:bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-[#25406F] transition-all shadow-sm"
                 >
                   <ZoomIn className="w-4 h-4" />
                 </button>
@@ -405,7 +498,7 @@ export default function ProductDetailPage() {
                 </button>
 
                 <div className="flex items-center gap-2.5 overflow-x-auto py-1 scrollbar-none flex-1 justify-center">
-                  {gallery.map((img, idx) => {
+                  {safeGallery.map((img, idx) => {
                     const isActive = selectedImage === img;
                     return (
                       <button
@@ -476,16 +569,10 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              {/* Specification Box (Light blue with orange vertical bar) */}
+              {/* Specification Box (Light blue with orange vertical bar matching Screenshot 1 & 2) */}
               <div className="bg-[#f3f6fb] border-l-4 border-[#F5A623] rounded-r-xl p-4 sm:p-5 text-xs text-[#374151] leading-relaxed space-y-1.5 my-2">
                 <p className="font-bold text-[#1a2b49] text-[13px] mb-2">
-                  {isVozol
-                    ? "Vozol Star 40000 Specification's:"
-                    : isMyle
-                    ? "Myle Meta Max 18000 Specification's:"
-                    : isKiefKing
-                    ? "Kief King 35000 Specification's:"
-                    : `${product.brand || 'Product'} Specification's:`}
+                  {shortSpecsTitle}
                 </p>
                 {isVozol ? (
                   <ul className="space-y-1 pl-1">
@@ -510,20 +597,30 @@ export default function ProductDetailPage() {
                     <li>• <strong className="font-bold text-[#1a2b49]">Display:</strong> LCD smart screen (Battery & E-Liquid)</li>
                     <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> MTL & DTL adjustable airflow</li>
                   </ul>
-                ) : (
+                ) : isKiefKing ? (
                   <ul className="space-y-1 pl-1">
-                    <li>• <strong className="font-bold text-[#1a2b49]">Puff Count:</strong> {product.puffs || 'Up to 35,000 puffs'}</li>
-                    <li>• <strong className="font-bold text-[#1a2b49]">Nicotine Strength:</strong> {product.nicotine || '3mg (0.3%)'}</li>
-                    <li>• <strong className="font-bold text-[#1a2b49]">E Liquid:</strong> Prefilled</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Puff Count:</strong> Up to 35,000 puffs</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Nicotine Strength:</strong> 3mg (0.3%)</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">E-Liquid:</strong> Prefilled</li>
                     <li>• <strong className="font-bold text-[#1a2b49]">Battery:</strong> 1100mAh rechargeable battery</li>
                     <li>• <strong className="font-bold text-[#1a2b49]">Charging system:</strong> USB Type-C Fast charging</li>
                     <li>• <strong className="font-bold text-[#1a2b49]">Coil Type:</strong> Mesh coil</li>
-                    <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> DTL(Direct to Lung)</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> DTL (Direct to Lung)</li>
+                  </ul>
+                ) : (
+                  <ul className="space-y-1 pl-1">
+                    <li>• <strong className="font-bold text-[#1a2b49]">Puff Count:</strong> {product.puffs || 'High Capacity Puffs'}</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Nicotine Strength:</strong> {product.nicotine || '20mg / 50mg'}</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">E Liquid:</strong> Prefilled</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Battery:</strong> Built-in rechargeable battery</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Charging system:</strong> USB Type-C Fast charging</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Coil Type:</strong> Advanced Mesh coil</li>
+                    <li>• <strong className="font-bold text-[#1a2b49]">Vaping Style:</strong> MTL / DTL smooth draw</li>
                   </ul>
                 )}
               </div>
 
-              {/* Flavor Selector */}
+              {/* Flavor Selector (Yellow Border matching Screenshot 3) */}
               <div className="space-y-1.5 pt-1">
                 <label htmlFor="flavor-select" className="block text-xs font-bold uppercase tracking-wider text-slate-700">
                   FLAVOUR
@@ -533,16 +630,14 @@ export default function ProductDetailPage() {
                     id="flavor-select"
                     value={selectedFlavor}
                     onChange={(e) => handleFlavorChange(e.target.value)}
-                    className="w-full appearance-none bg-white border border-slate-300 hover:border-[#F5A623] text-slate-700 text-sm rounded-full px-5 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#F5A623]/30 focus:border-[#F5A623] transition-colors cursor-pointer shadow-xs"
+                    className="w-full appearance-none bg-white border border-[#F5A623] text-slate-700 text-sm rounded-full px-5 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#F5A623]/30 transition-colors cursor-pointer shadow-xs"
                   >
                     <option value="Select Flavour">Select Flavour</option>
-                    {(product.flavors && product.flavors.length > 0 ? product.flavors : currentFlavorsList.map((f: [string, string]) => f[0]))
-                      .filter((f: string) => f !== 'Select Flavour')
-                      .map((flavor: string) => (
-                        <option key={flavor} value={flavor}>
-                          {flavor}
-                        </option>
-                      ))}
+                    {currentFlavorsList.map(([flavor]: [string, string]) => (
+                      <option key={flavor} value={flavor}>
+                        {flavor}
+                      </option>
+                    ))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#F5A623]">
                     <ChevronDown className="w-4 h-4 stroke-[2.5]" />
@@ -582,7 +677,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Total Price Box */}
-              <div className="bg-gradient-to-r from-[#f0f5ff] to-[#e8eef9] border border-[#bdd0f0] rounded-xl p-4 sm:p-5 flex items-center justify-between shadow-xs my-3">
+              <div className="bg-[#f0f5fa] border border-[#e2e8f0] rounded-xl p-4 sm:p-5 flex items-center justify-between shadow-xs my-3">
                 <div>
                   <span className="block text-xs font-bold text-[#25406F] uppercase tracking-wider">
                     TOTAL PRICE
@@ -651,22 +746,24 @@ export default function ProductDetailPage() {
                 </button>
               </div>
 
-              {/* Trust Badges Strip */}
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-4 text-xs text-slate-700">
-                <div className="flex items-center gap-1.5">
-                  <Truck className="w-4 h-4 text-slate-600" />
-                  <span>Free Shipping above 350</span>
+              {/* Trust Badges Container matching Screenshot 3 */}
+              <div className="bg-[#f8faff] border border-[#e5ecf6] rounded-xl p-3.5 sm:p-4 space-y-2 mt-4 text-xs text-slate-700">
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                  <div className="flex items-center gap-1.5 font-medium text-slate-700">
+                    <Truck className="w-4 h-4 text-slate-600 stroke-[1.8]" />
+                    <span>Free Shipping above 350</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 font-medium text-slate-700">
+                    <ShieldCheck className="w-4 h-4 text-slate-600 stroke-[1.8]" />
+                    <span>Secure Checkout</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 font-medium text-slate-700">
+                    <RotateCcw className="w-4 h-4 text-slate-600 stroke-[1.8]" />
+                    <span>Easy Returns</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-slate-600" />
-                  <span>Secure Checkout</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <RotateCcw className="w-4 h-4 text-slate-600" />
-                  <span>Easy Returns</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-slate-600" />
+                <div className="flex items-center gap-1.5 font-medium text-slate-700 pt-1 border-t border-slate-100/80">
+                  <CheckCircle2 className="w-4 h-4 text-slate-600 stroke-[1.8]" />
                   <span>Quality Guaranteed</span>
                 </div>
               </div>
@@ -890,7 +987,7 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
 
-                  {/* Why Choose Section (Light-blue cards with dark blue checkmarks) */}
+                  {/* Why Choose Section */}
                   <div className="pt-6 space-y-3">
                     <h2 className="vap-heading-highlight">
                       Why choose Vozol Star 40000 Puff Vape
@@ -898,77 +995,32 @@ export default function ProductDetailPage() {
                     <p className="text-slate-600 text-xs sm:text-sm">
                       When choosing a vape, think beyond puffs. Focus on creating a reliable, flavorful, and tailored experience for each session. The Vozol Star 40K is designed to push the limits of endurance and pairs the precision of dual mesh coils with adjustable airflow control and intelligent LED monitoring to deliver a vape to fit your style. With smooth nicotine delivery to a bold flavor clarity, Vozol star is made to satisfy the demands of Dubai vapers who want both performance and ease of use.
                     </p>
-                    
-                    <div className="space-y-2.5 pt-2">
-                      {[
-                        'Smart LED Screen: Built-in LED screen displays real-time battery life and e-liquid levels. It is an easy but powerful method to keep your vaping experience in your hands.',
-                        'Flavor clarity: Dual mesh coil technology brings out the depth and consistency of each flavor, from cooling mint to exotic fruit blends. The coil produces a steady vapor without dry hits, bringing out the richness in each flavor blend.',
-                        'Smooth Nicotine Delivery: Star 40K has a smoothness and satisfaction level at 20mg nicotine strength. It is engineered to provide a uniform throat hit that feels natural and consistent throughout all 40,000 puffs.',
-                        'Adjustable airflow: A built in airflow slider lets you dial in your draw. If you like a tight MTL draw or a looser, cloudier hit, the Star 40K can be instantly adjusted to your liking.',
-                        'Trusted Reliability: This Vozol disposable vape is 100% ESMA compliant. It has leak-proof and safety features. It\'s made to meet UAE quality and performance standards.'
-                      ].map((item, i) => (
-                        <div key={i} className="bg-[#f0f5fb] border border-[#d4e1f4] hover:bg-[#e8f0fb] hover:border-[#25406f] rounded-xl p-3.5 sm:p-4 flex items-center gap-3 transition-colors">
-                          <div className="w-5 h-5 rounded-full bg-[#25406f] flex items-center justify-center flex-shrink-0">
-                            <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 10 8" fill="none">
-                              <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </div>
-                          <p className="text-xs sm:text-sm text-[#374151] leading-snug">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-
-                    <p className="text-slate-600 text-xs sm:text-sm pt-2">
-                      Vape Stall online store has Vozol Star 40000 puff vape for sale in Dubai, UAE with fast shipping, cash on delivery and same day delivery options. Buy Vozol Star 40000 puff vape in Dubai online and get it delivered to your doorstep with ease.
-                    </p>
-
-                    {/* Extra Heading */}
-                    <div className="pt-4 space-y-2">
-                      <h2 className="vap-heading-highlight">
-                        Buy Vozol Star 40000 Puff Vape in UAE
-                      </h2>
-                      <p className="text-slate-600 text-xs sm:text-sm">
-                        The Vozol Star 40000 Puff Vape features dual mesh coil heating, adjustable airflow, LED screen display, USB-C fast charging, and advanced safety features. It has 850mAh rechargeable battery, large prefilled reservoir and up to 40,000 puffs. That makes it a device for vapers who are seeking for customizable performance and long-lasting satisfaction.
-                      </p>
-                      <p className="text-slate-600 text-xs sm:text-sm">
-                        Ready to elevate your sessions? Buy Vozol Star 40000 puff 20mg nicotine vape in UAE today with same day delivery, cash on delivery options and get the best price for Vozol Star 40K in AED. Order now from the Vape Stall, trusted vape shops in UAE and enjoy a premium disposable electronic cigarette with innovation, safety and flavor variety.
-                      </p>
-                    </div>
-
                   </div>
                 </div>
               ) : isMyle ? (
                 /* MYLE META MAX 18000 DESCRIPTION */
                 <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
                   <h1 className="text-xl sm:text-2xl font-extrabold text-center text-[#25406f]">
-                    Buy Myle Meta Max 18000 Puff 50mg Disposable Vape in UAE – Advanced Dual Mesh Smart Display Vape
+                    Buy Myle Meta Max 18000 Puff 50mg Disposable Vape in UAE – Supreme Flavor &amp; Advanced Dual Mesh Technology
                   </h1>
                   <p>
-                    If you are searching for a high-performance disposable vape that combines advanced technology and generous puff capacity, the Myle Meta Max 18000 puffs disposable vape is designed to deliver top satisfaction. It features a sleek ergonomic body, dual mesh coil atomizer, 850mAh Type-C rechargeable battery, and up to 18,000 flavorful puffs. This modern device ensures consistent flavor delivery, dense vapor clouds, and a smooth throat hit with 50mg salt nicotine from first to last puff. The Myle Meta Max 18k stands out in the UAE vape market for its premium reliability and innovation.
+                    Experience the pinnacle of vaping satisfaction with the Myle Meta Max 18000 Puff Disposable Vape in UAE. Engineered with cutting-edge Dual Mesh coil technology, high 18ml e-liquid capacity, and a responsive smart LCD display, this premium device delivers exceptional flavor authenticity and satisfying clouds from first puff to last.
                   </p>
                   <p>
-                    You can Buy Myle Meta Max 18000 Puff 50mg Disposable Vape in UAE from{' '}
+                    Buy Myle Meta Max 18000 Puff 50mg Disposable Vape in UAE from{' '}
                     <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
                       Vape Stall
-                    </Link>
-                    . We offer authentic devices, competitive prices, and fast same-day shipping across Dubai and all 7 Emirates. Whether you seek long-lasting convenience or intense fruit and mint flavors, the Myle Meta Max is the premier choice for adult vapers.
+                    </Link>{' '}
+                    with fast same-day delivery in Dubai, Sharjah, Ajman, and express delivery across Abu Dhabi and all UAE Emirates.
                   </p>
 
                   <div className="pt-2">
                     <h2 className="vap-heading-highlight">
                       Myle Meta Max 18000 – Product Overview
                     </h2>
-                    <div className="space-y-4 text-slate-700 leading-relaxed text-xs sm:text-sm">
-                      <p>
-                        The Myle Meta Max 18000 disposable vape is engineered for vapers seeking maximum endurance, precision airflow control, and rich flavor clarity. Its pocket-friendly design makes it comfortable to carry anywhere across Dubai and the UAE. Equipped with dual mesh coil technology, it heats e-liquid evenly to produce full-bodied vapor and rich flavor reproduction without dry hits. Its 850mAh built-in battery fast charges via Type-C, while the large 18ml prefilled tank ensures weeks of uninterrupted vaping sessions with satisfying 50mg nicotine salt hits.
-                      </p>
-                      <p>
-                        Stay in complete control of your vaping session with the integrated smart LCD display that accurately shows real-time battery life and remaining e-liquid levels. An adjustable airflow slider allows you to effortlessly transition between a restricted Mouth-to-Lung (MTL) draw and an airy Direct-to-Lung (DTL) experience according to your preference.
-                      </p>
-                      <p>
-                        This high-capacity vape is built with multi-layered leak-proof architecture, short-circuit prevention, and overcharge protection to guarantee dependable operation. The Myle Meta Max 18000 fully complies with UAE ESMA standards for electronic cigarette products and provides peace of mind for quality-conscious consumers.
-                      </p>
-                    </div>
+                    <p>
+                      The Myle Meta Max 18000 brings the renowned Myle vaping elegance to the high-capacity disposable realm. Powered by an 850mAh rechargeable battery with USB Type-C rapid charging, it guarantees uninterrupted performance. The device features an intuitive smart screen that monitors battery life and e-liquid reserves in real time.
+                    </p>
                   </div>
 
                   {/* Available Flavors Section */}
@@ -976,7 +1028,7 @@ export default function ProductDetailPage() {
                     <h3 className="text-base sm:text-lg font-bold text-[#25406f] mb-4">
                       Available Flavours
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-3.5">
                       {myleFlavorsList.map(([name, desc]: [string, string]) => (
                         <div
                           key={name}
@@ -1016,25 +1068,105 @@ export default function ProductDetailPage() {
                       </table>
                     </div>
                   </div>
+                </div>
+              ) : isKiefKing ? (
+                /* KIEF KING 35000 DESCRIPTION */
+                <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
+                  <h1 className="text-xl sm:text-2xl font-extrabold text-center text-[#25406f]">
+                    Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE – Ultra High Puff Mesh Coil Device
+                  </h1>
+                  <p>
+                    If you are searching for a disposable vape that combines advanced technology and high puff capacity, The Kief King 35000 puffs disposable vape is made to meet this need. It has a sleek body, mesh coil atomizer, Type-C rechargeable battery and extraordinary 35,000 puff count. This is a modern vape device and it ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff. This disposable vape stands out in the Dubai vape market as a high puff disposable vape. The Kief King 35k is built for convenience and performance.
+                  </p>
+                  <p>
+                    You can Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE from{' '}
+                    <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
+                      Vape Stall
+                    </Link>
+                    . We offer low prices and fast shipping. Kief King vape can be a good choice if you are looking for a kief king high puff vape, a long lasting disposable vape, or just want to enjoy strong shisha flavors. It is also a popular kief king disposable vape uae option for adult users.
+                  </p>
 
-                  {/* Why Choose Section */}
+                  <div className="pt-2">
+                    <h2 className="vap-heading-highlight">
+                      Kief King 35000 – Product Overview
+                    </h2>
+                    <div className="space-y-4 text-slate-700 leading-relaxed text-xs sm:text-sm">
+                      <p>
+                        The Kief King disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor. Its Type-C rechargeable battery supports extended use, on the other hand large prefilled e-liquid reservoir and high capacity e-liquid setup guarantee long sessions without flavor fade. With nicotine 3mg strength balances smooth throat hits and long vaping sessions. That makes it a strong smoking alternative for adult vape users. The inhale activated device system eliminates buttons and offers an easy natural draw. It works as a convenient prefilled vape device for everyday use.
+                      </p>
+                      <p>
+                        This high puff capacity vape offers safety features like leak proof design, short circuit prevention, and overcharge safeguards ensure reliability across thousands of draws. Kief King 35000 complies with ESMA standards UAE for disposable electronic cigarette products and aligns with UAE vape regulations.
+                      </p>
+                      <p>
+                        Kief King 35000 offers a variety of flavor experience designed for every kind of vaper. Whether you prefer classic Double Apple, Grape, fruity blends like Strawberry, Mango, and Blueberry Raspberry or exotic mixes such as Love 66 and Lady Killer, offers a wide flavor portfolio designed to satisfy diverse tastes. Combined with its mesh coil atomizer, every flavor profile is delivered with clarity, richness, and smooth exhale. This makes it a dependable vaping device in the growing vaping culture UAE.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Available Flavors Section */}
+                  <div className="pt-4">
+                    <h3 className="text-base sm:text-lg font-bold text-[#25406f] mb-4">
+                      Available Flavours
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+                      {kiefKingFlavorsList.map(([name, desc]: [string, string]) => (
+                        <div
+                          key={name}
+                          onClick={() => handleFlavorChange(name)}
+                          className="bg-[#f8faff] border border-[#e2eaf5] hover:border-[#f5a623] hover:shadow-[0_6px_20px_rgba(245,166,35,0.15)] hover:bg-[#fffef8] rounded-xl p-3.5 flex items-start gap-2.5 transition-all duration-200 cursor-pointer shadow-xs group"
+                        >
+                          <span className="w-2 h-2 rounded-full bg-gradient-to-br from-[#f5a623] to-[#d4870a] shadow-[0_0_0_3px_rgba(245,166,35,0.18)] mt-1.5 flex-shrink-0 group-hover:scale-110 transition-transform"></span>
+                          <p className="text-xs sm:text-[13px] text-slate-700 leading-snug">
+                            <strong className="font-bold text-[#25406f]">{name}</strong> – {desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Key Features & Specifications Table */}
+                  <div className="pt-6">
+                    <h2 className="vap-heading-highlight">
+                      Key Features &amp; Specifications
+                    </h2>
+                    <div className="overflow-x-auto rounded-xl border border-slate-200">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-[#1d335d] text-white">
+                            <th className="p-3.5 font-bold w-1/4 text-center">Feature</th>
+                            <th className="p-3.5 font-bold w-3/4 text-center">Details</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200 bg-white text-slate-800">
+                          {kiefKingSpecsTable.map(([feat, det]: [string, string]) => (
+                            <tr key={feat}>
+                              <td className="p-3 text-center font-bold bg-slate-50">{feat}</td>
+                              <td className="p-3 text-center font-semibold">{det}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Why Choose Kief King */}
                   <div className="space-y-6 pt-6">
                     <div className="space-y-3">
                       <h2 className="vap-heading-highlight">
-                        Why Choose Myle Meta Max 18000 Puff Vape?
+                        Why Choose Kief King 35000 Puff Vape?
                       </h2>
                       <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
-                        The Myle Meta Max 18000 combines cutting-edge vape engineering, smart LCD monitoring, and exceptional flavor craftsmanship. Designed for adult consumers demanding quality and longevity, it offers unmatched value in the UAE disposable vape landscape.
+                        The Kief King 35000 is built for vapers who want maximum longevity and bold flavor delivery in one device. This vape is positioned in the high puff capacity disposable vape category. It combines mesh coil technology, Type-C rechargeable convenience, and shisha-inspired blends to create a disposable vape that feels powerful yet easy to use.
                       </p>
                       <div className="space-y-2 pt-1">
                         {[
-                          'Mega 18,000 puff capacity for weeks of smooth, satisfying vaping.',
-                          'Dual mesh coil system ensuring maximum flavor clarity and cloud density.',
-                          'Real-time smart LCD screen monitoring battery life and e-liquid level.',
-                          '850mAh rechargeable battery with rapid USB Type-C fast charging.',
-                          'Adjustable airflow control to customize between tight MTL and loose DTL draws.',
-                          '100% leak-proof build and ESMA compliant safety safeguards.',
-                          'Available at Vape Stall with guaranteed authenticity and same-day Dubai delivery.'
+                          'Mega puff capacity: 35,000 puffs designed for uninterrupted, long-lasting sessions.',
+                          'Mesh coil performance: Smooth vapor with clear, rich flavor notes.',
+                          'Rechargeable convenience: Type-C charging ensures extended usability.',
+                          'Bold shisha flavors: Inspired Shisha blends like Double Apple, Love 66, Lady Killer, and Dubai Pistachio.',
+                          'Lifestyle fit: Designed for adult vapers who enjoy long sessions and cloud chasing.',
+                          'Reliability: Leak-proof build and consistent performance across flavors with leak-proof device protection.',
+                          'Available at Vape Stall: Authentic devices, fast delivery in Dubai, and the best deal on Kief King 35000 in UAE.'
                         ].map((item, i) => (
                           <div key={i} className="bg-[#f0f5fb] border border-[#d4e1f4] hover:bg-[#e8f0fb] hover:border-[#25406f] rounded-xl p-3.5 sm:p-4 flex items-center gap-3 transition-colors">
                             <div className="w-5 h-5 rounded-full bg-[#25406f] flex items-center justify-center flex-shrink-0">
@@ -1047,79 +1179,29 @@ export default function ProductDetailPage() {
                         ))}
                       </div>
                     </div>
-
-                    <div className="space-y-3 pt-2">
-                      <h2 className="vap-heading-highlight">
-                        Order Myle Meta Max 18000 Puff Disposable Vape in UAE
-                      </h2>
-                      <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
-                        Order your genuine Myle Meta Max 18000 Puff 50mg Disposable Vape today from{' '}
-                        <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
-                          Vape Stall
-                        </Link>
-                        , the trusted online vape store in Dubai, UAE. We provide fast same-day delivery in Dubai, Sharjah, and Ajman, and rapid express delivery to Abu Dhabi, Al Ain, Fujairah, and Ras Al Khaimah.
-                      </p>
-                      <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
-                        Enjoy flexible payment options including Cash on Delivery (COD) and card payments, backed by our 100% authenticity guarantee and responsive customer support.
-                      </p>
-                    </div>
                   </div>
                 </div>
               ) : (
-                /* KIEF KING / DEFAULT DESCRIPTION */
+                /* DYNAMIC GENERIC PRODUCT DESCRIPTION */
                 <div className="space-y-6 text-[#374151] text-sm leading-relaxed">
                   <h1 className="text-xl sm:text-2xl font-extrabold text-center text-[#25406f]">
-                    {isKiefKing
-                      ? 'Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE – Ultra High Puff Mesh Coil Device'
-                      : `Buy ${product.name} in UAE – Ultra High Puff Mesh Coil Device`}
+                    Buy {product.name} in UAE – 100% Authentic Online Vape Store
                   </h1>
                   <p>
-                    {isKiefKing
-                      ? 'If you are searching for a disposable vape that combines advanced technology and high puff capacity, The Kief King 35000 puffs disposable vape is made to meet this need. It has a sleek body, mesh coil atomizer, Type-C rechargeable battery and extraordinary 35,000 puff count. This is a modern vape device and it ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff. This disposable vape stands out in the Dubai vape market as a high puff disposable vape. The Kief King 35k is built for convenience and performance.'
-                      : (product.description ||
-                        'If you are searching for a disposable vape that combines advanced technology and high puff capacity, this device is made to meet this need. It ensures smooth flavor delivery, dense vapor clouds and a satisfying throat hit from first to last puff.')}
+                    {product.description ||
+                      `Buy ${product.name} online in UAE from Vape Stall. Guaranteed 100% authentic with fast same-day delivery across Dubai, Abu Dhabi, Sharjah, Ajman, and all Emirates. Enjoy rich taste, durable performance, and unmatched quality.`}
                   </p>
                   <p>
-                    {isKiefKing ? (
-                      <>
-                        You can Buy Kief King 35000 Puffs 3mg Disposable Vape in UAE from{' '}
-                        <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
-                          Vape Stall
-                        </Link>
-                        . We offer low prices and fast shipping. Kief King vape can be a good choice if you are looking for a kief king high puff vape, a long lasting disposable vape, or just want to enjoy strong shisha flavors. It is also a popular kief king disposable vape uae option for adult users.
-                      </>
-                    ) : (
-                      <>
-                        You can Buy {product.name} in UAE from{' '}
-                        <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
-                          Vape Stall
-                        </Link>
-                        . We offer low prices and fast shipping cash on delivery across UAE.
-                      </>
-                    )}
+                    You can Buy {product.name} in UAE with low prices, fast express shipping, and Cash on Delivery (COD) options available across the entire United Arab Emirates.
                   </p>
 
                   <div className="pt-2">
                     <h2 className="vap-heading-highlight">
-                      {isKiefKing ? 'Kief King 35000 – Product Overview' : 'Product Overview'}
+                      Product Overview
                     </h2>
-                    {isKiefKing ? (
-                      <div className="space-y-4 text-slate-700 leading-relaxed text-xs sm:text-sm">
-                        <p>
-                          The Kief King disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor. Its Type-C rechargeable battery supports extended use, on the other hand large prefilled e-liquid reservoir and high capacity e-liquid setup guarantee long sessions without flavor fade. With nicotine 3mg strength balances smooth throat hits and long vaping sessions. That makes it a strong smoking alternative for adult vape users. The inhale activated device system eliminates buttons and offers an easy natural draw. It works as a convenient prefilled vape device for everyday use.
-                        </p>
-                        <p>
-                          This high puff capacity vape offers safety features like leak proof design, short circuit prevention, and overcharge safeguards ensure reliability across thousands of draws. Kief King 35000 complies with ESMA standards UAE for disposable electronic cigarette products and aligns with UAE vape regulations.
-                        </p>
-                        <p>
-                          Kief King 35000 offers a variety of flavor experience designed for every kind of vaper. Whether you prefer classic Double Apple, Grape, fruity blends like Strawberry, Mango, and Blueberry Raspberry or exotic mixes such as Love 66 and Lady Killer, offers a wide flavor portfolio designed to satisfy diverse tastes. Combined with its mesh coil atomizer, every flavor profile is delivered with clarity, richness, and smooth exhale. This makes it a dependable vaping device in the growing vaping culture UAE.
-                        </p>
-                      </div>
-                    ) : (
-                      <p>
-                        This premium disposable vape is made for users who need modern convenience, flavor consistency, and longevity. Its compact vape design makes it easy to carry as a portable vape device. This device features advanced mesh coil technology to enhance vapor density and every puff delivers its full flavor.
-                      </p>
-                    )}
+                    <p>
+                      {product.name} is engineered to deliver a seamless vaping experience with high efficiency and robust flavor output. Featuring a precision heating coil, long-lasting battery life, and compact ergonomic design, this device ensures consistent satisfaction from the very first draw to the end of the reservoir.
+                    </p>
                   </div>
 
                   {/* Available Flavors Section */}
@@ -1127,7 +1209,7 @@ export default function ProductDetailPage() {
                     <h3 className="text-base sm:text-lg font-bold text-[#25406f] mb-4">
                       Available Flavours
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-3.5">
                       {currentFlavorsList.map(([name, desc]: [string, string]) => (
                         <div
                           key={name}
@@ -1167,61 +1249,6 @@ export default function ProductDetailPage() {
                       </table>
                     </div>
                   </div>
-
-                  {isKiefKing && (
-                    <div className="space-y-6 pt-6">
-                      <div className="space-y-3">
-                        <h2 className="vap-heading-highlight">
-                          Why Choose Kief King 35000 Puff Vape?
-                        </h2>
-                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
-                          The Kief King 35000 is built for vapers who want maximum longevity and bold flavor delivery in one device. This vape is positioned in the high puff capacity disposable vape category. It combines mesh coil technology, Type-C rechargeable convenience, and shisha-inspired blends to create a disposable vape that feels powerful yet easy to use. This disposable vape device fits users searching for a rechargeable disposable vape, mesh coil disposable vape, and type c rechargeable vape in one package.
-                        </p>
-                        <div className="space-y-2 pt-1">
-                          {[
-                            'Mega puff capacity: 35,000 puffs designed for uninterrupted, long-lasting sessions.',
-                            'Mesh coil performance: Smooth vapor with clear, rich flavor notes.',
-                            'Rechargeable convenience: type c charging ensures extended usability.',
-                            'Bold shisha flavors: Inspired Shisha blends like Double Apple, Love 66, Lady Killer, and Dubai Pistachio.',
-                            'Lifestyle fit: Designed for adult vapers who enjoy long sessions and cloud chasing.',
-                            'Reliability: Leak-proof build and consistent performance across flavors with leak proof vape device protection.',
-                            'Available at Vape Stall: Authentic devices, fast delivery in Dubai, and the best deal on Kief King 35000 in UAE from an online vape store UAE and trusted premium vape brand collection.'
-                          ].map((item, i) => (
-                            <div key={i} className="bg-[#f0f5fb] border border-[#d4e1f4] hover:bg-[#e8f0fb] hover:border-[#25406f] rounded-xl p-3.5 sm:p-4 flex items-center gap-3 transition-colors">
-                              <div className="w-5 h-5 rounded-full bg-[#25406f] flex items-center justify-center flex-shrink-0">
-                                <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 10 8" fill="none">
-                                  <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                              </div>
-                              <p className="text-xs sm:text-sm text-[#374151] leading-snug">{item}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="space-y-3 pt-2">
-                        <h2 className="vap-heading-highlight">
-                          Order Kief King 35000 Puffs Disposable Vape in UAE
-                        </h2>
-                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
-                          The Kief King 35000 puffs disposable vape dubai option is an elegant high puff capacity vape that brings together technology, flavor, and lifestyle. It stands out in the high puff disposable vape category with mesh coil atomizer, Type-C rechargeable battery, low nicotine and massive 35,000 puff count. Delivers smooth throat hits, bold shisha flavors and consistent vapor clouds for weeks of uninterrupted use. This vape is made with leak-proof design and modern portability. It is one of the most reliable long-lasting disposable vapes in Dubai.
-                        </p>
-                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
-                          You can buy kief king vape online from{' '}
-                          <Link href="/collections/vape-stall-disposable-vape-shop-in-uae" className="text-[#25406F] font-semibold underline hover:text-[#1a2f52]">
-                            Vape Stall
-                          </Link>
-                          , with fast service and vape delivery Dubai available across the UAE. Cash on Delivery is also available in Dubai, Palm Jumeirah, Sharjah, Abu Dhabi, Ajman, Umm Al Quwain, Ras Al Khaimah, and Fujairah with discount pricing, ensuring convenience and value wherever you are. This makes it a trusted Kief King UAE choice.
-                        </p>
-                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
-                          Vape Stall provides guaranteed authenticity and kief king 35000 price dubai kept competitive. Seasonal discounts, market best prices and attractive deals are always available, including cheap kief king vape uae offers.
-                        </p>
-                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
-                          Ready to enjoy a 35,000 puff shisha-style vape from a trusted Dubai vape store? Explore and buy Kief King 35000 Puffs 3mg Disposable Vape in UAE from Vape Stall and take advantage of same-day delivery across Dubai and UAE, friendly customer support and real deals.
-                        </p>
-                      </div>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
@@ -1501,6 +1528,38 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
+
+      {/* ========================================================
+          10. STICKY BOTTOM ADD TO CART BAR (Matching vapstall.ae 1:1)
+         ======================================================== */}
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 py-2.5 px-4 sm:px-8 z-30 flex items-center justify-between shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-lg bg-slate-50 border border-slate-200 overflow-hidden flex-shrink-0">
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-contain p-0.5 sm:p-1"
+            />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[11.5px] sm:text-[13px] font-bold text-[#1a2b49] truncate max-w-[170px] sm:max-w-md">
+              {product.name}
+            </p>
+            <p className="text-xs sm:text-[13px] font-extrabold text-[#25406F]">
+              {product.priceFormatted}
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          className="h-9 sm:h-10 px-5 sm:px-7 rounded-full bg-[#25406F] hover:bg-[#1a2f52] text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-sm flex items-center justify-center flex-shrink-0 active:scale-95 cursor-pointer"
+        >
+          Add to cart
+        </button>
+      </div>
 
     </div>
   );

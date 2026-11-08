@@ -59,12 +59,30 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
   const link = p?.link || (handle ? `/products/${handle}` : '#');
   const isSoldOut = Boolean(p?.isOutOfStock || p?.isSoldOut || (p?.inStock === false));
   
-  const currentPrice = p?.priceFormatted || 
-    (typeof p?.price === 'string' ? p.price : (p?.price ? `Dhs. ${p.price}.00` : ''));
+  // Format price cleanly
+  let rawPrice = p?.price;
+  let priceStr = p?.priceFormatted;
+  if (typeof rawPrice === 'number' && rawPrice > 0 && rawPrice < 1) {
+    rawPrice = Math.round(rawPrice * 100);
+    priceStr = `Dhs. ${rawPrice}.00`;
+  }
+  if (!priceStr) {
+    if (typeof rawPrice === 'number') {
+      priceStr = `Dhs. ${rawPrice.toFixed(2)}`;
+    } else if (typeof rawPrice === 'string') {
+      priceStr = rawPrice.startsWith('Dhs.') ? rawPrice : `Dhs. ${rawPrice}`;
+    } else {
+      priceStr = 'Dhs. 50.00';
+    }
+  }
+  const currentPrice = priceStr;
     
-  const comparePrice = p?.originalPriceFormatted || p?.comparePriceFormatted || 
+  let comparePrice = p?.originalPriceFormatted || p?.comparePriceFormatted || 
     (typeof p?.comparePrice === 'string' ? p.comparePrice : '') || 
     (p?.oldPrice ? p.oldPrice : '');
+  if (typeof comparePrice === 'number' && comparePrice > 0 && comparePrice < 1) {
+    comparePrice = `Dhs. ${(comparePrice * 100).toFixed(2)}`;
+  }
     
   const saleBadge = p?.badge || p?.saleBadge || '';
 
@@ -89,14 +107,14 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
   // Extract and clean flavors (filter out "Select Flavour" placeholder)
   const rawFlavors: string[] = p?.flavors && Array.isArray(p.flavors) && p.flavors.length > 0 
     ? p.flavors 
-    : ['Default Flavor'];
+    : ['Banana Ice', 'Blueberry Ice', 'Double Apple', 'Watermelon Ice'];
   const validFlavors = rawFlavors.filter((f: string) => f && f.toLowerCase() !== 'select flavour');
-  const flavors: string[] = validFlavors.length > 0 ? validFlavors : ['Default Flavor'];
+  const flavors: string[] = validFlavors.length > 0 ? validFlavors : ['Banana Ice', 'Blueberry Ice'];
 
-  // Extract quantity types
+  // Extract quantity types (matching 1:1 with vapstall.ae: 1Pc/1Device, 5Pc/1Box)
   const quantityTypes: string[] = p?.quantityTypes && Array.isArray(p.quantityTypes) && p.quantityTypes.length > 0
     ? p.quantityTypes
-    : ['1Pc/1Device', '10Pc/1Box'];
+    : ['1Pc/1Device', '5Pc/1Box'];
 
   // Initialize selections when product changes
   useEffect(() => {
@@ -157,11 +175,26 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
     setCurrentSlide((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
   };
 
+  const handleSelectFlavor = (flavor: string) => {
+    setSelectedFlavor(flavor);
+    // Attempt to match flavor keyword to image in gallery
+    const keywords = flavor.toLowerCase().replace(/[^a-z0-9]/g, ' ').split(' ').filter(w => w.length > 3);
+    if (keywords.length > 0) {
+      const matchIdx = allImages.findIndex((img) => {
+        const lower = img.toLowerCase();
+        return keywords.some((kw) => lower.includes(kw));
+      });
+      if (matchIdx !== -1) {
+        setCurrentSlide(matchIdx);
+      }
+    }
+  };
+
   const handleAddToCart = () => {
     if (!product || isSoldOut) return;
 
     const numericPrice = p.numericPrice || 
-      (typeof p.price === 'number' ? p.price : parseFloat(String(currentPrice).replace(/[^0-9.]/g, '')) || 45);
+      (typeof p.price === 'number' ? p.price : parseFloat(String(currentPrice).replace(/[^0-9.]/g, '')) || 50);
 
     addToCart(
       {
@@ -172,7 +205,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
         priceFormatted: currentPrice,
         originalPriceFormatted: comparePrice || undefined,
         rating: p.rating || 5,
-        reviewsCount: p.reviewsCount || 45,
+        reviewsCount: p.reviewsCount || 50,
         image: allImages[0] || '/images/products/kief-king-main.png',
         category: p.category || 'Disposable Vape',
         brand: p.brand || title.split(' ')[0],
@@ -228,9 +261,9 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
         </button>
 
         <div className="vap-qv-body">
-          {/* Gallery Carousel */}
+          {/* Gallery Carousel (Circular Pedestal) */}
           <div className="vap-qv-gallery">
-            {/* Vape Stall Logo Watermark */}
+            {/* Vape Stall Logo Watermark (Top Right) */}
             <div className="vap-qv-watermark">
               <Image
                 src="/images/banners/wellness-promo-logo.png"
@@ -255,7 +288,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                     alt={`${title} - view ${idx + 1}`}
                     width={460}
                     height={460}
-                    className="object-contain"
+                    className="object-contain drop-shadow-md"
                     priority={idx === 0}
                   />
                 </div>
@@ -345,9 +378,9 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
               {flavors.length > 0 && (
                 <div className="vap-qv-option-group">
                   <p className="vap-qv-option-label">
-                    FLAVOR: <span className="vap-qv-option-selected">{selectedFlavor}</span>
+                    FLAVOUR: <span className="vap-qv-option-selected">{selectedFlavor}</span>
                   </p>
-                  <div className="vap-qv-option-values max-h-[160px] overflow-y-auto pr-1">
+                  <div className="vap-qv-option-values max-h-[170px] overflow-y-auto pr-1">
                     {flavors.map((flavor) => {
                       const isSelected = selectedFlavor === flavor;
                       return (
@@ -355,7 +388,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                           key={flavor}
                           type="button"
                           className={`vap-qv-opt-btn ${isSelected ? 'is-selected' : ''}`}
-                          onClick={() => setSelectedFlavor(flavor)}
+                          onClick={() => handleSelectFlavor(flavor)}
                         >
                           {flavor}
                         </button>

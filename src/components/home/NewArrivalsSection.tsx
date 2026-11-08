@@ -4,14 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { ProductCard } from '@/components/product/ProductCard';
-import { QuickViewModal } from '@/components/product/QuickViewModal';
 
 interface NewArrivalsSectionProps {
   products: Product[];
 }
 
 export const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({ products }) => {
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -82,7 +80,6 @@ export const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({ products
             >
               <ProductCard
                 product={product}
-                onQuickView={(p) => setQuickViewProduct(p)}
               />
             </div>
           ))}
@@ -116,12 +113,6 @@ export const NewArrivalsSection: React.FC<NewArrivalsSectionProps> = ({ products
         </div>
 
       </div>
-
-      {/* Quick View Modal */}
-      <QuickViewModal
-        product={quickViewProduct}
-        onClose={() => setQuickViewProduct(null)}
-      />
     </section>
   );
 };

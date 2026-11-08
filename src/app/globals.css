@@ -1465,6 +1465,111 @@ a.vap-brand-item:hover img {
   }
 }
 
+/* ── Disposable Vape Mega Menu (1:1 with vapstall.ae) ── */
+.vap-mm-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #15284B;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  animation: vap-mm-fade 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes vap-mm-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vap-mm-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.vap-mm-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+.vap-mm-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+}
+
+.vap-mm-scroll::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+
+.vap-mm-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.vap-mm-no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── Vapstall Product Card Cart Button (vap-cart & vap-cart-icon 1:1 with vapstall.ae) ── */
+.vap-cart {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1px solid rgba(37, 64, 111, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+@media (max-width: 639px) {
+  .vap-cart {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+}
+
+.vap-cart:hover {
+  background: #e2e8f0;
+  border-color: rgba(37, 64, 111, 0.2);
+  transform: scale(1.08);
+  box-shadow: 0 3px 8px rgba(37, 64, 111, 0.12);
+}
+
+.vap-cart:active {
+  transform: scale(0.95);
+}
+
+.vap-cart-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+@media (max-width: 639px) {
+  .vap-cart-icon {
+    width: 15px;
+    height: 15px;
+  }
+}
+
 /* ── Vap Quick View Popup Modal (vap-quick-view from vapstall.ae) ── */
 .vap-qv-overlay {
   position: fixed;

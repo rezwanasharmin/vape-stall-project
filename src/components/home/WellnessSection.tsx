@@ -3,26 +3,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { QuickViewModal, QuickViewProductData } from '@/components/product/QuickViewModal';
+import { useRouter } from 'next/navigation';
+import { useQuickView } from '@/context/QuickViewContext';
 
-interface WellnessProduct extends QuickViewProductData {
+export interface WellnessProduct {
   id: string;
+  name: string;
   title: string;
   badge?: string;
   saleBadge?: string;
   price: string;
+  priceFormatted?: string;
   oldPrice?: string;
   comparePrice?: string;
   img: string;
   galleryImages: string[];
   flavors: string[];
-  quantityTypes: string[];
+  quantityTypes?: string[];
   link: string;
   numericPrice: number;
   isSoldOut?: boolean;
 }
 
-const leftProducts: WellnessProduct[] = [
+export const leftProducts: WellnessProduct[] = [
   {
     id: 'well-1',
     name: 'Al Fakher crown bar ultra 25000 puff 5mg in UAE',
@@ -138,7 +141,7 @@ const leftProducts: WellnessProduct[] = [
   },
 ];
 
-const rightProducts: WellnessProduct[] = [
+export const rightProducts: WellnessProduct[] = [
   {
     id: 'well-4',
     name: 'Al Fakher 30mg Salt Nicotine E Liquid 30ml in UAE',
@@ -257,9 +260,10 @@ const rightProducts: WellnessProduct[] = [
 ];
 
 export const WellnessSection: React.FC = () => {
+  const router = useRouter();
+  const quickView = useQuickView();
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [quickViewProduct, setQuickViewProduct] = useState<WellnessProduct | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -328,7 +332,7 @@ export const WellnessSection: React.FC = () => {
                     <div
                       key={p.id}
                       className="product-card"
-                      onClick={() => (window.location.href = p.link)}
+                      onClick={() => router.push(p.link)}
                     >
                       <Link
                         href={p.link}
@@ -363,11 +367,11 @@ export const WellnessSection: React.FC = () => {
                         type="button"
                         className="add-btn wellness-atc"
                         data-vap-qv-open={p.id}
-                        aria-label={`Quick view: ${p.title}`}
+                        aria-label={`View: ${p.title}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
-                          setQuickViewProduct(p);
+                          quickView?.openQuickView(p);
                         }}
                       >
                         <span className="watc-plus">+</span>
@@ -386,7 +390,7 @@ export const WellnessSection: React.FC = () => {
                     <div
                       key={p.id}
                       className="product-card"
-                      onClick={() => (window.location.href = p.link)}
+                      onClick={() => router.push(p.link)}
                     >
                       <Link
                         href={p.link}
@@ -421,11 +425,11 @@ export const WellnessSection: React.FC = () => {
                         type="button"
                         className="add-btn wellness-atc"
                         data-vap-qv-open={p.id}
-                        aria-label={`Quick view: ${p.title}`}
+                        aria-label={`View: ${p.title}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
-                          setQuickViewProduct(p);
+                          quickView?.openQuickView(p);
                         }}
                       >
                         <span className="watc-plus">+</span>
@@ -440,12 +444,6 @@ export const WellnessSection: React.FC = () => {
 
         </div>
       </div>
-
-      {/* Quick View Modal */}
-      <QuickViewModal
-        product={quickViewProduct}
-        onClose={() => setQuickViewProduct(null)}
-      />
     </section>
   );
 };
