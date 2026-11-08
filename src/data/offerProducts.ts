@@ -288,3 +288,4 @@ export const offerProducts: Product[] = [
     description: "Buy Elf bar EP8000 Puffs Disposable Vape 20mg in UAE in UAE online from Vape Stall. Guaranteed 100% authentic with fast same-day delivery across Dubai and all UAE Emirates."
   }
 ];
+

@@ -11,6 +11,7 @@ import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { QuickViewModal } from '@/components/product/QuickViewModal';
 import { CollectionSeoGuide } from '@/components/shop/CollectionSeoGuide';
+import { OfferCollectionSeoGuide } from '@/components/shop/OfferCollectionSeoGuide';
 import { CollectionSpotFake } from '@/components/shop/CollectionSpotFake';
 import { CollectionFaq } from '@/components/shop/CollectionFaq';
 import { CollectionAuth } from '@/components/shop/CollectionAuth';
@@ -1159,7 +1160,7 @@ function ShopContent() {
           )}
 
           {/* ─── COLLECTION GUIDE (Full 1:1 authentic content) ─── */}
-          <CollectionSeoGuide />
+          {isOffersCollection ? <OfferCollectionSeoGuide /> : <CollectionSeoGuide />}
 
         </div>
 
