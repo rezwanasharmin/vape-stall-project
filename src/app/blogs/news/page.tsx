@@ -40,6 +40,7 @@ export default function BlogListingPage() {
                   src={article.image}
                   alt={article.title}
                   fill
+                  unoptimized
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
@@ -77,3 +78,4 @@ export default function BlogListingPage() {
     </div>
   );
 }
+

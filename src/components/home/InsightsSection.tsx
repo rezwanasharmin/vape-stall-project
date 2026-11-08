@@ -51,6 +51,7 @@ export function InsightsSection() {
                         height={335}
                         className="w-full h-full object-cover"
                         loading="lazy"
+                        unoptimized
                       />
                     </div>
                     <div className="blog-text-content">

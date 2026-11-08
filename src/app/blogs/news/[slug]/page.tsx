@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { blogArticles } from '@/data/blogArticles';
-import { ArticleFaq } from '@/components/blog/ArticleFaq';
+import { FAQSection } from '@/components/home/FAQSection';
 import '@/app/section-blog-post.css';
 
 export default function BlogDetailPage() {
@@ -91,7 +91,7 @@ export default function BlogDetailPage() {
       <main id="MainContent" className="flex-grow">
         <article className="article-template">
           
-          {/* ─── Hero Image Container ─── */}
+          {/* ─── Hero Image Container (Crystal-Clear 2752w Original) ─── */}
           <div className="article-template__hero-container max-w-[1040px] mx-auto px-4 sm:px-6 mt-4 sm:mt-8">
             <div className="article-template__hero-adapt media relative rounded-2xl overflow-hidden shadow-2xl bg-slate-100 aspect-[16/9] w-full">
               <Image
@@ -99,6 +99,7 @@ export default function BlogDetailPage() {
                 alt={article.title}
                 fill
                 priority
+                unoptimized
                 sizes="(min-width: 1100px) 1040px, (min-width: 750px) calc(100vw - 10rem), 100vw"
                 className="object-cover w-full h-full"
               />
@@ -139,236 +140,38 @@ export default function BlogDetailPage() {
           </header>
 
           {/* ─── Table of Contents ─── */}
-          <nav className="vap-toc page-width page-width--narrow max-w-[820px] mx-auto px-4 sm:px-6 my-8" aria-labelledby="VapToc-content">
-            <details className="vap-toc__details bg-[#f4f6fb] border border-[#e8edf5] rounded-2xl overflow-hidden" open>
-              <summary className="vap-toc__summary flex items-center justify-between p-4 sm:p-5 cursor-pointer list-none select-none">
-                <span id="VapToc-content" className="vap-toc__title inline-flex items-center gap-2.5 font-bold text-[#1a2a4a] text-sm sm:text-base">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true" className="text-[#b48648]">
-                    <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+          {article.toc && article.toc.length > 0 && (
+            <nav className="vap-toc page-width page-width--narrow max-w-[820px] mx-auto px-4 sm:px-6 my-8" aria-labelledby="VapToc-content">
+              <details className="vap-toc__details bg-[#f4f6fb] border border-[#e8edf5] rounded-2xl overflow-hidden" open>
+                <summary className="vap-toc__summary flex items-center justify-between p-4 sm:p-5 cursor-pointer list-none select-none">
+                  <span id="VapToc-content" className="vap-toc__title inline-flex items-center gap-2.5 font-bold text-[#1a2a4a] text-sm sm:text-base">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true" className="text-[#b48648]">
+                      <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                    </svg>
+                    In this article
+                  </span>
+                  <svg className="vap-toc__chevron w-4 h-4 text-[#25406f] transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9" />
                   </svg>
-                  In this article
-                </span>
-                <svg className="vap-toc__chevron w-4 h-4 text-[#25406f] transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </summary>
-              <ol className="vap-toc__list pb-4 px-6 sm:px-8 space-y-1.5 list-decimal text-xs sm:text-sm text-slate-600 font-medium">
-                {article.toc.map((item) => (
-                  <li key={item.id} className="pl-1">
-                    <a href={`#${item.id}`} className="text-[#25406f] hover:text-[#b48648] hover:underline transition-colors">
-                      {item.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </details>
-          </nav>
+                </summary>
+                <ol className="vap-toc__list pb-4 px-6 sm:px-8 space-y-1.5 list-decimal text-xs sm:text-sm text-slate-600 font-medium">
+                  {article.toc.map((item) => (
+                    <li key={item.id} className="pl-1">
+                      <a href={`#${item.id}`} className="text-[#25406f] hover:text-[#b48648] hover:underline transition-colors">
+                        {item.title}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            </nav>
+          )}
 
           {/* ─── Article Content (1:1 with vapstall.ae) ─── */}
-          <div className="article-template__content page-width page-width--narrow max-w-[820px] mx-auto px-4 sm:px-6 text-[15px] sm:text-[16.5px] leading-relaxed text-[#334155] space-y-5">
-            <p>
-              Step into any vape shop in Dubai and mention Nasty, and the counter staff will nearly always answer with a question. Which one? The brand covers a long list of flavors, a few bottle sizes, and two kinds of nicotine. When all you want is a juice that tastes good in your device, that’s plenty to work through. Buy{' '}
-              <Link href="/shop?brand=Nasty" className="text-[#25406f] font-semibold hover:text-[#b48648] underline">
-                Nasty Vape Juice
-              </Link>{' '}
-              Models after you know your device and your nicotine need, and the whole thing gets easier.
-            </p>
-
-            <p>
-              Most people come to Nasty for the flavors, and the brand has a solid fan base across the UAE. The range includes freebase bottles and{' '}
-              <Link href="/shop?category=E-Liquids" className="text-[#25406f] font-semibold hover:text-[#b48648] underline">
-                salt nic
-              </Link>{' '}
-              bottles. A liquid that runs fine in a refillable tank can feel strange in a small pod system. Customers ask this type of question all the time, so we put the answers on one page. Here you’ll find the Best Nasty Vape Juice Models UAE adult users ask about most. We also cover label reading and fake bottles.
-            </p>
-
-            {/* SECTION 1 */}
-            <h2 id="why-getting-the-right-model-matters" className="text-xl sm:text-2xl font-black text-[#1a2a4a] pt-6 pb-2 border-b border-slate-200">
-              Why Getting the Right Model Matters
-            </h2>
-
-            <p>
-              Say you own a small pod kit and pick up a bottle made for a big tank. The vapor comes out thin. The nicotine hardly shows up. Or a smoker grabs a mild bottle, feels nothing, and quits vaping by Friday. You can read endless lists of the best vape juice in UAE, but a list has no idea what device you hold. In most cases the bottle type is the problem, not the brand.
-            </p>
-
-            <p>
-              We sorted this guide into three groups. The first group is for those who are new to vaping. The second already vapes and knows what flavors it likes. The third is cigarette smokers who want to switch. Each group gets plain advice on nicotine, bottle size and flavor. We’ll also look at a product page, because the label tells you more than the artwork does.
-            </p>
-
-            <h3 className="text-lg sm:text-xl font-bold text-[#1a2a4a] pt-3">
-              Different Nasty Vape Juice Models Explained
-            </h3>
-
-            <p>
-              Nasty freebase vs salt nic models is the split to learn first. Freebase is the older style of{' '}
-              <Link href="/shop?category=E-Liquids" className="text-[#25406f] font-semibold hover:text-[#b48648] underline">
-                e-liquid
-              </Link>
-              , and most people use it in refillable tanks. The nicotine strength is usually lower, and you breathe the vapor directly into your lungs. Vapers call this Direct-To-Lung, or DTL, and the clouds come out big. A Nasty Juice shortfill sits in this group. The bottle isn’t full to the top, so you have space to add a nicotine shot, or you can skip it and vape at zero.
-            </p>
-
-            <p>
-              Nic salt is the other type. Its lower pH keeps the throat hit smooth, even when the strength is high. You’ll see it in{' '}
-              <Link href="/shop?category=Pod+Systems" className="text-[#25406f] font-semibold hover:text-[#b48648] underline">
-                pod
-              </Link>{' '}
-              systems and low-wattage devices that use a tight Mouth-to-Lung draw, shortened to MTL. That draw is close to puffing on a cigarette. Look at your e liquid vape device first, because the device tells you which type to buy. Some people just search liquid vape nasty and assume any bottle will do. It won’t, because the two types don’t swap well.
-            </p>
-
-            <p>
-              Bottle size is the next thing to look at. With Nasty 30ml vs 60ml bottle models, the bigger one lasts longer and usually costs less for each ml. Some flavors also come in a 50ml bottle, so check the listing. The PG/VG ratio sits on the label too. PG gives a bit of throat hit and carries the flavor. VG makes the vapor thicker. Neither is better. Your device decides.
-            </p>
-
-            <h3 className="text-lg sm:text-xl font-bold text-[#1a2a4a] pt-3">
-              Best Nasty Vape Juice Models for New Vapers
-            </h3>
-
-            <p>
-              Start small with your first bottle. Choose a low strength and a smooth flavor, and make sure the liquid matches the device you already own. A Nasty vape juice nicotine strength guide for beginners can be short. Begin low. Go up later only if you need to. People often ask about Nasty Juice 20mg vs{' '}
-              <Link href="/shop?q=50mg" className="text-[#25406f] font-semibold hover:text-[#b48648] underline">
-                50mg
-              </Link>{' '}
-              models. Most people who don’t smoke find 20mg plenty, and 50mg can make the first few puffs hit hard enough to make you cough. The stronger bottle makes more sense for someone who already smokes every day.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Easy starter:</strong> A{' '}
-              <Link href="/shop?nicotine=20mg" className="text-[#25406f] font-semibold hover:text-[#b48648] underline">
-                20mg
-              </Link>{' '}
-              salt nic bottle in a pod system is where most people begin, and a light ice flavor keeps the first week simple. Apple Ice, Peach Ice, Strawberry Ice and Blueberry Ice are the ones we would hand to a first-timer. They’re cool, fruity and soft on the throat. A pod with a tight draw suits them well, so you can find out if vaping is for you without a harsh start.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Everyday middle ground:</strong> Once you’ve settled in, a refillable tank saves money because it takes more liquid. Mango Ice, Strawberry Watermelon and Raspberry Watermelon are tasty in a tank, and a 60ml bottle goes a long way. Keep the nicotine low. Freebase at high strength is rough on the throat. Look at the PG/VG ratio as well, and choose one your coil can handle.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Long-lasting stock:</strong> If you vape every day, a long lasting Nasty Juice e-liquid saves you from running out after three days. A big bottle helps, and a cupboard away from sun and car heat keeps it tasting the way it should. Steady e-liquid flow into the coil matters too, so don’t let the tank run low before you refill.
-            </p>
-
-            <h3 className="text-lg sm:text-xl font-bold text-[#1a2a4a] pt-3">
-              Best Nasty Vape Juice Models for Experienced Vapers
-            </h3>
-
-            <p>
-              You know your coil, your wattage and your favorite draw. By now flavor depth and PG/VG ratio count for more than anything else. A quick label check saves a lot of guessing. Read the liquid type, the PG/VG ratio and the size of each bottle you like. Line up two or three flavors that way and one tends to stand out. If you Buy Nasty Vape Juice Models this way, you can easily get authentic Nasty vape juice instead of fakes.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Layered fruit mixes:</strong> Berry Grape, Mix Berry, Cherry Peach Raspberry and Grape Raspberry Ice have a blended taste that comes through best in a tank with open airflow. Blue Razz Ice and Berry Bomb lean sharper and sweeter. Kiwi Passionfruit Guava gives a bright, juicy finish.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Popular names:</strong> Trap Queen Nasty Juice gets asked for more than most. You can read the Nasty Trap Queen flavor profile on its product page. The reviews on that page are worth a look before you pick a size.
-            </p>
-
-            <h3 className="text-lg sm:text-xl font-bold text-[#1a2a4a] pt-3">
-              Best Nasty Vape Juice Models for Smokers Switching Over
-            </h3>
-
-            <p>
-              A smoker who switches usually cares about the hit before anything else. If the nicotine feels weak, a pack of cigarettes starts looking easy again. Nic salt in a pod system with a tight MTL draw is the usual route. For heavy smokers, 35mg to 50mg is a common range. Lighter smokers can begin near 20mg and adjust. The same rule applies if you’re moving over from a basic e-cigarette.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Tobacco flavors:</strong> Dry Tobacco, Vanilla Tobacco, Caramel Tobacco, Vanilla Custard Tobacco, Cubano and Tobacco Apple taste warm and familiar. They work for smokers who don’t want a fruity taste in the way.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Menthol and mint:</strong> Menthol, Arctic Mint, Spearmint and Miami Mint hit cold and clean. People who smoked menthols usually settle in here quickly.
-            </p>
-
-            {/* SECTION 2 */}
-            <h2 id="nasty-vape-juice-flavors-and-features" className="text-xl sm:text-2xl font-black text-[#1a2a4a] pt-6 pb-2 border-b border-slate-200">
-              Nasty Vape Juice Flavors and Features
-            </h2>
-
-            <p>
-              Flavor is why most people pick Nasty. Instead of listing every bottle in a row, the flavors below sit in groups by taste.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Ice flavors:</strong> Nasty Lychee Ice, Watermelon Ice and Mango Ice are a good place to start if you like a cold exhale. Grape Ice, Pineapple Ice, Cola Ice, Guava Ice, Mango Peach Ice and Passion Fruit Ice follow the same idea. On most of them the cold stays gentle, and the fruit still comes through.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Fruit and berry flavors:</strong> Strawberry Kiwi, Strawberry Mango and Strawberry Melon are the strawberry blends, and Cherry Watermelon, Double Watermelon and Watermelon Apple cover the melon side. Grape Strawberry, Grape &amp; Mixed Berries and Blackcurrant round out the berries. Honeydew, Aloe Grape and Aqua taste lighter. Some grape fans ask for Genuine Nasty ASAP Grape e-liquid Dubai stores keep in stock.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Tropical flavors:</strong> Mango runs through most of this group, from Caribbean Mango and Green Mango to Peach Mango and Mango Lassi. Pineapple shows up as Pineapple, Pineapple Kiwi and Pineapple Lychee, and Passion Fruit, Guava and Lychee sit alongside them. They’re sweet, and they stay pleasant in hot weather.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Cush Man flavors:</strong> Nasty Cushman Mango and Mango Cushman are the starting point. Cush Man Mango Strawberry, Cush Man Mango Banana and Cush Man Mango Grape each bring a second fruit into the mango. If you’re after Original Nasty Cush Man e-liquid UAE shops carry, try the plain mango first and branch out from there.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Shisha flavors:</strong> Shisha Double Apple is the obvious pick for hookah fans. Shisha Melon Mint, Shisha Mix Melon Mint, Shisha Lemon Mint, Shisha Green Grape and Shisha Grape Raspberry cover the other hookah-style mixes. The Nasty Double Apple vs Green Ape debate is mostly about taste. Double Apple is sweet with a slight tartness, the classic hookah style. Green Ape suits people who want a sharper green apple. Green Apple and Nasty Green Apple are close neighbors.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Dessert, energy and cola flavors:</strong> For something sweet, there’s Coffee, Strawberry Milkshake, Rainbow Candy and plain Strawberry. Cherry Cola and Fizzy Cherry taste like soda, and Energy Drink, Red Energy and Red Rage go for the energy can. Pineapple Lemonade and Blackcurrant Lemonade land between fruit and soda.
-            </p>
-
-            {/* SECTION 3 */}
-            <h2 id="things-worth-knowing-before-you-buy" className="text-xl sm:text-2xl font-black text-[#1a2a4a] pt-6 pb-2 border-b border-slate-200">
-              Things Worth Knowing Before You Buy
-            </h2>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Match nicotine strength to your habit.</strong> Bigger isn’t better here. Salt nic at 35mg to 50mg suits heavy smokers. Casual vapers do better at 10mg to 20mg, and they can move up later if it feels weak.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Check your pods and tank.</strong> Buying a Nasty vape refill for a pod device? Confirm the pod accepts that liquid first. Thick, VG-heavy juice can clog a small coil. Thin salt nic juice can leak from a large tank.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Compare by price per ml.</strong> Vape liquid price in UAE shifts with bottle size, and larger bottles often cost less per ml. Many shoppers ask about the Nasty Vape Box price, and you’ll find the current figure on each product page. A salt nic bottle and a shortfill cost different amounts, so compare similar bottles.
-            </p>
-
-            <p>
-              <strong className="text-[#1a2a4a]">Use real reviews.</strong> Reviews help most when they come from real buyers. Skim the ratings and comments, and see which best selling Nasty Juice flavors UAE shoppers keep reordering.
-            </p>
-
-            <h3 className="text-lg sm:text-xl font-bold text-[#1a2a4a] pt-3">
-              Real vs Fake Nasty Vape Juice
-            </h3>
-
-            <p>
-              Real vs fake Nasty vape juice is something every UAE buyer should think about. A fake can taste harsh or chemical, and you can’t trust the nicotine level printed on it. That can hurt your health, so skip the gamble. Start with the printing. Real packaging has sharp text and even colors. The cap should be sealed, and the label should list nicotine strength, bottle size and PG/VG ratio.
-            </p>
-
-            <p>
-              Vape products here have to meet ESMA safety standards, so a seller who can’t explain that should worry you. Look for ESMA approved Nasty vape juice UAE sellers can explain in plain words. Random social media sellers are not worth the risk. A shop that lists full product details is the safer choice.
-            </p>
-
-            {/* SECTION 4 */}
-            <h2 id="where-to-buy-nasty-vape-juice-in-uae" className="text-xl sm:text-2xl font-black text-[#1a2a4a] pt-6 pb-2 border-b border-slate-200">
-              Where to Buy Nasty Vape Juice in UAE
-            </h2>
-
-            <p>
-              <Link href="/" className="text-[#25406f] font-semibold hover:text-[#b48648] underline">
-                Vape Stall
-              </Link>{' '}
-              is a verified and licensed vape seller in the UAE, and our products come from verified suppliers. As an online vape store, we aim to be the Best Nasty Vape Juice Shop in UAE for adult vapers. The{' '}
-              <Link href="/shop?brand=Nasty" className="text-[#25406f] font-semibold hover:text-[#b48648] underline">
-                Nasty collection
-              </Link>{' '}
-              can be browsed by flavor, nicotine strength and bottle size, and every bottle’s price is on its product page. Stock changes, so check the page before ordering.
-            </p>
-
-            <p>
-              Delivery covers Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah and Umm Al Quwain. In central areas of Dubai, same day delivery is available, and some orders arrive within a few hours. Where you live changes the timing. You can pay with Cash on Delivery (COD) anywhere in the UAE.
-            </p>
-
-            <p>
-              When a shop shows clear labels and answers your questions, you can Buy Nasty Vape Juice Models without second-guessing the bottle in your hand. You can order online at Vape Stall.
-            </p>
-          </div>
+          <div
+            className="article-template__content page-width page-width--narrow max-w-[820px] mx-auto px-4 sm:px-6 text-[15px] sm:text-[16.5px] leading-relaxed text-[#334155] space-y-5"
+            dangerouslySetInnerHTML={{ __html: article.contentHtml }}
+          />
 
           {/* ─── Social Sharing Bar ─── */}
           <div className="article-template__social-sharing page-width page-width--narrow max-w-[820px] mx-auto px-4 sm:px-6 my-10">
@@ -442,8 +245,8 @@ export default function BlogDetailPage() {
 
         </article>
 
-        {/* ─── Frequently Asked Questions Section (8 Authentic Items) ─── */}
-        <ArticleFaq items={article.faqs} />
+        {/* ─── Frequently Asked Questions Section (Exact 1:1 Home page FAQ section) ─── */}
+        <FAQSection />
       </main>
     </div>
   );

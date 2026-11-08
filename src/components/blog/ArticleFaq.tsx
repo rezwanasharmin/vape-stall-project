@@ -124,3 +124,4 @@ export const ArticleFaq: React.FC<ArticleFaqProps> = ({ items }) => {
     </div>
   );
 };
+
