@@ -105,7 +105,8 @@ export const Navbar: React.FC = () => {
     },
     {
       name: 'OFFERS',
-      href: '/shop?q=Offer',
+      href: '/collections/offer-vape-shop-dubai',
+      active: pathname === '/collections/offer-vape-shop-dubai' || pathname?.startsWith('/collections/offer'),
     },
   ];
 

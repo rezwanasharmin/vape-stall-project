@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useMemo, Suspense } from 'react';
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useParams, usePathname } from 'next/navigation';
 import { shopProducts } from '@/data/shopProducts';
+import { offerProducts } from '@/data/offerProducts';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
@@ -17,9 +18,31 @@ import '@/app/vap-collection.css';
 
 function ShopContent() {
   const searchParams = useSearchParams();
+  const params = useParams();
+  const pathname = usePathname();
+  const slug = (params?.slug as string) || '';
+
   const initialCategory = searchParams.get('category');
   const initialBrand = searchParams.get('brand');
   const initialQuery = searchParams.get('q') || '';
+
+  // Determine if this is the Offers Collection page (/collections/offer-vape-shop-dubai)
+  const isOffersCollection = useMemo(() => {
+    return (
+      slug === 'offer-vape-shop-dubai' ||
+      slug === 'offer' ||
+      pathname === '/collections/offer-vape-shop-dubai' ||
+      pathname?.startsWith('/collections/offer') ||
+      initialQuery.toLowerCase() === 'offer'
+    );
+  }, [slug, pathname, initialQuery]);
+
+  const baseProducts = useMemo(() => {
+    return isOffersCollection ? offerProducts : shopProducts;
+  }, [isOffersCollection]);
+
+  const defaultMaxPrice = isOffersCollection ? '675.00' : '750.00';
+  const defaultMaxPriceNum = isOffersCollection ? 675 : 750;
 
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -27,8 +50,8 @@ function ShopContent() {
   // Filter States
   const [selectedAvailabilities, setSelectedAvailabilities] = useState<string[]>([]);
   const [priceFrom, setPriceFrom] = useState<string>('0');
-  const [priceTo, setPriceTo] = useState<string>('750.00');
-  const [appliedPriceRange, setAppliedPriceRange] = useState<[number, number]>([0, 750]);
+  const [priceTo, setPriceTo] = useState<string>(defaultMaxPrice);
+  const [appliedPriceRange, setAppliedPriceRange] = useState<[number, number]>([0, defaultMaxPriceNum]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     initialCategory ? [initialCategory] : []
   );
@@ -43,10 +66,19 @@ function ShopContent() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Sync price bounds when collection changes
+  useEffect(() => {
+    setPriceTo(defaultMaxPrice);
+    setAppliedPriceRange([0, defaultMaxPriceNum]);
+    if (isOffersCollection) {
+      setIsCategoryOpen(false);
+    }
+  }, [defaultMaxPrice, defaultMaxPriceNum, isOffersCollection]);
+
   // Accordion open/close states
   const [isAvailabilityOpen, setIsAvailabilityOpen] = useState<boolean>(true);
   const [isPriceOpen, setIsPriceOpen] = useState<boolean>(true);
-  const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(true);
+  const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(!isOffersCollection);
   const [isNicotineOpen, setIsNicotineOpen] = useState<boolean>(false);
   const [isBrandsOpen, setIsBrandsOpen] = useState<boolean>(false);
 
@@ -68,6 +100,13 @@ function ShopContent() {
     { label: 'Replacement Pod', count: 2 },
   ];
 
+  const currentCategoriesList = useMemo(() => {
+    if (isOffersCollection) {
+      return [{ label: 'Disposable vape', count: 13 }];
+    }
+    return categoriesList;
+  }, [isOffersCollection, categoriesList]);
+
   // Nicotine Strengths matching vapstall.ae
   const nicotineList = [
     { label: '20mg', count: 32 },
@@ -79,6 +118,19 @@ function ShopContent() {
     { label: '6mg', count: 8 },
     { label: '0mg', count: 2 },
   ];
+
+  const currentNicotineList = useMemo(() => {
+    if (isOffersCollection) {
+      return [
+        { label: '50mg', count: 5 },
+        { label: '20mg', count: 4 },
+        { label: '6mg', count: 1 },
+        { label: '3mg', count: 1 },
+        { label: '2mg', count: 1 },
+      ];
+    }
+    return nicotineList;
+  }, [isOffersCollection, nicotineList]);
 
   // Top Selling Brands matching vapstall.ae
   const brandsList = [
@@ -97,10 +149,39 @@ function ShopContent() {
     { label: 'Myle', count: 6 },
   ];
 
+  const currentBrandsList = useMemo(() => {
+    if (isOffersCollection) {
+      return [
+        { label: 'Elf Bar', count: 2 },
+        { label: 'Flonq', count: 2 },
+        { label: 'Al Fakher', count: 1 },
+        { label: 'VOZOL', count: 1 },
+        { label: 'Kief King', count: 1 },
+        { label: 'Myle', count: 1 },
+        { label: 'Lost Mary', count: 1 },
+        { label: 'Waka', count: 1 },
+        { label: 'Nasty', count: 1 },
+        { label: 'Sultan Shisha', count: 1 },
+        { label: 'Humo Azul', count: 1 },
+        { label: 'Ignite', count: 1 },
+      ];
+    }
+    return brandsList;
+  }, [isOffersCollection, brandsList]);
+
+  const inStockCount = useMemo(
+    () => baseProducts.filter((p) => p.inStock).length,
+    [baseProducts]
+  );
+  const outOfStockCount = useMemo(
+    () => baseProducts.filter((p) => !p.inStock).length,
+    [baseProducts]
+  );
+
   const handleApplyPrice = (e: React.FormEvent) => {
     e.preventDefault();
     const min = parseFloat(priceFrom) || 0;
-    const max = parseFloat(priceTo) || 750;
+    const max = parseFloat(priceTo) || defaultMaxPriceNum;
     setAppliedPriceRange([min, max]);
     setCurrentPage(1);
   };
@@ -139,8 +220,8 @@ function ShopContent() {
     setSelectedBrands([]);
     setSelectedNicotines([]);
     setPriceFrom('0');
-    setPriceTo('750.00');
-    setAppliedPriceRange([0, 750]);
+    setPriceTo(defaultMaxPrice);
+    setAppliedPriceRange([0, defaultMaxPriceNum]);
     setCurrentPage(1);
   };
 
@@ -149,11 +230,11 @@ function ShopContent() {
     selectedCategories.length +
     selectedBrands.length +
     selectedNicotines.length +
-    (appliedPriceRange[0] > 0 || appliedPriceRange[1] < 750 ? 1 : 0);
+    (appliedPriceRange[0] > 0 || appliedPriceRange[1] < defaultMaxPriceNum ? 1 : 0);
 
   // Filtered Products
   const filteredProducts = useMemo(() => {
-    return shopProducts
+    return baseProducts
       .filter((p) => {
         // Availability
         if (selectedAvailabilities.length > 0) {
@@ -194,8 +275,8 @@ function ShopContent() {
           if (!match) return false;
         }
 
-        // Search query
-        if (initialQuery) {
+        // Search query (only filter if on general search, not offer collection)
+        if (initialQuery && !isOffersCollection) {
           const q = initialQuery.toLowerCase();
           if (!p.name.toLowerCase().includes(q) && !p.brand.toLowerCase().includes(q)) {
             return false;
@@ -213,6 +294,7 @@ function ShopContent() {
         return 0; // most-relevant (default order)
       });
   }, [
+    baseProducts,
     selectedAvailabilities,
     appliedPriceRange,
     selectedCategories,
@@ -220,6 +302,7 @@ function ShopContent() {
     selectedNicotines,
     sortBy,
     initialQuery,
+    isOffersCollection,
   ]);
 
   const handleAddToCart = (product: Product) => {
@@ -242,13 +325,13 @@ function ShopContent() {
     setTimeout(() => setToastMessage(null), 2500);
   };
 
-  const pageSize = 12;
+  const pageSize = isOffersCollection ? 24 : 12;
   const totalPages = Math.ceil(filteredProducts.length / pageSize) || 1;
 
   const pagedProducts = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
     return filteredProducts.slice(start, start + pageSize);
-  }, [filteredProducts, currentPage]);
+  }, [filteredProducts, currentPage, pageSize]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -287,7 +370,7 @@ function ShopContent() {
             ›
           </span>
           <span className="vcol-breadcrumb__cur text-[#25406f] font-semibold" aria-current="page">
-            Vape Stall: Disposable Vape shop in UAE
+            {isOffersCollection ? 'Offer' : 'Vape Stall: Disposable Vape shop in UAE'}
           </span>
         </nav>
       </div>
@@ -372,7 +455,7 @@ function ShopContent() {
                           )}
                         </span>
                         <span className="vcol-check-text flex-1">In stock</span>
-                        <span className="vcol-check-count text-[11.5px] text-slate-400">(81)</span>
+                        <span className="vcol-check-count text-[11.5px] text-slate-400">({inStockCount})</span>
                       </label>
                     </li>
                     <li className="vcol-check-item">
@@ -395,7 +478,7 @@ function ShopContent() {
                           )}
                         </span>
                         <span className="vcol-check-text flex-1">Out of stock</span>
-                        <span className="vcol-check-count text-[11.5px] text-slate-400">(17)</span>
+                        <span className="vcol-check-count text-[11.5px] text-slate-400">({outOfStockCount})</span>
                       </label>
                     </li>
                   </ul>
@@ -463,7 +546,7 @@ function ShopContent() {
                             value={priceTo}
                             onChange={(e) => setPriceTo(e.target.value)}
                             className="vcol-price-input w-full px-2 py-1.5 text-xs text-[#25406f] font-semibold focus:outline-none"
-                            placeholder="750.00"
+                            placeholder={defaultMaxPrice}
                           />
                         </div>
                       </div>
@@ -507,7 +590,7 @@ function ShopContent() {
               {isCategoryOpen && (
                 <div className="vcol-filter-body px-4 pb-4 max-h-[300px] overflow-y-auto scrollbar-thin">
                   <ul className="vcol-check-list space-y-1">
-                    {categoriesList.map((item) => {
+                    {currentCategoriesList.map((item) => {
                       const isChecked = selectedCategories.includes(item.label);
                       return (
                         <li key={item.label} className="vcol-check-item">
@@ -566,7 +649,7 @@ function ShopContent() {
               {isNicotineOpen && (
                 <div className="vcol-filter-body px-4 pb-4">
                   <ul className="vcol-check-list space-y-1">
-                    {nicotineList.map((item) => {
+                    {currentNicotineList.map((item) => {
                       const isChecked = selectedNicotines.includes(item.label);
                       return (
                         <li key={item.label} className="vcol-check-item">
@@ -625,7 +708,7 @@ function ShopContent() {
               {isBrandsOpen && (
                 <div className="vcol-filter-body px-4 pb-4 max-h-[300px] overflow-y-auto scrollbar-thin">
                   <ul className="vcol-check-list space-y-1">
-                    {brandsList.map((item) => {
+                    {currentBrandsList.map((item) => {
                       const isChecked = selectedBrands.includes(item.label);
                       return (
                         <li key={item.label} className="vcol-check-item">
@@ -786,13 +869,13 @@ function ShopContent() {
                   <span className="vcol-pill-x">×</span>
                 </button>
               ))}
-              {(appliedPriceRange[0] > 0 || appliedPriceRange[1] < 750) && (
+              {(appliedPriceRange[0] > 0 || appliedPriceRange[1] < defaultMaxPriceNum) && (
                 <button
                   type="button"
                   onClick={() => {
                     setPriceFrom('0');
-                    setPriceTo('750.00');
-                    setAppliedPriceRange([0, 750]);
+                    setPriceTo(defaultMaxPrice);
+                    setAppliedPriceRange([0, defaultMaxPriceNum]);
                   }}
                   className="vcol-pill inline-flex items-center gap-1.5 bg-[#25406f]/10 text-[#25406f] px-3 py-1 rounded-full text-xs font-semibold hover:bg-red-50 hover:text-red-600 transition-colors"
                 >
@@ -938,7 +1021,7 @@ function ShopContent() {
                       <div className="vap-product-text-content flex flex-col flex-1">
                         
                         {/* Title */}
-                        <Link href={`/product/${product.handle}`} className="block">
+                        <Link href={`/products/${product.handle}`} className="block">
                           <h3 className="vap-product-name text-[14px] sm:text-[15px] font-bold text-[#1e293b] hover:text-[#b48648] line-clamp-2 min-h-[42px] leading-snug transition-colors">
                             {product.name}
                           </h3>
