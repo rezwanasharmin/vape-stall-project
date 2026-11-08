@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
+import { useQuickView } from '@/context/QuickViewContext';
 
 interface ProductCardProps {
   product: Product;
@@ -14,9 +15,19 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }) => {
-  const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const isWishlisted = isInWishlist(product.id);
+  const quickView = useQuickView();
+
+  const handleOpenQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onQuickView) {
+      onQuickView(product);
+    } else if (quickView?.openQuickView) {
+      quickView.openQuickView(product);
+    }
+  };
 
   return (
     <div
@@ -81,17 +92,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         </div>
 
         {/* Quick View Bar (Slides up on hover) */}
-        <Link
-          href={`/products/${product.handle}`}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
+        <button
+          type="button"
+          onClick={handleOpenQuickView}
           className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#25406F]/90 via-[#25406F]/70 to-transparent pt-6 sm:pt-8 pb-2 sm:pb-3 px-2 sm:px-3 flex items-center justify-center translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10 cursor-pointer"
+          aria-label={`Quick view ${product.name}`}
         >
           <span className="text-white text-[11px] sm:text-[12px] font-bold tracking-widest uppercase drop-shadow-sm">
             Quick View
           </span>
-        </Link>
+        </button>
       </div>
 
       {/* Product Information */}
@@ -131,7 +141,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           ) : null}
         </div>
 
-        {/* Price & Add to Cart Action */}
+        {/* Price & Quick View Cart Action */}
         <div className="mt-auto pt-2 sm:pt-3 flex items-center justify-between border-t border-slate-100 min-h-[42px] sm:min-h-[52px]">
           <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-0.5">
             {product.originalPriceFormatted && (
@@ -151,13 +161,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
 
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              addToCart(product, 1);
-            }}
-            className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-[#f1f5f9] hover:bg-[#25406F] text-[#25406F] hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm active:scale-95 flex-shrink-0"
-            aria-label={`Add ${product.name} to cart`}
-            title="Add to cart"
+            onClick={handleOpenQuickView}
+            className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-[#f1f5f9] hover:bg-[#25406F] text-[#25406F] hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm active:scale-95 flex-shrink-0 cursor-pointer"
+            aria-label={`Quick view ${product.name}`}
+            title="Quick view"
           >
             <svg
               className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5"

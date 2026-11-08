@@ -14,20 +14,28 @@ export interface QuickViewProductData {
   priceFormatted?: string;
   price?: string | number;
   originalPriceFormatted?: string;
-  comparePrice?: string;
+  comparePriceFormatted?: string;
+  comparePrice?: string | number;
   savingsFormatted?: string;
   badge?: string;
   saleBadge?: string;
   image?: string;
   img?: string;
   images?: string[];
+  altImage?: string;
   galleryImages?: string[];
   flavors?: string[];
   quantityTypes?: string[];
   isOutOfStock?: boolean;
   isSoldOut?: boolean;
+  inStock?: boolean;
   link?: string;
   numericPrice?: number;
+  rating?: number;
+  reviewsCount?: number;
+  description?: string;
+  category?: string;
+  brand?: string;
 }
 
 interface QuickViewModalProps {
@@ -46,40 +54,49 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
 
   // Parse product attributes
   const p = product as any;
-  const title = p ? (p.title || p.name || '') : '';
+  const title = p ? (p.name || p.title || '') : '';
   const handle = p ? (p.handle || (p.link ? p.link.replace('/products/', '') : '')) : '';
-  const link = p?.link || (handle ? `/product/${handle}` : '#');
-  const isSoldOut = Boolean(p?.isOutOfStock || p?.isSoldOut);
+  const link = p?.link || (handle ? `/products/${handle}` : '#');
+  const isSoldOut = Boolean(p?.isOutOfStock || p?.isSoldOut || (p?.inStock === false));
   
   const currentPrice = p?.priceFormatted || 
     (typeof p?.price === 'string' ? p.price : (p?.price ? `Dhs. ${p.price}.00` : ''));
     
-  const comparePrice = p?.originalPriceFormatted || p?.comparePrice || '';
-  const saleBadge = p?.saleBadge || p?.badge || '';
+  const comparePrice = p?.originalPriceFormatted || p?.comparePriceFormatted || 
+    (typeof p?.comparePrice === 'string' ? p.comparePrice : '') || 
+    (p?.oldPrice ? p.oldPrice : '');
+    
+  const saleBadge = p?.badge || p?.saleBadge || '';
 
-  // Extract images
-  const allImages: string[] = [];
+  // Extract images: include gallery, primary, and secondary/alt images
+  const rawImages: string[] = [];
   if (p) {
-    if (p.galleryImages && p.galleryImages.length > 0) {
-      allImages.push(...p.galleryImages);
-    } else if (p.images && p.images.length > 0) {
-      allImages.push(...p.images);
-    } else if (p.image) {
-      allImages.push(p.image);
-    } else if (p.img) {
-      allImages.push(p.img);
+    if (p.galleryImages && Array.isArray(p.galleryImages) && p.galleryImages.length > 0) {
+      rawImages.push(...p.galleryImages);
     }
+    if (p.images && Array.isArray(p.images) && p.images.length > 0) {
+      rawImages.push(...p.images);
+    }
+    if (p.image) rawImages.push(p.image);
+    if (p.img) rawImages.push(p.img);
+    if (p.altImage) rawImages.push(p.altImage);
+  }
+  const allImages = Array.from(new Set(rawImages.filter(Boolean)));
+  if (allImages.length === 0) {
+    allImages.push('/images/products/kief-king-main.png');
   }
 
-  // Extract flavors
-  const flavors: string[] = p?.flavors && p.flavors.length > 0 
+  // Extract and clean flavors (filter out "Select Flavour" placeholder)
+  const rawFlavors: string[] = p?.flavors && Array.isArray(p.flavors) && p.flavors.length > 0 
     ? p.flavors 
     : ['Default Flavor'];
+  const validFlavors = rawFlavors.filter((f: string) => f && f.toLowerCase() !== 'select flavour');
+  const flavors: string[] = validFlavors.length > 0 ? validFlavors : ['Default Flavor'];
 
   // Extract quantity types
-  const quantityTypes: string[] = p?.quantityTypes && p.quantityTypes.length > 0
+  const quantityTypes: string[] = p?.quantityTypes && Array.isArray(p.quantityTypes) && p.quantityTypes.length > 0
     ? p.quantityTypes
-    : ['1Pc/1Device'];
+    : ['1Pc/1Device', '10Pc/1Box'];
 
   // Initialize selections when product changes
   useEffect(() => {
@@ -153,14 +170,15 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
         handle: handle || 'product',
         price: numericPrice,
         priceFormatted: currentPrice,
-        rating: 5,
-        reviewsCount: 45,
-        image: allImages[0] || '/images/products/wellness-alfakher-ultra-25k.png',
-        category: 'Disposable Vape',
-        brand: title.split(' ')[0],
-        inStock: true,
-        flavors: [selectedFlavor],
-        description: title,
+        originalPriceFormatted: comparePrice || undefined,
+        rating: p.rating || 5,
+        reviewsCount: p.reviewsCount || 45,
+        image: allImages[0] || '/images/products/kief-king-main.png',
+        category: p.category || 'Disposable Vape',
+        brand: p.brand || title.split(' ')[0],
+        inStock: !isSoldOut,
+        flavors: flavors,
+        description: p.description || title,
       },
       1,
       selectedFlavor
@@ -329,7 +347,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                   <p className="vap-qv-option-label">
                     FLAVOR: <span className="vap-qv-option-selected">{selectedFlavor}</span>
                   </p>
-                  <div className="vap-qv-option-values">
+                  <div className="vap-qv-option-values max-h-[160px] overflow-y-auto pr-1">
                     {flavors.map((flavor) => {
                       const isSelected = selectedFlavor === flavor;
                       return (

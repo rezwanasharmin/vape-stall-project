@@ -1068,16 +1068,16 @@ function ShopContent() {
                             )}
                           </div>
 
-                          {/* Add to Cart button matching screenshot light blue / cart icon */}
+                          {/* Quick View / Add to Cart button matching screenshot light blue / cart icon */}
                           <button
                             type="button"
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              handleAddToCart(product);
+                              setQuickViewProduct(product);
                             }}
                             className="w-9 h-9 rounded-full bg-[#eef4ff] hover:bg-[#25406f] text-[#25406f] hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm active:scale-90 cursor-pointer"
-                            aria-label={`Add ${product.name} to cart`}
+                            aria-label={`Quick view ${product.name}`}
                           >
                             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                               <circle cx="9" cy="21" r="1" />

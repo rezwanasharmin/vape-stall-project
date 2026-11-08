@@ -4,6 +4,7 @@ import './globals.css';
 import './component-whatsapp-float.css';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
+import { QuickViewProvider } from '@/context/QuickViewContext';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -43,15 +44,17 @@ export default function RootLayout({
       <body className={`${outfit.className} min-h-screen bg-dark-bg text-gray-100 flex flex-col antialiased`}>
         <CartProvider>
           <WishlistProvider>
-            <AnnouncementBar />
-            <Navbar />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-            <CartDrawer />
-            <AgeVerificationModal />
-            <WhatsAppButton />
+            <QuickViewProvider>
+              <AnnouncementBar />
+              <Navbar />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+              <CartDrawer />
+              <AgeVerificationModal />
+              <WhatsAppButton />
+            </QuickViewProvider>
           </WishlistProvider>
         </CartProvider>
       </body>
